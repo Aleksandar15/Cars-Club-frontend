@@ -1,19 +1,20 @@
 import { useState } from "react";
+import { Container } from "react-bootstrap";
 // import reactLogo from './assets/react.svg'
 // import './App.css'
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import HomePage from "../components/Home/HomePage";
+import NavBar from "../components/NavBar/NavBar";
 
 function App() {
-  // const [count, setCount] = useState(0)
-
   return (
     <div>
-      <BrowserRouter>
+      <NavBar />
+      <Container className="mb-4">
         <Routes>
           <Route path="/" element={<HomePage />} />
         </Routes>
-      </BrowserRouter>
+      </Container>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 # CARS CLUB
 
-##### The Goal: Improve my **TypeScript** skills
+##### Main Goal: Improve my **TypeScript** skills
 
 #### Plans & Features (in non-technical way):
 

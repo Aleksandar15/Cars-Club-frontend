@@ -1,17 +1,5 @@
-import {
-  ChangeEvent,
-  FormEvent,
-  FormEventHandler,
-  MouseEventHandler,
-  useState,
-} from "react";
-import {
-  Button,
-  Form,
-  FormControl,
-  FormGroup,
-  FormLabel,
-} from "react-bootstrap";
+import { ChangeEvent, FormEvent, useState } from "react";
+import { Button, Col, FloatingLabel, Form, InputGroup } from "react-bootstrap";
 import SearchSVGicon from "../../utilities/icons/search-SVG-icon";
 
 const Marketplace = () => {
@@ -43,24 +31,31 @@ const Marketplace = () => {
 
   return (
     <>
+      <h3 className="mb-3 pb-3 text-primary">
+        Welcome to Marketplace - Here you can find offers or post your own.
+      </h3>
       <Form onSubmit={handleSearch}>
-        <FormGroup>
-          <FormLabel htmlFor="carNameField">SEARCH:</FormLabel>
+        <Col md="5">
           <div className="input-group">
-            <FormControl
-              type="text"
-              placeholder="Search car name"
-              name="carNameField"
-              id="carNameField"
-              onChange={handleInput}
-              // value={searchInput}
-              value={searchInput.carNameField}
-            />
+            <InputGroup.Text id="carNameField" className="text-primary ">
+              SEARCH
+            </InputGroup.Text>
+            <FloatingLabel label="Search by car's brand">
+              <Form.Control
+                type="text"
+                placeholder="Search car by name"
+                name="carNameField"
+                id="carNameField"
+                aria-describedby="carNameField"
+                onChange={handleInput}
+                value={searchInput.carNameField}
+              />
+            </FloatingLabel>
             <Button variant="btn bg-light btn-outline-primary" type="submit">
               <SearchSVGicon />
             </Button>
           </div>
-        </FormGroup>
+        </Col>
       </Form>
     </>
   );

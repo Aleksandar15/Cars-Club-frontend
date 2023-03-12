@@ -5,7 +5,7 @@ import { Container } from "react-bootstrap";
 import { Routes, Route } from "react-router-dom";
 import HomePage from "./components/Home/HomePage";
 import NavBar from "./components/NavBar/NavBar";
-import Marketplace from "./components/Marketplace/Marketplace";
+import Marketplace from "./pages/ProtectedPages/Marketplace";
 
 function App() {
   return (

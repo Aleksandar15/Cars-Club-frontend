@@ -3,9 +3,9 @@ import { Container } from "react-bootstrap";
 // import reactLogo from './assets/react.svg'
 // import "./App.css";
 import { Routes, Route } from "react-router-dom";
-import HomePage from "../components/Home/HomePage";
-import NavBar from "../components/NavBar/NavBar";
-import Marketplace from "../components/Marketplace/Marketplace";
+import HomePage from "./components/Home/HomePage";
+import NavBar from "./components/NavBar/NavBar";
+import Marketplace from "./components/Marketplace/Marketplace";
 
 function App() {
   return (

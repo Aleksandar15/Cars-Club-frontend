@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Container } from "react-bootstrap";
 // import reactLogo from './assets/react.svg'
-// import "./App.css";
+import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import HomePage from "./pages/Home/HomePage";
 import NavBar from "./components/NavBar/NavBar";

@@ -1,4 +1,6 @@
 const SearchSVGicon = () => {
+  // Some of the icons are modified versions
+  // than the ones in the Assets folder
   return (
     <>
       <svg

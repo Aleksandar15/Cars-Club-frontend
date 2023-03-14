@@ -21,3 +21,10 @@ background: blue;
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 0, 255, 0.777); 
 }
+
+.form-login {
+  border: dotted red 2px;
+  padding: 20px;
+  border-radius: 10px;
+}
+

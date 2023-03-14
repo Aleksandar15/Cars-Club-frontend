@@ -1,4 +1,8 @@
 const SearchSVGicon = () => {
+  // This isn't directly imported from assets
+  // because I've modified it,
+  // later I can create a separate folder
+  // in Assets containing modified SVG's.
   return (
     <>
       <svg

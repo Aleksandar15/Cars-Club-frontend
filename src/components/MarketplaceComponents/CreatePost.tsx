@@ -1,5 +1,5 @@
 import { Button } from "react-bootstrap";
-import CreatePostSVG from "../../utilities/icons/createPost-SVG";
+import CreatePostSVG from "../../utilities/icons-setup/createPost-SVG";
 
 const CreatePostButton = () => {
   return (

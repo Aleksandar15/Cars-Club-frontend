@@ -13,25 +13,25 @@ const NavBar = () => {
           {/* NAV2 */}
           {isAuthenticated ? (
             <>
-              <Nav.Link to="/" as={NavLink}>
+              <Nav.Link to="/" as={NavLink} className="fs-5">
                 Home
               </Nav.Link>
-              <Nav.Link to="/catalog" as={NavLink}>
+              <Nav.Link to="/catalog" as={NavLink} className="fs-5">
                 Catalog
               </Nav.Link>
-              <Nav.Link to="/marketplace" as={NavLink}>
+              <Nav.Link to="/marketplace" as={NavLink} className="fs-5">
                 Marketplace
               </Nav.Link>
             </>
           ) : (
             <>
-              <Nav.Link to="/" as={NavLink}>
+              <Nav.Link to="/" as={NavLink} className="fs-5">
                 Home
               </Nav.Link>
-              <Nav.Link to="/login" as={NavLink}>
+              <Nav.Link to="/login" as={NavLink} className="fs-5">
                 Login
               </Nav.Link>
-              <Nav.Link to="/register" as={NavLink}>
+              <Nav.Link to="/register" as={NavLink} className="fs-5">
                 Register
               </Nav.Link>
             </>

@@ -1,11 +1,17 @@
 import { Button, Form } from "react-bootstrap";
+import useMyNavigate from "../../hooks/useMyNavigate/useMyNavigate";
 
 const Login = () => {
+  const navigatePage = useMyNavigate();
+
   return (
     <>
       <h1 className="text-info text-center mb-5">LOGIN</h1>
       <div className="d-flex flex-column align-items-center ">
-        <Form className="pb-4 mb-4 d-flex flex-column w-25 align-items-center ">
+        <Form
+          //  onSubmit={}
+          className="pb-4 mb-4 d-flex flex-column w-25 align-items-center "
+        >
           <Form.Label id="username" className="text-primary mb-0 ">
             Username:
           </Form.Label>
@@ -55,11 +61,9 @@ const Login = () => {
         <div className="mt-1 ms-1 mb-2 d-flex  align-items-center justify-content-space-between">
           <p className="text-danger pt-2 me-3">Already have an account?</p>
           <Button
-            // variant={`btn bg-light btn-outline-success
-            // pb-1 text-success btn-sm `}   //for shortening if the line gets too long
             variant="btn bg-light btn-outline-success pb-1 mb-1  text-success btn-sm "
-            // onClick={}
             type="button"
+            onClick={() => navigatePage("/register")}
           >
             REGISTER
           </Button>

@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import useMyNavigate from "../../hooks/useMyNavigate/useMyNavigate";
 
 const HomePage = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const navigate = useNavigate();
-  const navigatePage = (route: string) => navigate(route);
+  const navigatePage = useMyNavigate();
 
   return (
     <div>

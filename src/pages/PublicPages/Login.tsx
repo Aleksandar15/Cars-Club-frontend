@@ -33,6 +33,7 @@ const Login = () => {
             // onChange={}
             // value={}
             className="mb-2"
+            autoComplete="off"
           />
           <Form.Label id="password" className="text-primary mb-0 ">
             Password:
@@ -64,7 +65,7 @@ const Login = () => {
             LOGIN
           </Button>
           <div className="mt-5 ms-1 mb- d-flex  align-items-center justify-content-space-between">
-            <p className="text-danger pt-2 me-3">Already have an account?</p>
+            <p className="text-danger pt-2 me-3">Don't have an account?</p>
             <Button
               variant="btn bg-light btn-outline-success pb-1 mb-1  text-success btn-sm "
               type="button"

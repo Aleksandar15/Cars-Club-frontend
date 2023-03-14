@@ -1,13 +1,17 @@
-import { FormEvent, MouseEvent } from "react";
+import { FormEvent } from "react";
 import { Button, Form } from "react-bootstrap";
 import useMyNavigate from "../../hooks/useMyNavigate/useMyNavigate";
+import useShowHideInput from "../../hooks/useShowHideInput/useShowHideInput";
 
 const Login = () => {
   const navigatePage = useMyNavigate();
 
+  // If it were onClick event, then:MouseEvent<HTMLButtonElement>
   const loginSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
+
+  const { showHideState, setShowHideState } = useShowHideInput();
 
   return (
     <>
@@ -35,7 +39,7 @@ const Login = () => {
           </Form.Label>
           <div className="input-group">
             <Form.Control
-              type="password"
+              type={showHideState.inputTypeProp}
               placeholder="Password"
               name="password"
               id="password"
@@ -44,6 +48,14 @@ const Login = () => {
               // value={}
               className="mb-4"
             />
+            <Button
+              type="button"
+              className={showHideState.btnClassName}
+              style={showHideState.btnStyleProp}
+              onClick={() => setShowHideState()}
+            >
+              {showHideState.btnTextSVG}
+            </Button>
           </div>
           <Button
             variant=" btn bg-light btn-outline-info text-info  "

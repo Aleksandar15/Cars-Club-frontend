@@ -1,9 +1,10 @@
-import { useState } from "react";
 import { Navbar as NavBarByBS, Container, Nav } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
+import { useSelectorTyped } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
 
 const NavBar = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const { isUserAuthorized } = useSelectorTyped((state) => state.verifyReducer);
+
   return (
     <NavBarByBS className="mb-5 bg-white shadow-sm">
       {/* Cars Club */}
@@ -11,7 +12,7 @@ const NavBar = () => {
         {/* NAV */}
         <Nav>
           {/* NAV2 */}
-          {isAuthenticated ? (
+          {isUserAuthorized ? (
             <>
               <Nav.Link to="/" as={NavLink} className="fs-5">
                 Home

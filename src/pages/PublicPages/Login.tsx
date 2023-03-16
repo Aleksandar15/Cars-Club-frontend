@@ -1,14 +1,19 @@
 import { FormEvent } from "react";
 import { Button, Form } from "react-bootstrap";
+import { useDispatchTyped } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
 import useMyNavigate from "../../hooks/useMyNavigate/useMyNavigate";
 import useShowHideInput from "../../hooks/useShowHideInput/useShowHideInput";
+import { verifyAction } from "../../redux/actions/verifyActions";
 
 const Login = () => {
   const navigatePage = useMyNavigate();
 
+  const dispatch = useDispatchTyped();
+
   // If it were onClick event, then:MouseEvent<HTMLButtonElement>
   const loginSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    dispatch<any>(verifyAction({ isUserAuthorized: true }));
   };
 
   const { showHideState, setShowHideState } = useShowHideInput();

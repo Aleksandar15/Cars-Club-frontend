@@ -19,6 +19,9 @@ const verifyReducer = (
   action: PayloadAction<{ isUserAuthorized: boolean }>
 ) => {
   console.log("VerifyReducer action:", action);
+  // ^^^ this also works with RTK setups
+  // since its inside combineReducers({})
+  // but its not a best practice
   switch (action.type) {
     case allActionTypes.USER_IS_NOT_AUTHORIZED:
       return {

@@ -14,6 +14,7 @@ const Login = () => {
   const loginSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(authorized({ userStatus: { isUserAuthorized: true } }));
+    navigatePage("/");
   };
 
   const { showHideState, setShowHideState } = useShowHideInput();

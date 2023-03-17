@@ -2,12 +2,14 @@ import { Navbar as NavBarByBS, Container, Nav } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { useSelectorTyped } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
 import { selectVerifyUser } from "../../redux/slices/verifySlice";
+import NavBarDropDown from "./NavBarDropDown";
+import NavDropDownPublic from "./NavDropDownPublic";
 
 const NavBar = () => {
   const { isUserAuthorized } = useSelectorTyped(selectVerifyUser);
 
   return (
-    <NavBarByBS className="mb-5 bg-white shadow-sm">
+    <NavBarByBS sticky="top" className="mb-5 bg-white shadow-sm">
       {/* Cars Club */}
       <Container>
         {/* NAV */}
@@ -40,6 +42,7 @@ const NavBar = () => {
           )}
         </Nav>
         {/* Nav Outside */}
+        {isUserAuthorized ? <NavBarDropDown /> : <NavDropDownPublic />}
       </Container>
       {/* Container Outside */}
     </NavBarByBS>

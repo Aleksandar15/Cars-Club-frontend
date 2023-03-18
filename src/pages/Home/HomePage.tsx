@@ -1,16 +1,19 @@
 import { useState } from "react";
 import { Button } from "react-bootstrap";
 import useMyNavigate from "../../hooks/useMyNavigate/useMyNavigate";
+import { useSelectorTyped } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
+import { selectVerifyUser } from "../../redux/slices/verifySlice";
 
 const HomePage = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { isUserAuthorized } = useSelectorTyped(selectVerifyUser);
   const navigatePage = useMyNavigate();
 
   return (
     <div>
       <h1 className="text-center text-info mb-5">Cars Club's Home - ENJOY!</h1>
 
-      {isAuthenticated ? (
+      {isUserAuthorized ? (
         <>
           <h2 className="text-center text-danger text-uppercase pt-3 mb-4 pb-3">
             Visit the club

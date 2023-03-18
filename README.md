@@ -14,7 +14,7 @@
 
 #### Technologies used:
 
-###### Postgres DB, TypeScript, ReactJS with Redux, NodeJS with ExpressJS
+###### Postgres DB, TypeScript, ReactJS with Redux Toolkit, NodeJS with ExpressJS
 
 ### Run my frontend project
 

@@ -1,16 +1,14 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import { store } from "../../main";
-
-import { verifyReducer } from "./verifyReducer/verifyReducer";
+import { verifySlice } from "../slices/verifySlice";
 // import searchBar from "./appReducers/searchBar";
 
 const rootReducer = combineReducers({
-  verifyReducer,
   // searchBar,
+  verifySlice: verifySlice.reducer,
 });
 
-export type RootState = ReturnType<typeof rootReducer>;
-
-export type AppDispatch = typeof store.dispatch;
+// While this RootState works,
+// I'll move it inside root.tsx
+// export type RootState = ReturnType<typeof rootReducer>;
 
 export default rootReducer;

@@ -3,7 +3,7 @@ import { Button, Form } from "react-bootstrap";
 import { useDispatchTyped } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
 import useMyNavigate from "../../hooks/useMyNavigate/useMyNavigate";
 import useShowHideInput from "../../hooks/useShowHideInput/useShowHideInput";
-import { verifyAction } from "../../redux/actions/verifyActions";
+import { authorized } from "../../redux/slices/verifySlice";
 
 const Login = () => {
   const navigatePage = useMyNavigate();
@@ -13,7 +13,8 @@ const Login = () => {
   // If it were onClick event, then:MouseEvent<HTMLButtonElement>
   const loginSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch<any>(verifyAction({ isUserAuthorized: true }));
+    dispatch(authorized({ userStatus: { isUserAuthorized: true } }));
+    navigatePage("/");
   };
 
   const { showHideState, setShowHideState } = useShowHideInput();

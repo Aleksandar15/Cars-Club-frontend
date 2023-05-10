@@ -56,6 +56,9 @@ const Register = () => {
         data?.isSuccessful &&
         data?.message === "User registered successfully"
       ) {
+        // NOTE: string literals won't print the message on a new
+        // lines, however I keep using it for visual code cleanup
+        // & styling-wise using: "white-space": "pre-line".
         dispatchTyped(
           openModalAction({
             isModalOpen: !isModalOpen,

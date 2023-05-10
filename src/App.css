@@ -28,3 +28,40 @@ background: blue;
   border-radius: 10px;
 }
 
+/* ModalText */
+.mymodal-wrapper{
+  /* background-color: var(--backgroundModalSwitch); */
+  background-color: rgba(255, 22, 22, 0.888);
+  border-radius: 25px;
+  /* text-align: center; */
+}
+.close-button {
+  position: absolute;
+  /* position: relative; */
+  top: 0;
+  right: 0;
+  font-size: 2rem;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+.spanModalClickOutside{
+  font-size: 10.1px;
+  position: relative;
+  left: 39%;
+  top: 0px;
+  font-weight: bold;
+  color: aqua;
+  /* bottom:0; */
+}
+.clickOKbutton{
+  font-size: 10.5px;
+  position: relative;
+  /* left: 39%; */
+  font-weight: bold;
+  color: aqua;
+  /* Above has the button wider, 
+  below is to make the button smaller: */
+  max-width: 150px;
+  left: 63.5%;
+}

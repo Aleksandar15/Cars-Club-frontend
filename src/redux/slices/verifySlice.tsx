@@ -18,7 +18,7 @@ export const verifySlice = createSlice({
   name: "verifyUser",
   initialState,
   reducers: {
-    authorized: (state, action: PayloadAction<VerifyStateProp>) => {
+    authorize: (state, action: PayloadAction<VerifyStateProp>) => {
       state.userStatus = {
         isUserAuthorized: action.payload.userStatus.isUserAuthorized,
       };
@@ -31,7 +31,7 @@ export const verifySlice = createSlice({
   },
 });
 
-export const { authorized, unauthorized } = verifySlice.actions;
+export const { authorize, unauthorized } = verifySlice.actions;
 
 export const selectVerifyUser = (state: RootState) =>
   state.verifySlice.userStatus;

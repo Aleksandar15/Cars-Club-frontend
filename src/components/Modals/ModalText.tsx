@@ -90,6 +90,7 @@ const ModalText = () => {
               style={{
                 // textDecoration: "underline overline",
                 textAlign: "center",
+                whiteSpace: "pre-line", // preferred over pre-wrap
               }}
             >
               {text}

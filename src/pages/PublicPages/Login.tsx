@@ -1,10 +1,18 @@
 import { ChangeEvent, FormEvent, MouseEvent, useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { useDispatchTyped } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
+import {
+  useDispatchTyped,
+  useSelectorTyped,
+} from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
 import useMyNavigate from "../../hooks/useMyNavigate/useMyNavigate";
 import useShowHideInput from "../../hooks/useShowHideInput/useShowHideInput";
 import { authorize } from "../../redux/slices/verifySlice";
 import { axiosAcceptJSON } from "../../utilities/API/axios";
+import ModalText from "../../components/Modals/ModalText";
+import {
+  openModalAction,
+  selectorOpenModalText,
+} from "../../redux/slices/openModalTextSlice";
 
 interface LoginFields {
   email: string;
@@ -29,15 +37,17 @@ const Login = () => {
     loginForever: false,
   });
 
+  const { isModalOpen } = useSelectorTyped(selectorOpenModalText);
+
   // If it were onClick event, then:MouseEvent<HTMLButtonElement>
   const loginSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const data: LoginData = (await axiosAcceptJSON(
+      const data: LoginData = await axiosAcceptJSON(
         "POST",
         "/api/v1/auth/login",
         JSON.stringify(loginFields)
-      )) as LoginData;
+      );
 
       const accessToken = data?.accessToken;
 
@@ -49,17 +59,40 @@ const Login = () => {
       if (data?.isSuccessful === false) {
         switch (data?.message) {
           case "Invalid Email":
-            return alert("Invalid e-mail");
+            return dispatch(
+              openModalAction({
+                isModalOpen: !isModalOpen,
+                text: `Invalid e-mail!`,
+              })
+            );
           case "Wrong email/password combinations":
-            return alert("Wrong e-mail/password combination");
+            return dispatch(
+              openModalAction({
+                isModalOpen: !isModalOpen,
+                text: `Wrong e-mail/password combination!`,
+              })
+            );
           case "Missing Credentials":
-            return alert("Fields can't be empty");
+            return dispatch(
+              openModalAction({
+                isModalOpen: !isModalOpen,
+                text: `Fields can't be empty!`,
+              })
+            );
           case "Server error":
-            return alert("Login error, please try again later");
+            return dispatch(
+              openModalAction({
+                isModalOpen: !isModalOpen,
+                text: `Login error, please try again later.`,
+              })
+            );
           case "Detected used refresh token in user's cookies":
-            alert(
-              `Someone has made requests without your permission. 
-              \nIf that wasn't you please login again and reset your password!`
+            dispatch(
+              openModalAction({
+                isModalOpen: !isModalOpen,
+                text: `Someone has made requests without your permission. 
+          If that wasn't you please login again and reset your password!`,
+              })
             );
             return setLoginFields({
               email: "",
@@ -67,7 +100,12 @@ const Login = () => {
               loginForever: false,
             });
           default:
-            return alert("Unexpected error happened, please try again");
+            return dispatch(
+              openModalAction({
+                isModalOpen: !isModalOpen,
+                text: `Unexpected error happened, please try again.`,
+              })
+            );
         }
       }
     } catch (err) {
@@ -90,6 +128,7 @@ const Login = () => {
   const loginTestUser = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
+      console.log("fired");
       const data: LoginData = (await axiosAcceptJSON(
         "POST",
         "/api/v1/auth/login",
@@ -99,26 +138,51 @@ const Login = () => {
           loginForever: false,
         })
       )) as LoginData;
+      console.log("data", data);
 
       const accessToken = data?.accessToken;
       if (typeof accessToken === "string") {
-        // navigatePage("/");
+        navigatePage("/");
+        dispatch(authorize({ userStatus: { isUserAuthorized: true } }));
       }
 
       if (data?.isSuccessful === false) {
         switch (data?.message) {
           case "Invalid Email":
-            return alert("Invalid e-mail");
+            return dispatch(
+              openModalAction({
+                isModalOpen: !isModalOpen,
+                text: `Invalid e-mail!`,
+              })
+            );
           case "Wrong email/password combinations":
-            return alert("Wrong e-mail/password combination");
+            return dispatch(
+              openModalAction({
+                isModalOpen: !isModalOpen,
+                text: `Wrong e-mail/password combination!`,
+              })
+            );
           case "Missing Credentials":
-            return alert("Fields can't be empty");
+            return dispatch(
+              openModalAction({
+                isModalOpen: !isModalOpen,
+                text: `Fields can't be empty!`,
+              })
+            );
           case "Server error":
-            return alert("Login error, please try again later");
+            return dispatch(
+              openModalAction({
+                isModalOpen: !isModalOpen,
+                text: `Login error, please try again later.`,
+              })
+            );
           case "Detected used refresh token in user's cookies":
-            alert(
-              `Someone has made requests without your permission. 
-            \nIf that wasn't you please login again and reset your password!`
+            dispatch(
+              openModalAction({
+                isModalOpen: !isModalOpen,
+                text: `Someone has made requests without your permission. 
+          If that wasn't you please login again and reset your password!`,
+              })
             );
             return setLoginFields({
               email: "",
@@ -126,7 +190,12 @@ const Login = () => {
               loginForever: false,
             });
           default:
-            return alert("Unexpected error happened, please try again");
+            return dispatch(
+              openModalAction({
+                isModalOpen: !isModalOpen,
+                text: `Unexpected error happened, please try again.`,
+              })
+            );
         }
       }
     } catch (err) {
@@ -136,6 +205,7 @@ const Login = () => {
 
   return (
     <>
+      <ModalText />
       <h1 className="text-info text-center mb-5">LOGIN</h1>
       <div className="d-flex flex-column align-items-center ">
         <Form
@@ -169,7 +239,7 @@ const Login = () => {
               onChange={handleLoginInputChanges}
               value={loginFields.password}
               className="mb-4"
-              autoComplete="off"
+              // autoComplete="off" // default
             />
             <Button
               type="button"

@@ -86,7 +86,7 @@ const ModalText = () => {
 
             {/* Text-only body for this case: */}
             <h3
-              className="text-info pb-5 mb-5"
+              className="text-light pb-5 mb-5 mt-4"
               style={{
                 // textDecoration: "underline overline",
                 textAlign: "center",

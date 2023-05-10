@@ -31,7 +31,9 @@ background: blue;
 /* ModalText */
 .mymodal-wrapper{
   /* background-color: var(--backgroundModalSwitch); */
-  background-color: rgba(255, 22, 22, 0.888);
+  /* background-color: rgba(255, 22, 22, 0.888); */
+  /* Above color feels like a warning (bright red) */
+  background-color: rgba(25, 222, 222, 0.777);
   border-radius: 25px;
   /* text-align: center; */
 }
@@ -51,7 +53,8 @@ background: blue;
   left: 39%;
   top: 0px;
   font-weight: bold;
-  color: aqua;
+  /* color: aqua; */
+  color: whitesmoke;
   /* bottom:0; */
 }
 .clickOKbutton{

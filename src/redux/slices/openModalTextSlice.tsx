@@ -15,11 +15,12 @@ const openModalTextSlice = createSlice({
   initialState,
   reducers: {
     openModalAction: (state, action: PayloadAction<InitialState>) => {
-      console.log("action:", action, "&& state:", state);
+      // state.isModalOpen = action.payload.isModalOpen; //original
+      // state = action.payload; //doesn't work
+
+      return action.payload; //Works as well, alternatively to:
       // state.isModalOpen = action.payload.isModalOpen;
-      // state.isModalOpen = action.payload;
-      // state = action.payload;
-      return action.payload;
+      // state.text = action.payload.text;
     },
   },
 });

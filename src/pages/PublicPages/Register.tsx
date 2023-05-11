@@ -37,7 +37,7 @@ const Register = () => {
   const dispatchTyped = useDispatchTyped();
   const { isModalOpen } = useSelectorTyped(selectorOpenModalText);
 
-  const loginSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const registerSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       // By using custom Axios instance instead of funcitonal instance
@@ -132,7 +132,7 @@ const Register = () => {
       <h1 className="text-info text-center  mb-5 ">REGISTER</h1>
       <div className="d-flex flex-column align-items-center ">
         <Form
-          onSubmit={loginSubmit}
+          onSubmit={registerSubmit}
           className="pb-4 mb-4 d-flex flex-column w-25 align-items-center form-login "
         >
           <Form.Label id="username" className="text-primary mb-0 ">

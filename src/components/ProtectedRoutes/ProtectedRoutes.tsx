@@ -12,11 +12,11 @@ import {
 import { axiosCredentials } from "../../utilities/API/axios";
 import Loading from "../Loading/Loading";
 
-interface ErrorDataAxios {
+interface ErrorUserAuth {
   isSuccessful: boolean;
   message: string;
 }
-interface SuccessDataAxios extends ErrorDataAxios {
+interface SuccessUserAuth extends ErrorUserAuth {
   user_role: string;
 }
 
@@ -30,7 +30,7 @@ const ProtectedRoutes = () => {
           `/api/v1/auth/verifyrefreshtoken`
         );
 
-        const dataTyped = data as SuccessDataAxios;
+        const dataTyped = data as SuccessUserAuth;
         console.log("dataTyped verifyRefreshToken:", dataTyped?.message);
         if (data?.isSuccessful) {
           setAuthUser(true);
@@ -38,7 +38,7 @@ const ProtectedRoutes = () => {
         // Error is handled in the Catch block
       } catch (err) {
         if (axios.isAxiosError(err)) {
-          const errDataTyped = err?.response?.data as ErrorDataAxios;
+          const errDataTyped = err?.response?.data as ErrorUserAuth;
           console.log("err:", err?.response);
           if (errDataTyped?.isSuccessful === false) {
             setAuthUser(false);

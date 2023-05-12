@@ -1,8 +1,12 @@
 import { Dropdown, DropdownButton } from "react-bootstrap";
 import useMyNavigate from "../../hooks/useMyNavigate/useMyNavigate";
+import { useSelectorTyped } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
+import { selectVerifyUser } from "../../redux/slices/verifySlice";
 
 const NavDropDownPublic = () => {
   const navigatePage = useMyNavigate();
+
+  const { isUserAuthorized } = useSelectorTyped(selectVerifyUser);
 
   return (
     <>
@@ -12,6 +16,7 @@ const NavDropDownPublic = () => {
         title="My Menu"
         id="dropdwon-menu-align-end"
         className="ms-auto me-5 mt-1"
+        disabled={isUserAuthorized === undefined ? true : false}
       >
         <Dropdown.Item
           eventKey="1"

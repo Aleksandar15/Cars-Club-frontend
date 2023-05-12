@@ -74,8 +74,8 @@ background: blue;
   cursor: default;
   user-select: none;
   position: absolute;
-  left: 50%;
-  /* margin-left: 39%; */
+  /* left: 50%; */
+  margin-left: 39%;
 }
 
 

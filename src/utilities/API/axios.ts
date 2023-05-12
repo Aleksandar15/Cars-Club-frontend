@@ -8,6 +8,15 @@ export const axiosCredentials = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,
 });
+// NOTE first argument of .post (or .get) method is 'path',
+// second argument is 'body'/'data' so pass {} for GET requests
+// if third argument ('headers') is needed.
+
+export const axiosReqJSON = axios.create({
+  baseURL: BASE_URL,
+  headers: { "Content-Type": "application/json" },
+  withCredentials: true,
+});
 
 export const axiosAcceptJSON = async (
   method: string,

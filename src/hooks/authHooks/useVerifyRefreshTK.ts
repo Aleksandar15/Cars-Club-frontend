@@ -15,7 +15,7 @@ import {
   SuccessUserAuth,
 } from "../../utilities/Types/userAuthTypes";
 
-const useVerifyRefreshTK = () => {
+const useVerifyRefreshTK = (routeBelongsTo?: string) => {
   const [authUser, setAuthUser] = useState<boolean | undefined>(undefined);
   const { isModalOpen } = useSelectorTyped(selectorOpenModalText);
   const dispatchTyped = useDispatchTyped();
@@ -55,19 +55,24 @@ const useVerifyRefreshTK = () => {
                 },
               })
             );
-            dispatchTyped(
-              openModalAction({
-                isModalOpen: !isModalOpen,
-                text: `Login please!`,
-              })
-            );
-            // IMPORTANT NOTE ~ the reason why <ModalText/> is showing
-            // up (ONLY in ProtectedRoutes) is because it is already
-            // rendered inside Login.tsx
-            // (where I'm navigating at in case: userAuth === false),
-            // so I don't need to render it twice inside ProtectedRoutes.
-            // NOTE AS WELL ~ for non-protected AKA Public Routes like
-            // HomePage.tsx will not trigger the Modal, it's all safe:)
+            if (routeBelongsTo === "private") {
+              dispatchTyped(
+                openModalAction({
+                  isModalOpen: !isModalOpen,
+                  text: `Login please!`,
+                })
+              );
+              // UPDATE: old notes below stopped working when Logic became
+              // more Complex I had to implement 'routeBelongsTo' argument.
+
+              // IMPORTANT NOTE ~ the reason why <ModalText/> is showing
+              // up (ONLY in ProtectedRoutes) is because it is already
+              // rendered inside Login.tsx
+              // (where I'm navigating at in case: userAuth === false),
+              // so I don't need to render it twice inside ProtectedRoutes.
+              // NOTE AS WELL ~ for non-protected AKA Public Routes like
+              // HomePage.tsx will not trigger the Modal, it's all safe:)
+            }
           }
         }
       }

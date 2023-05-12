@@ -44,6 +44,10 @@ const ProtectedRoutes = () => {
                 text: `Login please!`,
               })
             );
+            // IMPORTANT NOTE ~ the reason why <ModalText/> is showing
+            // up is because it is already rendered inside Login.tsx
+            // (where I'm navigating at in case userAuth is false)
+            // so I don't need to render it twice in here, indeed.
           }
         }
       }

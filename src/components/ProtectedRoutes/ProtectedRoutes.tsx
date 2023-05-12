@@ -10,15 +10,11 @@ import {
   selectorOpenModalText,
 } from "../../redux/slices/openModalTextSlice";
 import { axiosCredentials } from "../../utilities/API/axios";
+import {
+  ErrorUserAuth,
+  SuccessUserAuth,
+} from "../../utilities/Types/userAuthTypes";
 import Loading from "../Loading/Loading";
-
-interface ErrorUserAuth {
-  isSuccessful: boolean;
-  message: string;
-}
-interface SuccessUserAuth extends ErrorUserAuth {
-  user_role: string;
-}
 
 const ProtectedRoutes = () => {
   const [authUser, setAuthUser] = useState<boolean | undefined>(undefined);

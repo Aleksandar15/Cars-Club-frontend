@@ -1,6 +1,5 @@
 import { Navbar as NavBarByBS, Container, Nav } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
-import useMyNavigate from "../../hooks/useMyNavigate/useMyNavigate";
 import { useSelectorTyped } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
 import { selectorOpenModalText } from "../../redux/slices/openModalTextSlice";
 import { selectVerifyUser } from "../../redux/slices/verifySlice";
@@ -13,47 +12,6 @@ const NavBar = () => {
   // Fixing a bug where sticky="top" persists and overrides my custom modal,
   // instead, based on the ModalText state toggle the "sticky" accordingly
   const { isModalOpen } = useSelectorTyped(selectorOpenModalText);
-
-  // const navigate = useMyNavigate();
-
-  // if (isUserAuthorized === undefined) {
-  //   return (
-  //     <NavBarByBS
-  //       sticky={isModalOpen ? undefined : "top"}
-  //       className="mb-5 bg-white shadow-sm"
-  //     >
-  //       {/* Cars Club */}
-  //       <Container className={`navBarContainer`}>
-  //         {/* NAV */}
-  //         <Nav className={`navCustomClass`}>
-  //           {/* NAV2 */}
-  //           {isUserAuthorized ? (
-  //             <>
-  //               <Nav.Link to="/" as={NavLink} className="fs-5">
-  //                 Home
-  //               </Nav.Link>
-  //             </>
-  //           ) : (
-  //             <>
-  //               <Nav.Link to="/" as={NavLink} className="fs-5">
-  //                 Home
-  //               </Nav.Link>
-  //             </>
-  //           )}
-  //         </Nav>
-  //         {/* NAV OUTSIDE */}
-  //         {/* TITLE */}
-  //         <NavBarByBS.Brand
-  //           className={`text-info fs-4 fw-bold navBarBrandTitle`}
-  //         >
-  //           CARS CLUB
-  //         </NavBarByBS.Brand>
-  //         {isUserAuthorized ? <NavBarDropDown /> : <NavDropDownPublic />}
-  //       </Container>
-  //       {/* Container Outside */}
-  //     </NavBarByBS>
-  //   );
-  // }
 
   return (
     <NavBarByBS

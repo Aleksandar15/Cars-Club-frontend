@@ -9,6 +9,7 @@ import {
   openModalAction,
   selectorOpenModalText,
 } from "../../redux/slices/openModalTextSlice";
+import { authorize } from "../../redux/slices/verifySlice";
 import { axiosCredentials } from "../../utilities/API/axios";
 import {
   ErrorUserAuth,
@@ -30,6 +31,15 @@ const ProtectedRoutes = () => {
         console.log("dataTyped verifyRefreshToken:", dataTyped?.message);
         if (data?.isSuccessful) {
           setAuthUser(true);
+
+          // Also on success update the isUserAuthorized state for NavBar
+          dispatchTyped(
+            authorize({
+              userStatus: {
+                isUserAuthorized: true,
+              },
+            })
+          );
         }
         // Error is handled in the Catch block
       } catch (err) {

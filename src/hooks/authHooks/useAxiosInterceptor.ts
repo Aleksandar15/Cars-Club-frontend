@@ -4,7 +4,10 @@ import { selectorAccessToken } from "../../redux/slices/refreshTokenSlice";
 import { axiosCredentials } from "../../utilities/API/axios";
 import useRefreshToken, { DataAccessToken } from "./useRefreshToken";
 
-const useAxiosJSONInterceptor = () => {
+// NOTE using 'axiosCredentials' custom instance of axios
+// so that I can add my own headers as per needed.
+
+const useAxiosInterceptor = () => {
   const refreshFN = useRefreshToken();
   const accessToken = useSelectorTyped<DataAccessToken>(selectorAccessToken);
 
@@ -60,4 +63,4 @@ const useAxiosJSONInterceptor = () => {
   return axiosCredentials;
 };
 
-export default useAxiosJSONInterceptor;
+export default useAxiosInterceptor;

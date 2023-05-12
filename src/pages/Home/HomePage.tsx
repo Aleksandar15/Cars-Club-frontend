@@ -11,7 +11,9 @@ const HomePage = () => {
 
   return (
     <div>
-      <h1 className="text-center text-info mb-5">Cars Club's Home - ENJOY!</h1>
+      <h1 className="text-center text-info mb-5">
+        Cars Club's Homepage - WELCOME!
+      </h1>
 
       {isUserAuthorized ? (
         <>

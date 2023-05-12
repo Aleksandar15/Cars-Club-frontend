@@ -3,14 +3,14 @@ import { RootState } from "../store";
 
 interface VerifyStateProp {
   userStatus: {
-    isUserAuthorized: boolean;
+    isUserAuthorized?: boolean;
     codeStatus?: number;
   };
 }
 
 const initialState: VerifyStateProp = {
   userStatus: {
-    isUserAuthorized: false,
+    isUserAuthorized: undefined,
   },
 };
 

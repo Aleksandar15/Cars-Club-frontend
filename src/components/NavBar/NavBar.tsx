@@ -16,6 +16,45 @@ const NavBar = () => {
 
   // const navigate = useMyNavigate();
 
+  // if (isUserAuthorized === undefined) {
+  //   return (
+  //     <NavBarByBS
+  //       sticky={isModalOpen ? undefined : "top"}
+  //       className="mb-5 bg-white shadow-sm"
+  //     >
+  //       {/* Cars Club */}
+  //       <Container className={`navBarContainer`}>
+  //         {/* NAV */}
+  //         <Nav className={`navCustomClass`}>
+  //           {/* NAV2 */}
+  //           {isUserAuthorized ? (
+  //             <>
+  //               <Nav.Link to="/" as={NavLink} className="fs-5">
+  //                 Home
+  //               </Nav.Link>
+  //             </>
+  //           ) : (
+  //             <>
+  //               <Nav.Link to="/" as={NavLink} className="fs-5">
+  //                 Home
+  //               </Nav.Link>
+  //             </>
+  //           )}
+  //         </Nav>
+  //         {/* NAV OUTSIDE */}
+  //         {/* TITLE */}
+  //         <NavBarByBS.Brand
+  //           className={`text-info fs-4 fw-bold navBarBrandTitle`}
+  //         >
+  //           CARS CLUB
+  //         </NavBarByBS.Brand>
+  //         {isUserAuthorized ? <NavBarDropDown /> : <NavDropDownPublic />}
+  //       </Container>
+  //       {/* Container Outside */}
+  //     </NavBarByBS>
+  //   );
+  // }
+
   return (
     <NavBarByBS
       sticky={isModalOpen ? undefined : "top"}
@@ -26,7 +65,11 @@ const NavBar = () => {
         {/* NAV */}
         <Nav className={`navCustomClass`}>
           {/* NAV2 */}
-          {isUserAuthorized ? (
+          {isUserAuthorized === undefined ? (
+            <Nav.Link to="/" as={NavLink} className="fs-5">
+              Home
+            </Nav.Link>
+          ) : isUserAuthorized === true ? (
             <>
               <Nav.Link to="/" as={NavLink} className="fs-5">
                 Home

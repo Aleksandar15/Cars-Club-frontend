@@ -2,11 +2,15 @@ import { combineReducers } from "@reduxjs/toolkit";
 import { verifySlice } from "../slices/verifySlice";
 // import searchBar from "./appReducers/searchBar";
 import openModalTextSlice from "../slices/openModalTextSlice";
+import refreshTokenSlice from "../slices/refreshTokenSlice";
 
 const rootReducer = combineReducers({
   // searchBar,
   verifySlice: verifySlice.reducer,
+  // Default exports with .reducer method
+  // allows me to use shorthand syntax
   openModalTextSlice,
+  refreshTokenSlice,
 });
 
 // While this RootState works,

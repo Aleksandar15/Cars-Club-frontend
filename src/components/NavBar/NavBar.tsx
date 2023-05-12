@@ -1,5 +1,6 @@
 import { Navbar as NavBarByBS, Container, Nav } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
+import useMyNavigate from "../../hooks/useMyNavigate/useMyNavigate";
 import { useSelectorTyped } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
 import { selectorOpenModalText } from "../../redux/slices/openModalTextSlice";
 import { selectVerifyUser } from "../../redux/slices/verifySlice";
@@ -10,8 +11,10 @@ const NavBar = () => {
   const { isUserAuthorized } = useSelectorTyped(selectVerifyUser);
 
   // Fixing a bug where sticky="top" persists and overrides my custom modal,
-  // then based on its ModalText state toggle the "sticky" accordingly
+  // instead, based on the ModalText state toggle the "sticky" accordingly
   const { isModalOpen } = useSelectorTyped(selectorOpenModalText);
+
+  // const navigate = useMyNavigate();
 
   return (
     <NavBarByBS
@@ -19,7 +22,9 @@ const NavBar = () => {
       className="mb-5 bg-white shadow-sm"
     >
       {/* Cars Club */}
-      <Container>
+      <Container
+      // style={{ display: "grid" }} //useful only for phone displays
+      >
         {/* NAV */}
         <Nav>
           {/* NAV2 */}
@@ -49,7 +54,26 @@ const NavBar = () => {
             </>
           )}
         </Nav>
-        {/* Nav Outside */}
+        {/* NAV OUTSIDE */}
+        {/* TITLE */}
+        <NavBarByBS.Brand
+          className={`text-info fs-4 fw-bold navBarBrandTitle`}
+          // onClick={() => navigate("/")}
+          style={{
+            cursor: "default",
+            // marginRight: "25px",
+            userSelect: "none",
+            // marginLeft: "25px",
+            // left: "50%",
+            // marginLeft: "25%",
+            // textDecoration: "underline overline",
+            // // Must be absolute
+            position: "absolute",
+            marginLeft: "39%",
+          }}
+        >
+          CARS CLUB
+        </NavBarByBS.Brand>
         {isUserAuthorized ? <NavBarDropDown /> : <NavDropDownPublic />}
       </Container>
       {/* Container Outside */}

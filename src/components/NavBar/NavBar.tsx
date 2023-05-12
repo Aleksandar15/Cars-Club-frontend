@@ -23,10 +23,20 @@ const NavBar = () => {
     >
       {/* Cars Club */}
       <Container
-      // style={{ display: "grid" }} //useful only for phone displays
+        // style={{ display: "grid" }} //useful only for phone displays
+        className={`navBarContainer`}
       >
         {/* NAV */}
-        <Nav>
+        <Nav
+          style={
+            {
+              // display: "flex",
+              // alignItems: "center",
+              // marginLeft: "18%",
+            }
+          }
+          className={`navCustomClass`}
+        >
           {/* NAV2 */}
           {isUserAuthorized ? (
             <>
@@ -59,18 +69,18 @@ const NavBar = () => {
         <NavBarByBS.Brand
           className={`text-info fs-4 fw-bold navBarBrandTitle`}
           // onClick={() => navigate("/")}
-          style={{
-            cursor: "default",
-            // marginRight: "25px",
-            userSelect: "none",
-            // marginLeft: "25px",
-            // left: "50%",
-            // marginLeft: "25%",
-            // textDecoration: "underline overline",
-            // // Must be absolute
-            position: "absolute",
-            marginLeft: "39%",
-          }}
+          // style={{
+          //   cursor: "default",
+          //   // marginRight: "25px",
+          //   userSelect: "none",
+          //   // marginLeft: "25px",
+          //   // left: "50%",
+          //   // marginLeft: "25%",
+          //   // textDecoration: "underline overline",
+          //   // // Must be absolute
+          //   position: "absolute",
+          //   marginLeft: "39%",
+          // }}
         >
           CARS CLUB
         </NavBarByBS.Brand>

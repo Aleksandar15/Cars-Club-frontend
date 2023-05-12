@@ -8,7 +8,7 @@ import {
   openModalAction,
   selectorOpenModalText,
 } from "../../redux/slices/openModalTextSlice";
-import { authorize } from "../../redux/slices/verifySlice";
+import { authorize, unauthorized } from "../../redux/slices/verifySlice";
 import { axiosCredentials } from "../../utilities/API/axios";
 import {
   ErrorUserAuth,
@@ -45,9 +45,16 @@ const useVerifyRefreshTK = () => {
       } catch (err) {
         if (axios.isAxiosError(err)) {
           const errDataTyped = err?.response?.data as ErrorUserAuth;
-          console.log("err:", err?.response);
           if (errDataTyped?.isSuccessful === false) {
             setAuthUser(false);
+            dispatchTyped(
+              unauthorized({
+                userStatus: {
+                  isUserAuthorized: false,
+                  codeStatus: err?.response?.status,
+                },
+              })
+            );
             dispatchTyped(
               openModalAction({
                 isModalOpen: !isModalOpen,
@@ -55,9 +62,10 @@ const useVerifyRefreshTK = () => {
               })
             );
             // IMPORTANT NOTE ~ the reason why <ModalText/> is showing
-            // up is because it is already rendered inside Login.tsx
-            // (where I'm navigating at in case userAuth is false)
-            // so I don't need to render it twice in here, indeed.
+            // up (ONLY in ProtectedRoutes) is because it is already
+            // rendered inside Login.tsx
+            // (where I'm navigating at in case: userAuth === false),
+            // so I don't need to render it twice inside ProtectedRoutes.
             // NOTE AS WELL ~ for non-protected AKA Public Routes like
             // HomePage.tsx will not trigger the Modal, it's all safe:)
           }

@@ -7,6 +7,12 @@ import {
   SuccessUserAuth,
 } from "../../utilities/Types/userAuthTypes";
 
+// NOTE this custom Hook is much like useVerfyRefreshTK except that this one will return
+// the function verifyRefreshToken in case I need to call it before features like
+// 'Create Post': so that I'll check if User is still authorized otherwise log them out
+// so that I don't leave the user typing a 'Post' only later to find out he/she's
+// logged out/token expired, etc.
+
 const useVerifyRefreshTK_FN = () => {
   const dispatchTyped = useDispatchTyped();
 

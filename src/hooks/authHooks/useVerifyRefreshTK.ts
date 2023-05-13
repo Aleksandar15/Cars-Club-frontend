@@ -41,7 +41,7 @@ const useVerifyRefreshTK = (routeBelongsTo?: "private" | "public") => {
           );
 
           const dataTyped = data as SuccessUserAuth;
-          if (data?.isSuccessful) {
+          if (dataTyped?.isSuccessful) {
             // setAuthUser(true);
 
             // Also on success update the isUserAuthorized state for NavBar

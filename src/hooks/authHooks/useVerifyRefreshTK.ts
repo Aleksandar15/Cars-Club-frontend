@@ -15,7 +15,7 @@ import {
   SuccessUserAuth,
 } from "../../utilities/Types/userAuthTypes";
 
-const useVerifyRefreshTK = (routeBelongsTo?: string) => {
+const useVerifyRefreshTK = (routeBelongsTo?: "private" | "public") => {
   const [authUser, setAuthUser] = useState<boolean | undefined>(undefined);
   const { isModalOpen } = useSelectorTyped(selectorOpenModalText);
   const dispatchTyped = useDispatchTyped();
@@ -55,6 +55,7 @@ const useVerifyRefreshTK = (routeBelongsTo?: string) => {
                 },
               })
             );
+
             if (routeBelongsTo === "private") {
               dispatchTyped(
                 openModalAction({
@@ -62,8 +63,35 @@ const useVerifyRefreshTK = (routeBelongsTo?: string) => {
                   text: `Login please!`,
                 })
               );
+              // UPDATE2: This is half-buggy: tested in 100s tests &
+              // results: condition creates a little bit of delay -> a
+              // delay (luckily in this case) in a positive form: so it
+              // allows mid-React-calculations to be triggering
+              // ModalText's rendering inside the Login.tsx Component;
+              // otherwise to make this fail IS: to remove the
+              // condition OR to make it LESS complex like: `if (true)`
+              // or EVEN: `if (routeBelongsTo === "private" || true)`
+              // which always evaluates to `true` very quickly,
+              // but this below is still complex:
+              // `if (routeBelongsTo === "private" && true)` because
+              // React needs to calculate both the non-complex `true`
+              // && the complex conditions & thus allowing Login
+              // process to start & mid-execution runs openModalAction.
+              // ALSO: removing IF condition and adding setTimeout tests:
+              // not even setTimeout of 0ms or 10ms isn't
+              // triggering the ModalText to open, but it needs 100ms!
+              // I'm half-sure that this condition:
+              // `if (routeBelongsTo === "private")` is that COMPLEX
+              // with evaluation time around 100ms!?!
+              // However I'll keep the IF condition for security
+              // reasons mentioned bellow.
+              // Otherwise even if it doesn't (sometimes) run the ModalText
+              // was an optional UI/UX feature anyways!:)
+
               // UPDATE: old notes below stopped working when Logic became
               // more Complex I had to implement 'routeBelongsTo' argument.
+              // Bugs were: it (still) works well for ProtectedRoutes,
+              // but triggers ModalText unnecessarily for PublicRoutes.
 
               // IMPORTANT NOTE ~ the reason why <ModalText/> is showing
               // up (ONLY in ProtectedRoutes) is because it is already

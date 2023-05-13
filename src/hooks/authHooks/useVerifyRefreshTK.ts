@@ -8,7 +8,11 @@ import {
   openModalAction,
   selectorOpenModalText,
 } from "../../redux/slices/openModalTextSlice";
-import { authorize, unauthorized } from "../../redux/slices/verifySlice";
+import {
+  authorize,
+  selectVerifyUser,
+  unauthorized,
+} from "../../redux/slices/verifySlice";
 import { axiosCredentials } from "../../utilities/API/axios";
 import {
   ErrorUserAuth,
@@ -16,9 +20,15 @@ import {
 } from "../../utilities/Types/userAuthTypes";
 
 const useVerifyRefreshTK = (routeBelongsTo?: "private" | "public") => {
-  const [authUser, setAuthUser] = useState<boolean | undefined>(undefined);
+  // const [authUser, setAuthUser] = useState<boolean | undefined>(undefined);
   const { isModalOpen } = useSelectorTyped(selectorOpenModalText);
   const dispatchTyped = useDispatchTyped();
+
+  // Must use this isUserAuthorized Redux state for dependency. In case
+  // when user clicks logout I want HomePage to refresh its buttons
+  const { isUserAuthorized } = useSelectorTyped(selectVerifyUser);
+  console.log("isUserAuthorized useVerifyRefreshTK HOOK:", isUserAuthorized);
+
   useEffect(() => {
     const verifyRefreshToken = async () => {
       try {
@@ -28,9 +38,8 @@ const useVerifyRefreshTK = (routeBelongsTo?: "private" | "public") => {
         );
 
         const dataTyped = data as SuccessUserAuth;
-        console.log("dataTyped verifyRefreshToken:", dataTyped?.message);
         if (data?.isSuccessful) {
-          setAuthUser(true);
+          // setAuthUser(true);
 
           // Also on success update the isUserAuthorized state for NavBar
           dispatchTyped(
@@ -46,7 +55,7 @@ const useVerifyRefreshTK = (routeBelongsTo?: "private" | "public") => {
         if (axios.isAxiosError(err)) {
           const errDataTyped = err?.response?.data as ErrorUserAuth;
           if (errDataTyped?.isSuccessful === false) {
-            setAuthUser(false);
+            // setAuthUser(false);
             dispatchTyped(
               unauthorized({
                 userStatus: {
@@ -106,9 +115,12 @@ const useVerifyRefreshTK = (routeBelongsTo?: "private" | "public") => {
       }
     };
 
-    verifyRefreshToken();
+    if (isUserAuthorized === undefined) {
+      verifyRefreshToken();
+    }
   }, []);
 
-  return authUser;
+  // return authUser;
+  return isUserAuthorized;
 };
 export default useVerifyRefreshTK;

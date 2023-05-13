@@ -1,16 +1,20 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import useVerifyRefreshTK from "../../hooks/authHooks/useVerifyRefreshTK";
+import { useSelectorTyped } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
+import { selectVerifyUser } from "../../redux/slices/verifySlice";
 import Loading from "../Loading/Loading";
 
 const ProtectedRoutes = () => {
-  const authUser = useVerifyRefreshTK("private");
+  const { isUserAuthorized } = useSelectorTyped(selectVerifyUser);
+
+  useVerifyRefreshTK("private", isUserAuthorized);
 
   const location = useLocation();
-  if (authUser === undefined) {
+  if (isUserAuthorized === undefined) {
     return <Loading />;
   }
 
-  return authUser ? (
+  return isUserAuthorized ? (
     <Outlet />
   ) : (
     <Navigate to="/login" replace state={{ from: location }} />

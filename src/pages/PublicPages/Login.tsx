@@ -13,6 +13,7 @@ import {
   openModalAction,
   selectorOpenModalText,
 } from "../../redux/slices/openModalTextSlice";
+import Loading from "../../components/Loading/Loading";
 
 interface LoginFields {
   email: string;
@@ -39,9 +40,15 @@ const Login = () => {
 
   const { isModalOpen } = useSelectorTyped(selectorOpenModalText);
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   // If it were onClick event, then:MouseEvent<HTMLButtonElement>
   const loginSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    // Start Loading
+    setLoading(true);
+    // Make sure to stop loading in fails cases so user can retry.
+
     try {
       const data: LoginData = await axiosAcceptJSON(
         "POST",
@@ -57,6 +64,7 @@ const Login = () => {
       }
 
       if (data?.isSuccessful === false) {
+        setLoading(false);
         switch (data?.message) {
           case "Invalid Email":
             return dispatch(
@@ -127,8 +135,11 @@ const Login = () => {
 
   const loginTestUser = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    // Start Loading
+    setLoading(true);
+    // Make sure to stop loading in fails cases so user can retry.
+
     try {
-      console.log("fired");
       const data: LoginData = (await axiosAcceptJSON(
         "POST",
         "/api/v1/auth/login",
@@ -138,15 +149,16 @@ const Login = () => {
           loginForever: false,
         })
       )) as LoginData;
-      console.log("data", data);
 
       const accessToken = data?.accessToken;
       if (typeof accessToken === "string") {
         navigatePage("/");
         dispatch(authorize({ userStatus: { isUserAuthorized: true } }));
+        setLoading(false);
       }
 
       if (data?.isSuccessful === false) {
+        setLoading(false);
         switch (data?.message) {
           case "Invalid Email":
             return dispatch(
@@ -202,6 +214,10 @@ const Login = () => {
       return;
     }
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <>

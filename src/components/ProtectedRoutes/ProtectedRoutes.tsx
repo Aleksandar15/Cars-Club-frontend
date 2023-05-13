@@ -3,7 +3,7 @@ import useVerifyRefreshTK from "../../hooks/authHooks/useVerifyRefreshTK";
 import Loading from "../Loading/Loading";
 
 const ProtectedRoutes = () => {
-  const authUser = useVerifyRefreshTK();
+  const authUser = useVerifyRefreshTK("private");
 
   const location = useLocation();
   if (authUser === undefined) {

@@ -8,9 +8,9 @@ export const axiosCredentials = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,
 });
-// NOTE first argument of .post (or .get) method is 'path',
-// second argument is 'body'/'data' so pass {} for GET requests
-// if third argument ('headers') is needed.
+// NOTE first argument of .post (or .get, etc.) method is 'path',
+// second argument is 'body'/'data' so if third argument ('headers')
+// is needed, then: pass {} to 2nd argument for empty-body requests.
 
 export const axiosReqJSON = axios.create({
   baseURL: BASE_URL,

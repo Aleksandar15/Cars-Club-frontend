@@ -24,9 +24,10 @@ export const verifySlice = createSlice({
       };
     },
     unauthorized: (state, action: PayloadAction<VerifyStateProp>) => {
-      state.userStatus = {
-        isUserAuthorized: action.payload.userStatus.isUserAuthorized,
-      };
+      // state.userStatus = {
+      //   isUserAuthorized: action.payload.userStatus.isUserAuthorized,
+      // };
+      state.userStatus = action.payload.userStatus;
     },
   },
 });

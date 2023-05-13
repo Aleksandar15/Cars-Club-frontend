@@ -5,3 +5,8 @@ export interface ErrorUserAuth {
 export interface SuccessUserAuth extends ErrorUserAuth {
   user_role: string;
 }
+
+export interface LogoutSuccess {
+  isSuccessful: boolean;
+  message: string;
+}

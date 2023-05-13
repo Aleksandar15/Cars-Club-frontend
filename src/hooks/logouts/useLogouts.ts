@@ -13,6 +13,11 @@ const useLogouts = () => {
   const navigatePage = useMyNavigate();
 
   const clickLogout = async () => {
+    // In need to show Loading of HomePage before any response is received
+    dispatchTyped(
+      unauthorized({ userStatus: { isUserAuthorized: undefined } })
+    );
+
     try {
       const { data } = await axiosCredentials.delete(`/api/v1/auth/logout`);
       const dataTyped = data as LogoutSuccess;
@@ -65,6 +70,11 @@ const useLogouts = () => {
   };
 
   const clickLogoutAll = async () => {
+    // In need to show Loading of HomePage before any response is received
+    dispatchTyped(
+      unauthorized({ userStatus: { isUserAuthorized: undefined } })
+    );
+
     try {
       const { data } = await axiosCredentials.delete(
         `/api/v1/auth/logoutallsessions`

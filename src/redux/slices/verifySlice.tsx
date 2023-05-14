@@ -1,16 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { IsUserAuthorized } from "../../utilities/Types/verifyUserTypes";
 import { RootState } from "../store";
 
 interface VerifyStateProp {
   userStatus: {
-    isUserAuthorized: boolean;
+    isUserAuthorized: IsUserAuthorized;
     codeStatus?: number;
   };
 }
 
 const initialState: VerifyStateProp = {
   userStatus: {
-    isUserAuthorized: false,
+    isUserAuthorized: undefined,
   },
 };
 
@@ -18,20 +19,21 @@ export const verifySlice = createSlice({
   name: "verifyUser",
   initialState,
   reducers: {
-    authorized: (state, action: PayloadAction<VerifyStateProp>) => {
+    authorize: (state, action: PayloadAction<VerifyStateProp>) => {
       state.userStatus = {
         isUserAuthorized: action.payload.userStatus.isUserAuthorized,
       };
     },
     unauthorized: (state, action: PayloadAction<VerifyStateProp>) => {
-      state.userStatus = {
-        isUserAuthorized: action.payload.userStatus.isUserAuthorized,
-      };
+      // state.userStatus = {
+      //   isUserAuthorized: action.payload.userStatus.isUserAuthorized,
+      // };
+      state.userStatus = action.payload.userStatus;
     },
   },
 });
 
-export const { authorized, unauthorized } = verifySlice.actions;
+export const { authorize, unauthorized } = verifySlice.actions;
 
 export const selectVerifyUser = (state: RootState) =>
   state.verifySlice.userStatus;

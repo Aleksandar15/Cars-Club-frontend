@@ -1,18 +1,12 @@
 import { Dropdown, DropdownButton } from "react-bootstrap";
+import useLogouts from "../../hooks/logouts/useLogouts";
 import useMyNavigate from "../../hooks/useMyNavigate/useMyNavigate";
-import { useDispatchTyped } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
-import { unauthorized } from "../../redux/slices/verifySlice";
 
 const NavBarDropDown = () => {
   const navigatePage = useMyNavigate();
-  const dispatch = useDispatchTyped();
   const clickCatalog = () => navigatePage("/catalog");
   const clickMarketplace = () => navigatePage("/marketplace");
-  const clickLogout = () => {
-    dispatch(unauthorized({ userStatus: { isUserAuthorized: false } }));
-    //if data received by backend is a 'successful logout':
-    navigatePage("/");
-  };
+  const { clickLogout, clickLogoutAll } = useLogouts();
 
   return (
     <>
@@ -48,6 +42,14 @@ const NavBarDropDown = () => {
           style={{ borderRadius: "10px" }}
         >
           Logout
+        </Dropdown.Item>
+        <Dropdown.Item
+          eventKey="4"
+          onClick={clickLogoutAll}
+          className="text-light bg-danger text-center mt-1"
+          style={{ borderRadius: "10px" }}
+        >
+          Logout all devices
         </Dropdown.Item>
       </DropdownButton>
     </>

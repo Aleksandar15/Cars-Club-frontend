@@ -1,17 +1,26 @@
-import { useState } from "react";
 import { Button } from "react-bootstrap";
+import Loading from "../../components/Loading/Loading";
+import useVerifyRefreshTK from "../../hooks/authHooks/useVerifyRefreshTK";
 import useMyNavigate from "../../hooks/useMyNavigate/useMyNavigate";
 import { useSelectorTyped } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
 import { selectVerifyUser } from "../../redux/slices/verifySlice";
 
 const HomePage = () => {
-  // const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const { isUserAuthorized } = useSelectorTyped(selectVerifyUser);
   const navigatePage = useMyNavigate();
+
+  const { isUserAuthorized } = useSelectorTyped(selectVerifyUser);
+
+  useVerifyRefreshTK("dynamic", isUserAuthorized);
+
+  if (isUserAuthorized === undefined || isUserAuthorized === "loading") {
+    return <Loading />;
+  }
 
   return (
     <div>
-      <h1 className="text-center text-info mb-5">Cars Club's Home - ENJOY!</h1>
+      <h1 className="text-center text-info mb-5">
+        Cars Club's Homepage - WELCOME!
+      </h1>
 
       {isUserAuthorized ? (
         <>

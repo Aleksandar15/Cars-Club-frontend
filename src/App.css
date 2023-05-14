@@ -28,3 +28,98 @@ background: blue;
   border-radius: 10px;
 }
 
+/* ModalText */
+.mymodal-wrapper{
+  /* background-color: var(--backgroundModalSwitch); */
+  /* background-color: rgba(255, 22, 22, 0.888); */
+  /* Above color feels like a warning (bright red) */
+  background-color: rgba(25, 222, 222, 0.777);
+  border-radius: 25px;
+  /* text-align: center; */
+}
+.close-button {
+  position: absolute;
+  /* position: relative; */
+  top: 0;
+  right: 0;
+  font-size: 2rem;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+.spanModalClickOutside{
+  font-size: 10.1px;
+  position: relative;
+  left: 39%;
+  top: 0px;
+  font-weight: bold;
+  /* color: aqua; */
+  color: whitesmoke;
+  /* bottom:0; */
+}
+.clickOKbutton{
+  font-size: 10.5px;
+  position: relative;
+  /* left: 39%; */
+  font-weight: bold;
+  color: aqua;
+  /* Above has the button wider, 
+  below is to make the button smaller: */
+  max-width: 150px;
+  left: 63.5%;
+}
+
+/* NavBar */
+.navBarBrandTitle {
+  cursor: default;
+  user-select: none;
+  position: absolute;
+  /* left: 50%; */
+  margin-left: 38.38%;
+}
+
+
+
+/* Styles for mobile screens */
+@media (max-width:767px) {
+  /* NavBar */
+  .navBarBrandTitle{
+    /* position: fixed; */
+    left: auto;
+    position: relative;
+  }
+
+  /* Others */
+}
+@media (max-width:550px) and (max-height:1000px) {
+  .navBarContainer{
+    display: grid !important;
+    
+  }
+  .navBarBrandTitle{
+    margin-top: -20px;
+    margin-bottom: -12px;
+    /* position: absolute; */
+    /* left: 20px; */
+    /* left: 5%; */
+    /* text-align: center; */
+    /* align-items: center; */
+    position: relative;
+    /* left: 3%; */
+    /* left: 9px; */
+    /* or to centralize: */
+    left: 11ex;
+    /* Above '11ex' is PERFECT! */
+    /* These below are relative & NOT what I want */
+    /* left: 7.5rem; */
+    /* left: 5.7em; */
+    /* left: 14vh; */
+    /* left: 30vw; */
+  }
+  .navCustomClass{
+    margin-left: 18%;
+    margin-top: -18px;
+  }
+
+  /* Others */
+}

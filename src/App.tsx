@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Container } from "react-bootstrap";
 // import reactLogo from './assets/react.svg'
 import "./App.css";
@@ -10,6 +9,8 @@ import Catalog from "./pages/ProtectedPages/Catalog";
 import Marketplace from "./pages/ProtectedPages/Marketplace";
 import Login from "./pages/PublicPages/Login";
 import Register from "./pages/PublicPages/Register";
+import ProtectedRoutes from "./components/ProtectedRoutes/ProtectedRoutes";
+import PublicRoutes from "./components/PublicRoutes/PublicRoutes";
 
 function App() {
   return (
@@ -20,12 +21,16 @@ function App() {
           <Route path="/" element={<HomePage />} />
 
           {/* Public routes */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route element={<PublicRoutes />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Route>
 
           {/* Protected routes */}
-          <Route path="/marketplace" element={<Marketplace />} />
-          <Route path="/catalog" element={<Catalog />} />
+          <Route path="/" element={<ProtectedRoutes />}>
+            <Route path="/marketplace" element={<Marketplace />} />
+            <Route path="/catalog" element={<Catalog />} />
+          </Route>
 
           {/* Not found route */}
           <Route path="*" element={<PageNotFound />} />

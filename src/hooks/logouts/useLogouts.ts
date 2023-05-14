@@ -15,7 +15,7 @@ const useLogouts = () => {
   const clickLogout = async () => {
     // In need to show Loading of HomePage before any response is received
     dispatchTyped(
-      unauthorized({ userStatus: { isUserAuthorized: undefined } })
+      unauthorized({ userStatus: { isUserAuthorized: "loading" } })
     );
 
     try {
@@ -72,7 +72,7 @@ const useLogouts = () => {
   const clickLogoutAll = async () => {
     // In need to show Loading of HomePage before any response is received
     dispatchTyped(
-      unauthorized({ userStatus: { isUserAuthorized: undefined } })
+      unauthorized({ userStatus: { isUserAuthorized: "loading" } })
     );
 
     try {

@@ -12,7 +12,7 @@ const HomePage = () => {
 
   useVerifyRefreshTK("dynamic", isUserAuthorized);
 
-  if (isUserAuthorized === undefined) {
+  if (isUserAuthorized === undefined || isUserAuthorized === "loading") {
     return <Loading />;
   }
 

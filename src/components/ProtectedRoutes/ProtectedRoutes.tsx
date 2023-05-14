@@ -10,7 +10,7 @@ const ProtectedRoutes = () => {
   useVerifyRefreshTK("private", isUserAuthorized);
 
   const location = useLocation();
-  if (isUserAuthorized === undefined) {
+  if (isUserAuthorized === undefined || isUserAuthorized === "loading") {
     return <Loading />;
   }
 

@@ -16,7 +16,7 @@ import {
 
 const useVerifyRefreshTK = (
   routeBelongsTo: "private" | "public" | "dynamic",
-  isUserAuthorized: boolean | undefined
+  isUserAuthorized: boolean | undefined | "loading"
 ) => {
   const { isModalOpen } = useSelectorTyped(selectorOpenModalText);
   const dispatchTyped = useDispatchTyped();

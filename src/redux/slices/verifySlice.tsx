@@ -3,7 +3,7 @@ import { RootState } from "../store";
 
 interface VerifyStateProp {
   userStatus: {
-    isUserAuthorized: boolean | undefined;
+    isUserAuthorized: boolean | undefined | "loading";
     codeStatus?: number;
   };
 }

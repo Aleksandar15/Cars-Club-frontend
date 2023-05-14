@@ -1,12 +1,6 @@
 import axios from "axios";
-import {
-  useDispatchTyped,
-  useSelectorTyped,
-} from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
-import {
-  openModalAction,
-  selectorOpenModalText,
-} from "../../redux/slices/openModalTextSlice";
+import { useDispatchTyped } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
+import { openModalAction } from "../../redux/slices/openModalTextSlice";
 import { authorize, unauthorized } from "../../redux/slices/verifySlice";
 import { axiosCredentials } from "../../utilities/API/axios";
 import {
@@ -22,7 +16,6 @@ const useVerifyRefreshTK = (
   routeBelongsTo: RouteBelongsTo,
   isUserAuthorized: IsUserAuthorized
 ) => {
-  const { isModalOpen } = useSelectorTyped(selectorOpenModalText);
   const dispatchTyped = useDispatchTyped();
 
   if (isUserAuthorized === undefined) {
@@ -61,7 +54,7 @@ const useVerifyRefreshTK = (
             if (routeBelongsTo === "private") {
               dispatchTyped(
                 openModalAction({
-                  isModalOpen: !isModalOpen,
+                  isModalOpen: true,
                   text: `Login please!`,
                 })
               );

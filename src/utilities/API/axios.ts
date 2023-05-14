@@ -1,6 +1,7 @@
 import axios, { AxiosError } from "axios";
 
-const BASE_URL = "http://localhost:3000";
+// const BASE_URL = "http://localhost:3000";
+const BASE_URL = "https://cars-club.netlify.app/api";
 
 export const axiosDefaultReq = axios.create({ baseURL: BASE_URL });
 

@@ -13,10 +13,14 @@ import {
   ErrorUserAuth,
   SuccessUserAuth,
 } from "../../utilities/Types/userAuthTypes";
+import {
+  IsUserAuthorized,
+  RouteBelongsTo,
+} from "../../utilities/Types/verifyUserTypes";
 
 const useVerifyRefreshTK = (
-  routeBelongsTo: "private" | "public" | "dynamic",
-  isUserAuthorized: boolean | undefined | "loading"
+  routeBelongsTo: RouteBelongsTo,
+  isUserAuthorized: IsUserAuthorized
 ) => {
   const { isModalOpen } = useSelectorTyped(selectorOpenModalText);
   const dispatchTyped = useDispatchTyped();

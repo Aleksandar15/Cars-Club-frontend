@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { IsUserAuthorized } from "../../utilities/Types/verifyUserTypes";
 import { RootState } from "../store";
 
 interface VerifyStateProp {
   userStatus: {
-    isUserAuthorized: boolean | undefined | "loading";
+    isUserAuthorized: IsUserAuthorized;
     codeStatus?: number;
   };
 }

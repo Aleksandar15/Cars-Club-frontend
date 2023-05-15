@@ -84,6 +84,17 @@ const useVerifyRefreshTK = (
       } catch (err) {
         if (axios.isAxiosError(err)) {
           const errDataTyped = err?.response?.data as ErrorUserAuth;
+
+          // Fix for sleeping Render.com taking up 30s to wake up
+          if (err?.response?.status === 500) {
+            const id = setTimeout(() => {
+              // It's not infinitive loop because after 30s the server
+              // has already awoke & there's no more 500 Errors.
+              verifyRefreshToken();
+              clearTimeout(id);
+            }, 30003);
+          }
+
           if (errDataTyped?.isSuccessful === false) {
             dispatchTyped(
               unauthorized({
@@ -93,15 +104,6 @@ const useVerifyRefreshTK = (
                 },
               })
             );
-            // Fix for sleeping Render.com taking up 30s to wake up
-            if (err?.response?.status === 500) {
-              const id = setTimeout(() => {
-                // It's not infinitive loop because after 30s the server
-                // has already awoke & there's no more 500 Errors.
-                verifyRefreshToken();
-                clearTimeout(id);
-              }, 30003);
-            }
 
             if (routeBelongsTo === "private") {
               dispatchTyped(

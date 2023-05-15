@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 
-// const BASE_URL = "http://localhost:3000";
-const BASE_URL = "https://cars-club.netlify.app/api";
+const BASE_URL = "http://localhost:3000";
+// const BASE_URL = "https://cars-club.netlify.app/api";
 
 export const axiosDefaultReq = axios.create({ baseURL: BASE_URL });
 
@@ -12,6 +12,11 @@ export const axiosCredentials = axios.create({
 // NOTE first argument of .post (or .get, etc.) method is 'path',
 // second argument is 'body'/'data' so if third argument ('headers')
 // is needed, then: pass {} to 2nd argument for empty-body requests.
+
+export const axiosCredentialsNonInterceptors = axios.create({
+  baseURL: BASE_URL,
+  withCredentials: true,
+});
 
 export const axiosReqJSON = axios.create({
   baseURL: BASE_URL,

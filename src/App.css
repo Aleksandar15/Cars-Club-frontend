@@ -51,7 +51,8 @@ background: blue;
 }
 .post-image-wrapper {
   max-width: 550px;
-  max-height: 700px;
+  /* max-height: 700px; */
+  max-height: 550px;
   overflow: hidden;
   display: flex;
   justify-content: center;

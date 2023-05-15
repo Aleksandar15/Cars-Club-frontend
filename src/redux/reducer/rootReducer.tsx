@@ -3,6 +3,7 @@ import { verifySlice } from "../slices/verifySlice";
 // import searchBar from "./appReducers/searchBar";
 import openModalTextSlice from "../slices/openModalTextSlice";
 import refreshTokenSlice from "../slices/refreshTokenSlice";
+import openModalPostSlice from "../slices/openModalPostSlice";
 
 const rootReducer = combineReducers({
   // searchBar,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   // allows me to use shorthand syntax
   openModalTextSlice,
   refreshTokenSlice,
+  openModalPostSlice,
 });
 
 // While this RootState works,

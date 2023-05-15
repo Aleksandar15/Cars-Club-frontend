@@ -91,12 +91,15 @@ const useVerifyRefreshTK = (
             err?.response?.status
           );
           if (err?.response?.status === 500) {
-            const id = setTimeout(() => {
-              // It's not infinitive loop because after 30s the server
-              // has already awoke & there's no more 500 Errors.
-              verifyRefreshToken();
-              clearTimeout(id);
-            }, 30003);
+            // Update2: there's seem to be NO need for timeout because
+            // by the time status 500 is received: the Server is UP.
+
+            // const id = setTimeout(() => {
+            //   // It's not infinitive loop because after 30s the server
+            //   // has already awoke & there's no more 500 Errors.
+            verifyRefreshToken();
+            //   clearTimeout(id);
+            // }, 30003);
           }
 
           if (errDataTyped?.isSuccessful === false) {

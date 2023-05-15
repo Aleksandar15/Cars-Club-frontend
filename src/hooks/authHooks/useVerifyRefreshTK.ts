@@ -86,6 +86,10 @@ const useVerifyRefreshTK = (
           const errDataTyped = err?.response?.data as ErrorUserAuth;
 
           // Fix for sleeping Render.com taking up 30s to wake up
+          console.log(
+            "Initial useVerifyRefreshTK err?.response?.status:",
+            err?.response?.status
+          );
           if (err?.response?.status === 500) {
             const id = setTimeout(() => {
               // It's not infinitive loop because after 30s the server

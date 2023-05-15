@@ -28,6 +28,58 @@ background: blue;
   border-radius: 10px;
 }
 
+
+
+/*  */
+/* POSTS Styles */
+.post {
+  background-color: #f5f5f5;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.post-image-wrapper-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+}
+.post-image-wrapper {
+  max-width: 550px;
+  max-height: 700px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.post-image {
+  /* width: auto;
+  height: auto; */
+  max-width: 100%;
+  max-height: 100%;
+  /* background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain; */
+  /* object-fit: contain; */
+  /* object-fit: cover; */
+}
+.post-comments .post-comments-ul {
+  list-style-type: none;
+  padding: 0;
+}
+.post-comments .post-comments-li {
+  margin-bottom: 5px;
+}
+/* POSTS Styling ends. */
+
+
+
+
 /* ModalText */
 .mymodal-wrapper{
   /* background-color: var(--backgroundModalSwitch); */
@@ -83,15 +135,18 @@ background: blue;
 /* Styles for mobile screens */
 @media (max-width:767px) {
   /* NavBar */
-  .navBarBrandTitle{
-    /* position: fixed; */
+
+  /* This is to make it appear a horizontal ScrollBar 
+  Which I don't want, I prefer the display:grid below*/
+  /* .navBarBrandTitle{
     left: auto;
     position: relative;
-  }
+  } */
 
   /* Others */
 }
-@media (max-width:550px) and (max-height:1000px) {
+/* @media (max-width:550px) and (max-height:1000px) { */
+@media (max-width:767px) and (max-height:1000px) {
   .navBarContainer{
     display: grid !important;
     

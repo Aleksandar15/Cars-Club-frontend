@@ -1,6 +1,7 @@
 import { Navbar as NavBarByBS, Container, Nav } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { useSelectorTyped } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
+import { selectorOpenModalPost } from "../../redux/slices/openModalPostSlice";
 import { selectorOpenModalText } from "../../redux/slices/openModalTextSlice";
 import { selectVerifyUser } from "../../redux/slices/verifySlice";
 import NavBarDropDown from "./NavBarDropDown";
@@ -12,10 +13,11 @@ const NavBar = () => {
   // Fixing a bug where sticky="top" persists and overrides my custom modal,
   // instead, based on the ModalText state toggle the "sticky" accordingly
   const { isModalOpen } = useSelectorTyped(selectorOpenModalText);
+  const { isModalPostOpen } = useSelectorTyped(selectorOpenModalPost);
 
   return (
     <NavBarByBS
-      sticky={isModalOpen ? undefined : "top"}
+      sticky={isModalOpen ? undefined : isModalPostOpen ? undefined : "top"}
       className="mb-5 bg-white shadow-sm"
     >
       {/* Cars Club */}

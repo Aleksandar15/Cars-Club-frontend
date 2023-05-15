@@ -2,7 +2,10 @@ import axios from "axios";
 import { useDispatchTyped } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
 import { openModalAction } from "../../redux/slices/openModalTextSlice";
 import { authorize, unauthorized } from "../../redux/slices/verifySlice";
-import { axiosCredentials } from "../../utilities/API/axios";
+import {
+  axiosCredentials,
+  axiosCredentialsNonInterceptors,
+} from "../../utilities/API/axios";
 import {
   ErrorUserAuth,
   SuccessUserAuth,
@@ -18,12 +21,52 @@ const useVerifyRefreshTK = (
 ) => {
   const dispatchTyped = useDispatchTyped();
 
+  // const timestamp = Date.now();
+
   if (isUserAuthorized === undefined) {
     const verifyRefreshToken = async () => {
       try {
         // GET /verifyrefreshtoken
-        const { data } = await axiosCredentials.get(
+        const { data } = await axiosCredentialsNonInterceptors.get(
+          // `/api/v1/auth/verifyrefreshtoken${timestamp}`,
           `/api/v1/auth/verifyrefreshtoken`
+          // {
+          //   headers: {
+          //     "Cache-Control": "no-cache",
+          //   },
+          // }
+
+          // NOTE may or may not use these cache headers in the future,
+          // I tried to bypass what turned out to be AVG Chrome bugs
+          // with their new 'Memory save' feature kept sending me
+          // old cookies in the HTTP Requests even when there were
+          // 0 cookies OR: even when I'd re-assign it by document.cookie
+          // the Express.js logs would show it received an
+          // invisible cookie that doesn't exist in the AVG Chrome.
+          // & Checking network tab would show 2 refreshToken cookies
+          // separated by `;` (DUPLICATES inside the HTTP Request: they
+          // were NOT differentiable by anything except their values!
+          // ->Also that first (unwanted) refreshToken's value was being
+          // sent back as Response Header in Set-Cookie & I tried to even
+          // hard-set a different cookie: and result was HTTP Response
+          // gets different cookie BUT AVG Chrome keeps re-sending this
+          // invisible & unwanted bug-inducing cookie), but the
+          // first cookie was stubborn & invisible
+          // and was being sent in every HTTP request
+          // to the /api/v1/auth/verifyrefreshtoken with or without
+          // 'timestamp' and with or without Headers of 'Cache-Control':
+          // 'no cache' & also tests: I tried setting it up
+          // on a button click
+          // same thing happened; however when I moved the controller's
+          // logic
+          // directly to be inside server.ts -> at a simplier /refreshtk
+          // endpoint: it somehow didn't showed that invisible cookie
+          // not on Button click nor by this useVerifyRefreshTK (hm?), but
+          // I couldn't run that endpoint's logic inside server.ts (which
+          // has a lot of codes in it)
+          // just to "avoid" this what-seems-to-be-AVG-Chrome-bug.
+          // HOWEVER: Chrome never has such an unexpected bugs, so AVG
+          // Chrome version was cause of that issue with 100% certainty.
         );
 
         const dataTyped = data as SuccessUserAuth;

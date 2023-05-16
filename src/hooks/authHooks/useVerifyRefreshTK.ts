@@ -91,6 +91,19 @@ const useVerifyRefreshTK = (
             err?.response?.status
           );
           if (err?.response?.status === 500) {
+            // Updated5: re-calling verifyRefreshToken() is not enough
+            // status 500 logs, then another 500 arrives; randomly
+            // 2, 3 or 6 calls -> usually with 5s delay it's 'reduced'
+            // to 2 calls but still it seems like Render has sleeping
+            // time (5s+ but 10s? 8s?) after the 30s waking-up time
+            // instead let's use reloads:
+            // window.location.reload(false);
+            // // ^Error: Expected 0 arguments, but got 1.ts
+            // Luckily 'false' is the default so article below was wrong?
+            window.location.reload();
+            // Note: I've also removed the setTimeout and its self-call
+            // to verifyRefreshToken();
+
             // Update4: 1ms wasn't enough, still took 3 x 500 statuses
             // for 4th request to be of 200
             // Let's add 5s delay, if even that doesn't work
@@ -109,14 +122,14 @@ const useVerifyRefreshTK = (
             // Update2: there's seem to be NO need for timeout because
             // by the time status 500 is received: the Server is UP.
 
-            const id = setTimeout(() => {
-              //   // It's not infinitive loop because after 30s the server
-              //   // has already awoke & there's no more 500 Errors.
-              verifyRefreshToken();
-              clearTimeout(id);
-              // }, 30003);
-              // }, 1000);
-            }, 5000);
+            // const id = setTimeout(() => {
+            //   //   // It's not infinitive loop because after 30s the server
+            //   //   // has already awoke & there's no more 500 Errors.
+            //   verifyRefreshToken();
+            //   clearTimeout(id);
+            //   // }, 30003);
+            //   // }, 1000);
+            // }, 5000);
           }
 
           if (errDataTyped?.isSuccessful === false) {

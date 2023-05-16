@@ -91,6 +91,14 @@ const useVerifyRefreshTK = (
             err?.response?.status
           );
           if (err?.response?.status === 500) {
+            // Update4: 1ms wasn't enough, still took 3 x 500 statuses
+            // for 4th request to be of 200
+            // Let's add 5s delay, if even that doesn't work
+            // I'd need to use window.location.reload(false);
+            // NOTE about this command: will do a cached refresh
+            // instead of (true): will do full refresh, more info here:
+            // https://upmostly.com/tutorials/how-to-refresh-a-page-or-component-in-react
+
             // UPDATE3: ah those sleeping servers... without the timeout
             // sometimes it takes 3, other times 5+ responses with 500
             // before response is received: after 2~3 minutes..
@@ -107,7 +115,8 @@ const useVerifyRefreshTK = (
               verifyRefreshToken();
               clearTimeout(id);
               // }, 30003);
-            }, 1000);
+              // }, 1000);
+            }, 5000);
           }
 
           if (errDataTyped?.isSuccessful === false) {

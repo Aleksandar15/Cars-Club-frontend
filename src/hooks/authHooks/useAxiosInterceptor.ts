@@ -9,7 +9,8 @@ import useRefreshToken, { DataAccessToken } from "./useRefreshToken";
 
 const useAxiosInterceptor = () => {
   const refreshFN = useRefreshToken();
-  const accessToken = useSelectorTyped<DataAccessToken>(selectorAccessToken);
+  const { accessToken } =
+    useSelectorTyped<DataAccessToken>(selectorAccessToken);
 
   useEffect(() => {
     const requestIntercept = axiosCredentials.interceptors.request.use(

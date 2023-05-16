@@ -29,3 +29,6 @@ export const { refreshAccessTokenAction } = refreshTokenSlice.actions;
 // // Alternatively shorter:
 export const selectorAccessToken = (state: RootState) =>
   state.refreshTokenSlice;
+// NOTE this can be: state.refreshTokenSlice.accessToken
+// BUT: inside useAxiosInterceptor I'd have to modify expected data to <string>
+// INSTEAD: I'll just destructure the {accessToken} inside useAxiosInterceptor.

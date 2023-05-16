@@ -91,15 +91,23 @@ const useVerifyRefreshTK = (
             err?.response?.status
           );
           if (err?.response?.status === 500) {
+            // UPDATE3: ah those sleeping servers... without the timeout
+            // sometimes it takes 3, other times 5+ responses with 500
+            // before response is received: after 2~3 minutes..
+            // it seem like NOT giving it a timeout kind of confuses
+            // the slow Render's free tier.
+            // Let's try a setTimeout with 1 second delay.
+
             // Update2: there's seem to be NO need for timeout because
             // by the time status 500 is received: the Server is UP.
 
-            // const id = setTimeout(() => {
-            //   // It's not infinitive loop because after 30s the server
-            //   // has already awoke & there's no more 500 Errors.
-            verifyRefreshToken();
-            //   clearTimeout(id);
-            // }, 30003);
+            const id = setTimeout(() => {
+              //   // It's not infinitive loop because after 30s the server
+              //   // has already awoke & there's no more 500 Errors.
+              verifyRefreshToken();
+              clearTimeout(id);
+              // }, 30003);
+            }, 1000);
           }
 
           if (errDataTyped?.isSuccessful === false) {

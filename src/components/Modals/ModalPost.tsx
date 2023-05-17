@@ -72,7 +72,7 @@ const ModalPost = () => {
     contactNumber: "",
     askingPrice: "",
   });
-  const handlePostChanges = (e: ChangeEvent<HTMLInputElement>) => {
+  const handlePostChanges = async (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name, files } = e.target;
     console.log("value:", value);
     // console.log("event.target.files:", e.target.files);
@@ -81,6 +81,36 @@ const ModalPost = () => {
     if (e.target?.files !== null) {
       console.log("event.target.files[0]:", e.target.files[0]);
     }
+    console.log("RUNS BEFORE");
+    if (name === "image" && files !== null) {
+      console.log("RUNS AFTER");
+      let binaryString: any;
+      const reader = new FileReader();
+      reader.onload = () => {
+        binaryString = reader.result;
+        console.log("binaryString111111:", binaryString);
+        uploadImage(binaryString);
+      };
+      console.log("binaryString222222:", binaryString);
+      reader.readAsBinaryString(files[0]);
+    }
+    const uploadImage = async (binaryString: any) => {
+      await new Promise((resolve) => setTimeout(resolve, 2000)); // Add a small delay to ensure the FileReader completes
+      //
+      const imageData = new Uint8Array(binaryString);
+      const { data } = await axiosCredentials.post(
+        "/api/v1/post/createpost",
+        // { image: files[0] }
+        // // {
+        // //   headers: {
+        // //     "Content-Type": "image/jpeg", // Adjust the content type based on your image format
+        // //   },
+        // // }
+        { binaryString: imageData }
+        // { headers: { "Content-Type": "application/josn" } }
+      );
+      console.log("data MODALPOST&uploadImage:", data);
+    };
 
     // If it's not a file-upload then use the 'value'
     const valueCheck =
@@ -123,7 +153,7 @@ const ModalPost = () => {
       charCounterSPAN.textContent = `(${remainingChars} characters left)`;
     }
 
-    // Tried built-in methods for in-area message but that didn't work
+    // Tried built-in methods for inside-area message but that didn't work
     // const charCounter = `${remainingChars} characters remaining`;
     // // e.target.setCustomValidity(charCounter);
     // e.target.setCustomValidity(remainingChars.toString());
@@ -140,11 +170,6 @@ const ModalPost = () => {
     // if (!isNaN(Number(value)) || value === "") {
     //   // With this condition I can use [name]: value -> works as fine.
     //   setPostState({ ...postState, [name]: sanitizedValue });
-    // }
-
-    // // Alternatively (same logic):
-    // if (!isNaN(Number(value)) || value === "") {
-    //   setPostState({ ...postState, [name]: value });
     // }
   };
 

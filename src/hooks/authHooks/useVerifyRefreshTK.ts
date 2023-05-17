@@ -91,6 +91,26 @@ const useVerifyRefreshTK = (
             err?.response?.status
           );
           if (err?.response?.status === 500) {
+            // Update7: still failing even after 10s
+            // it took 2x requests by 28s (shown in Network tab)
+            // and 10s additionally on the last (my own) re-call
+            // so in total around 1:10 minutes. BAD.
+            // Alternative approach I took: running cron jobs
+            // https://console.cron-job.org
+            // There's free quota that can run every 1mins
+            // I selected my backend to run ~14mins as to not fall
+            // asleep:
+            // https://cars-clubs-backend.onrender.com
+            // Get's pinged (no response is needed; there's Monitor
+            // showing it returned 404 Not Found bcuz `/` Route
+            // Handler doesn't exist) and that way it keeps up the
+            // server awake, aside from that 60/14 has decimals
+            // so selected minutes like: EVERY: 04,14,28,42,56mins.
+            // NOTE: I will keep the setTimeout in case my
+            // cron job goes down. -> since that doesn't cause issue
+            // since it ONLY runs on status code 500 (server down;
+            // unless I have deployed some bugs:)).
+
             // Update6: it doesn't work still takes up to 2mins
             // it took 1:30 minute after I hard refreshed 10 times
             // CTRL+SHIFT+R

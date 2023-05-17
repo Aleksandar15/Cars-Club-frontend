@@ -2,6 +2,7 @@ import axios from "axios";
 import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import useAxiosInterceptor from "../../hooks/authHooks/useAxiosInterceptor";
+import useModalPost_formatNum from "../../hooks/ModalPostHooks/useModalPost_formatNum";
 import {
   useDispatchTyped,
   useSelectorTyped,
@@ -11,20 +12,8 @@ import {
   openModalPostAction,
   selectorOpenModalPost,
 } from "../../redux/slices/openModalPostSlice";
+import { Currency, PostState } from "../../utilities/Types/modalPostTypes";
 import LoadingModalPost from "../Loading/LoadingModalPost";
-
-type PostState = {
-  title: string;
-  image: string;
-  description: string;
-  // FormData issue: value can only be: string | Blob
-  // contactNumber: number | null;
-  // askingPrice: number | null;
-  contactNumber: string;
-  askingPrice: string;
-};
-
-// type Currency = "EUR" | "USD" | "Select currency";
 
 const ModalPost = () => {
   const { isModalPostOpen, text } = useSelectorTyped(selectorOpenModalPost);
@@ -125,7 +114,8 @@ const ModalPost = () => {
         const formatedSanitzedValue = formatNumber(sanitizedValue); // Custom function
         setPostState({ ...postState, [name]: formatedSanitzedValue });
 
-        // Alternatively: Check if the value is a number or an empty string
+        // Alternatively (for both IF and ELSE statements):
+        // Check if the value is a number or an empty string
         // & AVOIDS State Updating
         // if (!isNaN(Number(value)) || value === "") {
         //   // With this condition I can use [name]: value -> works as fine.
@@ -138,45 +128,28 @@ const ModalPost = () => {
     }
   };
 
-  // const [currency, setCurrency] = useState("Select currency");
-  const [currency, setCurrency] = useState("USD");
+  const [currency, setCurrency] = useState<Currency>("USD");
   const handleCurrencyChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setCurrency(e.target.value);
+    const selectedCurrency = e?.target?.value as Currency;
+    setCurrency(selectedCurrency);
 
     // Update the value as well
     const deFormatedValue = deformatNumber(postState.askingPrice);
-    const reFormatedValue = formatNumber(deFormatedValue, e.target.value);
+    const reFormatedValue = formatNumber(deFormatedValue, selectedCurrency);
     setPostState({ ...postState, ["askingPrice"]: reFormatedValue });
   };
-  const formatNumber = (value: string, currencyArg = currency): string => {
-    if (currencyArg === "EUR") {
-      // // Format the number with commas for Europe AND add € at the end
-      // return value.replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "€";
-      // // For UX preference I decided not to use "€" at the end.
-      return value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    } else {
-      // Format the number with dots for the USA AND add $ at the beginning
-      // return "$" + value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-      return value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    }
-  };
-  const deformatNumber = (formattedValue: string): string => {
-    // Remove commas or dots from the formatted value
-    const deformattedValue = formattedValue.replace(/[,|.]/g, "");
-    return deformattedValue;
-  };
+  const { formatNumber, deformatNumber } = useModalPost_formatNum(currency);
 
   // const submitPost = async (e: MouseEvent<HTMLButtonElement>) => {
   const submitPost = async (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
     console.count("submitPost click");
-    setLoading(true);
     try {
       const formData = new FormData();
       // formData.append("title", postState.title);
       // formData.append("image", postState.image);
-      // ...
-      // ... Alternative loop:
+
+      // ... Alternative loop for DRY:
       // for (const key in postState) {
       //   formData.append(key, postState[key]); // TypeScript errors
       // }
@@ -185,6 +158,8 @@ const ModalPost = () => {
         formData.append(key, value);
       });
 
+      // Start Loading
+      setLoading(true);
       const { data } = await axiosCredentials.post(
         `http://localhost:3000/api/v1/post/createpost`,
         formData,

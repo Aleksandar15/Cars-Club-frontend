@@ -261,7 +261,8 @@ const ModalPost = () => {
                 <div
                   // color wrapper
                   style={{ color: "white", textTransform: "uppercase" }}
-                  className="pb-5 mb-5 mt-4 "
+                  // className="pb-5 mb-5 mt-4 "
+                  className="pb-5 mb-0 mt-2 "
                 >
                   <form>
                     <label className="me-1 fw-bold" htmlFor="title">
@@ -288,7 +289,7 @@ const ModalPost = () => {
                         accept="image/jpeg, image/jpg, image/png"
                       />
                     </div>
-                    <label className="me-1 fw-bold mt-3" htmlFor="description">
+                    <label className="me-1 fw-bold mt-2" htmlFor="description">
                       Description:
                     </label>
                     <br />
@@ -341,14 +342,14 @@ const ModalPost = () => {
                       style={{
                         fontSize:
                           postState.currency === "Select currency"
-                            ? "13.8px"
+                            ? "13px"
                             : "15px",
-                      }}
+                      }} // This isn't required; Changed logic: default is "USD".
                     >
                       <option
                         value="Select currency"
                         disabled
-                        style={{ fontSize: "13.8px" }} // Used for a case if the User
+                        style={{ fontSize: "13px" }} // Used for a case if the User
                         // selects "EUR" and decides to re-select: keep size the same
                       >
                         CURRENCY

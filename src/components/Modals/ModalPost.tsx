@@ -109,10 +109,15 @@ const ModalPost = () => {
     const sanitizedValue = value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
     // By using RegEx the non-numeric inputs are converted into "" ('nothing').
 
+    // FIX for "askingPrice" being unable to be editing in-between-digits
+    // const deFormatedValue = deformatNumber(value);
+    const deFormatedValue = deformatNumber(sanitizedValue);
+
     if (sanitizedValue.length <= 18) {
       // Test2 UI/UX:
       if (name === "askingPrice") {
-        const formatedSanitzedValue = formatNumber(sanitizedValue); // Custom function
+        // const formatedSanitzedValue = formatNumber(sanitizedValue); // Custom function
+        const formatedSanitzedValue = formatNumber(deFormatedValue); // Custom function
         setPostState({ ...postState, [name]: formatedSanitzedValue });
 
         // Alternatively (for both IF and ELSE statements):
@@ -194,7 +199,7 @@ const ModalPost = () => {
           setLoading(false);
         }
       } else {
-        setIsEmptyFieldValue(true);
+        setIsEmptyFieldValue(true); // Shows the 'Fields can't be empty'
       }
     } catch (err) {
       if (axios.isAxiosError(err)) {

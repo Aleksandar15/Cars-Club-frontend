@@ -51,14 +51,13 @@ const ModalPost = () => {
   };
 
   // BODY STATES
-
   const [postState, setPostState] = useState<PostState>({
     title: "",
     image: "",
-    // image: null,
     description: "",
     contactNumber: "",
     askingPrice: "",
+    currency: "USD",
   });
   const handlePostChanges = async (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name, files } = e.target;
@@ -86,8 +85,6 @@ const ModalPost = () => {
       [name]: name === "image" && files !== null ? files[0] : capitalizedValue,
     });
   };
-
-  // console.log("postState:", postState);
 
   const handleTextAreaChanges = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value, maxLength } = e.target;
@@ -128,17 +125,21 @@ const ModalPost = () => {
     }
   };
 
-  const [currency, setCurrency] = useState<Currency>("USD");
   const handleCurrencyChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const selectedCurrency = e?.target?.value as Currency;
-    setCurrency(selectedCurrency);
 
     // Update the value as well
     const deFormatedValue = deformatNumber(postState.askingPrice);
     const reFormatedValue = formatNumber(deFormatedValue, selectedCurrency);
-    setPostState({ ...postState, ["askingPrice"]: reFormatedValue });
+    setPostState({
+      ...postState,
+      ["askingPrice"]: reFormatedValue,
+      ["currency"]: selectedCurrency,
+    });
   };
-  const { formatNumber, deformatNumber } = useModalPost_formatNum(currency);
+  const { formatNumber, deformatNumber } = useModalPost_formatNum(
+    postState.currency
+  );
 
   // const submitPost = async (e: MouseEvent<HTMLButtonElement>) => {
   const submitPost = async (e: FormEvent<HTMLButtonElement>) => {
@@ -312,11 +313,13 @@ const ModalPost = () => {
                       Currency:
                     </label>
                     <select
-                      value={currency}
+                      value={postState.currency}
                       onChange={handleCurrencyChange}
                       style={{
                         fontSize:
-                          currency === "Select currency" ? "13.8px" : "15px",
+                          postState.currency === "Select currency"
+                            ? "13.8px"
+                            : "15px",
                       }}
                     >
                       <option
@@ -336,7 +339,11 @@ const ModalPost = () => {
                     </select>
                     <br />
                     <span style={{ fontWeight: "bold", fontSize: "21px" }}>
-                      {currency === "EUR" ? "€" : currency === "USD" ? "$" : ""}
+                      {postState.currency === "EUR"
+                        ? "€"
+                        : postState.currency === "USD"
+                        ? "$"
+                        : ""}
                     </span>
                     <input
                       // className="mt-3"

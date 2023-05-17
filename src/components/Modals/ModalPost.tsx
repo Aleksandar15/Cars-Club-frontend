@@ -13,9 +13,20 @@ import {
 } from "../../redux/slices/openModalPostSlice";
 import LoadingModalPost from "../Loading/LoadingModalPost";
 
+type PostState = {
+  title: string;
+  image: string;
+  description: string;
+  // FormData issue: value can only be: string | Blob
+  // contactNumber: number | null;
+  // askingPrice: number | null;
+  contactNumber: string;
+  askingPrice: string;
+};
+
+// type Currency = "EUR" | "USD" | "Select currency";
+
 const ModalPost = () => {
-  // const ModalPost = ({ children }) => {
-  // const { isModalPostOpen } = useSelector(selectorOpenModal);
   const { isModalPostOpen, text } = useSelectorTyped(selectorOpenModalPost);
   const dispatch = useDispatchTyped();
   const axiosCredentials = useAxiosInterceptor();
@@ -51,18 +62,6 @@ const ModalPost = () => {
   };
 
   // BODY STATES
-  type PostState = {
-    title: string;
-    image: string;
-    // // image: string | null;
-    // image: string | File; // possibly I'll use for the received data
-    description: string;
-    contactNumber: string;
-    askingPrice: string;
-  };
-  // FormData's Blob TypeScript's rules
-  // Argument of type 'string | number' is not assignable to parameter of type 'string | Blob'.
-  // Type 'number' (/also 'null' or anything) is not assignable to type 'string | Blob'.
 
   const [postState, setPostState] = useState<PostState>({
     title: "",
@@ -74,52 +73,13 @@ const ModalPost = () => {
   });
   const handlePostChanges = async (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name, files } = e.target;
-    console.log("value:", value);
-    // console.log("event.target.files:", e.target.files);
-    // const condition = files !== null || files !== undefined;
-    // console.log("condition", condition);
+    console.log("value handlePostChanges:", value);
     if (e.target?.files !== null) {
       console.log("event.target.files[0]:", e.target.files[0]);
     }
-    console.log("RUNS BEFORE");
-    if (name === "image" && files !== null) {
-      console.log("RUNS AFTER");
-      let binaryString: any;
-      const reader = new FileReader();
-      reader.onload = () => {
-        binaryString = reader.result;
-        console.log("binaryString111111:", binaryString);
-        uploadImage(binaryString);
-      };
-      console.log("binaryString222222:", binaryString);
-      reader.readAsBinaryString(files[0]);
-    }
-    const uploadImage = async (binaryString: any) => {
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // Add a small delay to ensure the FileReader completes
-      //
-      const imageData = new Uint8Array(binaryString);
-      const { data } = await axiosCredentials.post(
-        "/api/v1/post/createpost",
-        // { image: files[0] }
-        // // {
-        // //   headers: {
-        // //     "Content-Type": "image/jpeg", // Adjust the content type based on your image format
-        // //   },
-        // // }
-        { binaryString: imageData }
-        // { headers: { "Content-Type": "application/josn" } }
-      );
-      console.log("data MODALPOST&uploadImage:", data);
-    };
 
     // If it's not a file-upload then use the 'value'
     const valueCheck =
-      // This 'undefined' check was added for TextArea but
-      // TextArea's fix of <HTMLInputElement | HTMLTextAreaElement>
-      // Turns into new TSC errors with 'files'
-      // & to avoid lots of IF statements:
-      // I separated the TextArea changes in a new handler FN below.
-      //
       // "Object is possibly 'null'" guards:
       files !== null && files !== undefined ? files[0] : value;
 
@@ -132,8 +92,8 @@ const ModalPost = () => {
 
     setPostState({
       ...postState,
-      // Also don't forget to NOT pass uppercase if 'name===image'.
-      // && the: files !== null check is TypeScript-specific.
+      // Also don't forget to NOT pass capitalizedValue if 'name===image'.
+      // && the: files !== null check is TypeScript-specific fix.
       [name]: name === "image" && files !== null ? files[0] : capitalizedValue,
     });
   };
@@ -152,25 +112,58 @@ const ModalPost = () => {
       // charCounter.textContent = `${remainingChars} characters remaining`;
       charCounterSPAN.textContent = `(${remainingChars} characters left)`;
     }
-
-    // Tried built-in methods for inside-area message but that didn't work
-    // const charCounter = `${remainingChars} characters remaining`;
-    // // e.target.setCustomValidity(charCounter);
-    // e.target.setCustomValidity(remainingChars.toString());
   };
 
   const handlePostNumberChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     const sanitizedValue = value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+    // By using RegEx the non-numeric inputs are converted into "" ('nothing').
 
-    // This allows for state updates but it's no problem since ModalPost is unexpensive
-    setPostState({ ...postState, [name]: sanitizedValue });
+    if (sanitizedValue.length <= 18) {
+      // Test2 UI/UX:
+      if (name === "askingPrice") {
+        const formatedSanitzedValue = formatNumber(sanitizedValue); // Custom function
+        setPostState({ ...postState, [name]: formatedSanitzedValue });
 
-    // // Check if the value is a number or an empty string
-    // if (!isNaN(Number(value)) || value === "") {
-    //   // With this condition I can use [name]: value -> works as fine.
-    //   setPostState({ ...postState, [name]: sanitizedValue });
-    // }
+        // Alternatively: Check if the value is a number or an empty string
+        // & AVOIDS State Updating
+        // if (!isNaN(Number(value)) || value === "") {
+        //   // With this condition I can use [name]: value -> works as fine.
+        //   // || value === "" -> checks against empty spaces
+        //   setPostState({ ...postState, [name]: sanitizedValue });
+        // }
+      } else {
+        setPostState({ ...postState, [name]: sanitizedValue });
+      }
+    }
+  };
+
+  // const [currency, setCurrency] = useState("Select currency");
+  const [currency, setCurrency] = useState("USD");
+  const handleCurrencyChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setCurrency(e.target.value);
+
+    // Update the value as well
+    const deFormatedValue = deformatNumber(postState.askingPrice);
+    const reFormatedValue = formatNumber(deFormatedValue, e.target.value);
+    setPostState({ ...postState, ["askingPrice"]: reFormatedValue });
+  };
+  const formatNumber = (value: string, currencyArg = currency): string => {
+    if (currencyArg === "EUR") {
+      // // Format the number with commas for Europe AND add € at the end
+      // return value.replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "€";
+      // // For UX preference I decided not to use "€" at the end.
+      return value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    } else {
+      // Format the number with dots for the USA AND add $ at the beginning
+      // return "$" + value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      return value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+  };
+  const deformatNumber = (formattedValue: string): string => {
+    // Remove commas or dots from the formatted value
+    const deformattedValue = formattedValue.replace(/[,|.]/g, "");
+    return deformattedValue;
   };
 
   // const submitPost = async (e: MouseEvent<HTMLButtonElement>) => {
@@ -191,8 +184,6 @@ const ModalPost = () => {
       Object.entries(postState).forEach(([key, value]) => {
         formData.append(key, value);
       });
-
-      // console.log("formData:", formData);
 
       const { data } = await axiosCredentials.post(
         `http://localhost:3000/api/v1/post/createpost`,
@@ -260,9 +251,9 @@ const ModalPost = () => {
           >
             {/* MODAL BODY */}
             {loading ? (
-              // Update2: it doesn't reset fields if no error happens
+              // Update2: it doesn't reset fields.
 
-              // NOTE: having Loading in here will RESET input fields
+              // NOTE: having Loading in here may RESET input fields
               // after an async fn's response setLoading(false).
               <LoadingModalPost />
             ) : (
@@ -322,42 +313,74 @@ const ModalPost = () => {
                       <label className="me-1 fw-bold mt-3" htmlFor="contact">
                         Contact number:
                       </label>
-                      {/* <br /> */}
+                      <br />
                       <input
-                        className="mt-3"
+                        // className="mt-3"
                         id="contact"
                         name="contactNumber"
-                        placeholder="888-888 (fake it)"
+                        placeholder="888888 (fake it)"
                         value={postState.contactNumber}
                         // onChange={handlePostChanges}
                         onChange={handlePostNumberChange}
                         type="tel"
                       />
                     </div>
-                    <div>
-                      <label className="me-2 fw-bold mt-3" htmlFor="price">
-                        Asking price:
-                      </label>
-                      <span style={{ fontWeight: "bold" }}>
-                        $
-                        <input
-                          className="mt-3"
-                          id="price"
-                          name="askingPrice"
-                          placeholder="8888 (fake it for test)"
-                          value={postState.askingPrice}
-                          // onChange={handlePostChanges}
-                          onChange={handlePostNumberChange}
-                          type="text"
-                          style={
-                            {
-                              // backgroundColor: "rgba(0, 0, 0, 0.5)",
-                              // opacity: "0.77",
-                            }
-                          }
-                        />
-                      </span>
-                    </div>
+                    <label className="me-2 fw-bold mt-3" htmlFor="price">
+                      Asking price:
+                    </label>
+                    <br />
+                    <label
+                      className="fw-bold me-1 mt-1 mb-1"
+                      style={{ fontSize: "14px" }}
+                    >
+                      {/* Select currency: */}
+                      Currency:
+                    </label>
+                    <select
+                      value={currency}
+                      onChange={handleCurrencyChange}
+                      style={{
+                        fontSize:
+                          currency === "Select currency" ? "13.8px" : "15px",
+                      }}
+                    >
+                      <option
+                        value="Select currency"
+                        disabled
+                        style={{ fontSize: "13.8px" }} // Used for a case if the User
+                        // selects "EUR" and decides to re-select: keep size the same
+                      >
+                        CURRENCY
+                      </option>
+                      <option value="EUR" style={{ fontSize: "15px" }}>
+                        EUR
+                      </option>
+                      <option value="USD" style={{ fontSize: "15px" }}>
+                        USD
+                      </option>
+                    </select>
+                    <br />
+                    <span style={{ fontWeight: "bold", fontSize: "21px" }}>
+                      {currency === "EUR" ? "€" : currency === "USD" ? "$" : ""}
+                    </span>
+                    <input
+                      // className="mt-3"
+                      id="price"
+                      name="askingPrice"
+                      placeholder="8888 (fake it for test)"
+                      value={postState.askingPrice}
+                      // onChange={handlePostChanges}
+                      onChange={handlePostNumberChange}
+                      // type="number"
+                      type="text"
+                      style={
+                        {
+                          // backgroundColor: "rgba(0, 0, 0, 0.5)",
+                          // opacity: "0.77",
+                        }
+                      }
+                    />
+                    <br />
                     <Button
                       variant={`btn bg-light btn-outline-info
                  text-info  fw-bold`}

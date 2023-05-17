@@ -7,6 +7,7 @@ export type PostState = {
   // askingPrice: number | null;
   contactNumber: string;
   askingPrice: string;
+  currency: Currency;
 };
 
 export type Currency = "EUR" | "USD" | "Select currency";

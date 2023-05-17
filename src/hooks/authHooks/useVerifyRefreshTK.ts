@@ -91,12 +91,55 @@ const useVerifyRefreshTK = (
             err?.response?.status
           );
           if (err?.response?.status === 500) {
+            // Update6: it doesn't work still takes up to 2mins
+            // it took 1:30 minute after I hard refreshed 10 times
+            // CTRL+SHIFT+R
+            // I did try refreshing manually after 30s (receiving 500)
+            // and 10 more times ever after, but STILL it took ~2mins
+            // I'll go back to setTimeout and have it 10s delay.
+            // OTHERWISE I must switch to some paid plans or Fly.io
+            // server left 1/3 but keep Database on Render.com
+
+            // // Updated5: re-calling verifyRefreshToken() is not enough
+            // // status 500 logs, then another 500 arrives; randomly
+            // // 2, 3 or 6 calls -> usually with 5s delay it's 'reduced'
+            // // to 2 calls but still it seems like Render has sleeping
+            // // time (5s+ but 10s? 8s?) after the 30s waking-up time
+            // // instead let's use reloads:
+            // // window.location.reload(false);
+            // // // ^Error: Expected 0 arguments, but got 1.ts
+            // // Luckily 'false' is the default so article below was wrong?
+            // window.location.reload();
+            // // Note: I've also removed the setTimeout and its self-call
+            // // to verifyRefreshToken();
+
+            // Update4: 1ms wasn't enough, still took 3 x 500 statuses
+            // for 4th request to be of 200
+            // Let's add 5s delay, if even that doesn't work
+            // I'd need to use window.location.reload(false);
+            // NOTE about this command: will do a cached refresh
+            // instead of (true): will do full refresh, more info here:
+            // https://upmostly.com/tutorials/how-to-refresh-a-page-or-component-in-react
+
+            // UPDATE3: ah those sleeping servers... without the timeout
+            // sometimes it takes 3, other times 5+ responses with 500
+            // before response is received: after 2~3 minutes..
+            // it seem like NOT giving it a timeout kind of confuses
+            // the slow Render's free tier.
+            // Let's try a setTimeout with 1 second delay.
+
+            // Update2: there's seem to be NO need for timeout because
+            // by the time status 500 is received: the Server is UP.
+
             const id = setTimeout(() => {
-              // It's not infinitive loop because after 30s the server
-              // has already awoke & there's no more 500 Errors.
+              //   // It's not infinitive loop because after 30s the server
+              //   // has already awoke & there's no more 500 Errors.
               verifyRefreshToken();
               clearTimeout(id);
-            }, 30003);
+              // }, 30003);
+              // }, 1000);
+              // }, 5000);
+            }, 10000);
           }
 
           if (errDataTyped?.isSuccessful === false) {

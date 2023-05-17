@@ -86,6 +86,7 @@ const ModalPost = () => {
       // && the: files !== null check is TypeScript-specific fix.
       [name]: name === "image" && files !== null ? files[0] : capitalizedValue,
     });
+    setIsEmptyFieldValue(false);
   };
 
   const handleTextAreaChanges = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -100,6 +101,7 @@ const ModalPost = () => {
       // charCounter.textContent = `${remainingChars} characters remaining`;
       charCounterSPAN.textContent = `(${remainingChars} characters left)`;
     }
+    setIsEmptyFieldValue(false);
   };
 
   const handlePostNumberChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -121,8 +123,10 @@ const ModalPost = () => {
         //   // || value === "" -> checks against empty spaces
         //   setPostState({ ...postState, [name]: sanitizedValue });
         // }
+        setIsEmptyFieldValue(false);
       } else {
         setPostState({ ...postState, [name]: sanitizedValue });
+        setIsEmptyFieldValue(false);
       }
     }
   };
@@ -142,6 +146,13 @@ const ModalPost = () => {
   const { formatNumber, deformatNumber } = useModalPost_formatNum(
     postState.currency
   );
+
+  // Call this setter fn after every input type
+  const [isEmptyFieldValue, setIsEmptyFieldValue] = useState<boolean>(false);
+  // Then submitPost will set it to true IF my custom FN checker returns
+  // 'true' to empty values, then next input type will hide the P tag
+  // text of "Fields can't be empty".
+  // There's more workarounds but this is "cheapest" CPU-wise.
 
   // const submitPost = async (e: MouseEvent<HTMLButtonElement>) => {
   const submitPost = async (e: FormEvent<HTMLButtonElement>) => {
@@ -182,6 +193,8 @@ const ModalPost = () => {
         if (data) {
           setLoading(false);
         }
+      } else {
+        setIsEmptyFieldValue(true);
       }
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -203,7 +216,7 @@ const ModalPost = () => {
 
   return (
     <>
-      <ModalText />
+      {/* <ModalText /> */}
       {isModalPostOpen && (
         <div
           style={{
@@ -281,7 +294,7 @@ const ModalPost = () => {
                     <br />
                     <p
                       id="descriptionCounterSPAN"
-                      className="m-0"
+                      className="m-0 "
                       style={{ textTransform: "lowercase" }}
                     />
                     <textarea
@@ -296,7 +309,7 @@ const ModalPost = () => {
                       maxLength={1000}
                     />
                     <div>
-                      <label className="me-1 fw-bold mt-3" htmlFor="contact">
+                      <label className="me-1 fw-bold mt-2" htmlFor="contact">
                         Contact number:
                       </label>
                       <br />
@@ -373,14 +386,25 @@ const ModalPost = () => {
                       }
                     />
                     <br />
+                    <p
+                      // style={{ display: isEmptyFieldValue ? "block" : "none" }}
+                      style={{
+                        visibility: isEmptyFieldValue ? "visible" : "hidden",
+                        color: "red",
+                        fontSize: "12px",
+                      }}
+                      className="mb-1  fw-bold mt-1"
+                    >
+                      Fields can't be empty
+                    </p>
                     <Button
                       variant={`btn bg-light btn-outline-info
                  text-info  fw-bold`}
                       type="submit"
                       onClick={submitPost}
-                      // className={"clickOKbutton"}
-                      // className={"clickOKbutton mt-5"}
-                      className={"mt-4"}
+                      // // className={"clickOKbutton"}
+                      // // className={"clickOKbutton mt-5"}
+                      // className={"mt-4"}
                     >
                       CREATE A POST
                     </Button>
@@ -394,16 +418,6 @@ const ModalPost = () => {
                     // position: "relative",
                   }}
                 >
-                  {/* <Button
-                variant={`btn bg-light btn-outline-info
-                 text-info mb-2 fw-bold`}
-                type="button"
-                onClick={setShowModalFN}
-                // className={"clickOKbutton"}
-                className={"clickOKbutton mt-5"}
-              >
-                OKAY
-              </Button> */}
                   <span className="spanModalClickOutside">
                     {/* <span className=""> */}
                     (click outside to close)

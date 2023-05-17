@@ -156,7 +156,12 @@ const ModalPost = () => {
       // }
       // Alternatively for alternative:
       Object.entries(postState).forEach(([key, value]) => {
-        formData.append(key, value);
+        if (key === "askingPrice") {
+          // Remove dots/commas for the 'price' number
+          formData.append(key, deformatNumber(value));
+        } else {
+          formData.append(key, value);
+        }
       });
 
       // Start Loading

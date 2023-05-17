@@ -12,8 +12,10 @@ import {
   openModalPostAction,
   selectorOpenModalPost,
 } from "../../redux/slices/openModalPostSlice";
+import modalPost_checkEmptyValueFN from "../../utilities/modalPost_FN/modalPost_checkEmptyValueFN";
 import { Currency, PostState } from "../../utilities/Types/modalPostTypes";
 import LoadingModalPost from "../Loading/LoadingModalPost";
+import ModalText from "./ModalText";
 
 const ModalPost = () => {
   const { isModalPostOpen, text } = useSelectorTyped(selectorOpenModalPost);
@@ -146,38 +148,40 @@ const ModalPost = () => {
     e.preventDefault();
     console.count("submitPost click");
     try {
-      const formData = new FormData();
-      // formData.append("title", postState.title);
-      // formData.append("image", postState.image);
+      if (modalPost_checkEmptyValueFN(postState)) {
+        const formData = new FormData();
+        // formData.append("title", postState.title);
+        // formData.append("image", postState.image);
 
-      // ... Alternative loop for DRY:
-      // for (const key in postState) {
-      //   formData.append(key, postState[key]); // TypeScript errors
-      // }
-      // Alternatively for alternative:
-      Object.entries(postState).forEach(([key, value]) => {
-        if (key === "askingPrice") {
-          // Remove dots/commas for the 'price' number
-          formData.append(key, deformatNumber(value));
-        } else {
-          formData.append(key, value);
-        }
-      });
+        // ... Alternative loop for DRY:
+        // for (const key in postState) {
+        //   formData.append(key, postState[key]); // TypeScript errors
+        // }
+        // Alternatively for alternative:
+        Object.entries(postState).forEach(([key, value]) => {
+          if (key === "askingPrice") {
+            // Remove dots/commas for the 'price' number
+            formData.append(key, deformatNumber(value));
+          } else {
+            formData.append(key, value);
+          }
+        });
 
-      // Start Loading
-      setLoading(true);
-      const { data } = await axiosCredentials.post(
-        `http://localhost:3000/api/v1/post/createpost`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+        // Start Loading
+        setLoading(true);
+        const { data } = await axiosCredentials.post(
+          `http://localhost:3000/api/v1/post/createpost`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        console.log("submitpost DATA:", data);
+        if (data) {
+          setLoading(false);
         }
-      );
-      console.log("submitpost DATA:", data);
-      if (data) {
-        setLoading(false);
       }
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -199,6 +203,7 @@ const ModalPost = () => {
 
   return (
     <>
+      <ModalText />
       {isModalPostOpen && (
         <div
           style={{

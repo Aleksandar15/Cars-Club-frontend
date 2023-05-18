@@ -15,19 +15,21 @@ function Post() {
   //
   const [dataImg, setDataImg] = useState("");
   const axiosCredentials = useAxiosInterceptor();
-  const [posts, setPosts] = useState<GotThreePostsROWS[]>([
-    {
-      post_title: "",
-      post_image_buffer: undefined,
-      post_description: "",
-      post_contact_number: "",
-      post_asking_price: "",
-      post_asking_price_currency: "",
-      post_id: "",
-      user_id: "",
-      post_created_at: "",
-    },
-  ]);
+  const [posts, setPosts] = useState<GotThreePostsROWS[]>([]);
+  // // Posts empty data so that I can check copy & reset state if needed
+  // const postsInitial = [
+  //   {
+  //     post_title: "",
+  //     post_image_buffer: undefined,
+  //     post_description: "",
+  //     post_contact_number: "",
+  //     post_asking_price: "",
+  //     post_asking_price_currency: "",
+  //     post_id: "",
+  //     user_id: "",
+  //     post_created_at: "",
+  //   },
+  // ];
   console.log('posts:",posts:', posts);
   const getImage = async () => {
     const { data } = await axiosCredentials.get(
@@ -132,7 +134,9 @@ function Post() {
     const buffer = new Uint8Array(bufferData as ArrayBufferLike).buffer;
     // const buffer = new Uint8Array(bufferDataState as ArrayBufferLike).buffer;
     const blob = new Blob([buffer], { type: "image/jpeg" });
-    return URL.createObjectURL(blob);
+    const blobToURL = URL.createObjectURL(blob);
+    console.log("blobToURL:", blobToURL);
+    return blobToURL;
 
     // const reader = new FileReader();
     // let blobUrl;
@@ -172,6 +176,62 @@ function Post() {
         src={dataImg} // Only when the `data:image/jpeg;base64,${base64Image}` is added on top of the Buffer.from().
         // src={"blob:http://localhost:5173/fccfd3c8-daf4-431e-9762-d1c7e8470007"}
       />
+      {/*  */}
+      {/*  */}
+      {/*  */}
+      {posts.length > 0 &&
+        posts.map((post) => {
+          {
+            console.log("post:", post);
+          }
+          return (
+            <div className="post" key={post.post_id}>
+              <div className="post-header">
+                <h2>{"title"}</h2>
+                <div className="post-actions">
+                  <ButtonGroup>
+                    <Button
+                      className="bg-warning btn-outline-warning text-light"
+                      style={{
+                        maxWidth: "70px",
+                        width: "70px",
+                        zIndex: "0",
+                        // marginLeft: "0px",
+                      }}
+                      onClick={() => console.log("Edit clicked")}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      className="bg-danger btn-outline-danger text-light"
+                      style={{ maxWidth: "70px", width: "70px" }}
+                    >
+                      Delete
+                    </Button>
+                  </ButtonGroup>
+                </div>
+              </div>
+              <div className="post-image-wrapper-center">
+                <div className="post-image-wrapper">
+                  <img
+                    src={convertBufferToImgSRC(post.post_image_buffer?.data)}
+                    alt={"title"}
+                    className="post-image"
+                  />
+                </div>
+              </div>
+              <p>{"description ".repeat(100)}</p>
+              <div className="post-comments">
+                <h6>Comments:</h6>
+              </div>
+            </div>
+          );
+        })}
+      {/*  */}
+      {/*  */}
+      {/*  */}
+      {/*  */}
+      {/*  */}
       <div className="post">
         <div className="post-header">
           {/* <h2>{title}</h2> */}

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useDispatchTyped } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
-import { openModalAction } from "../../redux/slices/openModalTextSlice";
+import { openModalTextAction } from "../../redux/slices/openModalTextSlice";
 import { authorize, unauthorized } from "../../redux/slices/verifySlice";
 import {
   axiosCredentials,
@@ -174,7 +174,7 @@ const useVerifyRefreshTK = (
 
             if (routeBelongsTo === "private") {
               dispatchTyped(
-                openModalAction({
+                openModalTextAction({
                   isModalOpen: true,
                   text: `Login please!`,
                 })
@@ -192,7 +192,7 @@ const useVerifyRefreshTK = (
               // `if (routeBelongsTo === "private" && true)` because
               // React needs to calculate both the non-complex `true`
               // && the complex conditions & thus allowing Login
-              // process to start & mid-execution runs openModalAction.
+              // process to start & mid-execution runs openModalTextAction.
               // ALSO: removing IF condition and adding setTimeout tests:
               // not even setTimeout of 0ms or 10ms isn't
               // triggering the ModalText to open, but it needs 100ms!

@@ -1,4 +1,4 @@
-import { openModalAction } from "../../redux/slices/openModalTextSlice";
+import { openModalTextAction } from "../../redux/slices/openModalTextSlice";
 import { PostState } from "../Types/modalPostTypes";
 
 const modalPost_checkEmptyValueFN = (postState: PostState): boolean => {
@@ -33,7 +33,7 @@ const modalPost_checkEmptyValueFN = (postState: PostState): boolean => {
     console.log("IF isEmpty", isEmpty);
     // if isEmpty is true
     // Trigger ModalText to open & return false to ModalPost
-    // openModalAction({
+    // openModalTextAction({
     //   isModalOpen: true,
     //   text: `Fields can't be empty!`,
     // });

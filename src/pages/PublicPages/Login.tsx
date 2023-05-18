@@ -10,7 +10,7 @@ import { authorize } from "../../redux/slices/verifySlice";
 import { axiosAcceptJSON } from "../../utilities/API/axios";
 import ModalText from "../../components/Modals/ModalText";
 import {
-  openModalAction,
+  openModalTextAction,
   selectorOpenModalText,
 } from "../../redux/slices/openModalTextSlice";
 import Loading from "../../components/Loading/Loading";
@@ -68,35 +68,35 @@ const Login = () => {
         switch (data?.message) {
           case "Invalid Email":
             return dispatch(
-              openModalAction({
+              openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Invalid e-mail!`,
               })
             );
           case "Wrong email/password combinations":
             return dispatch(
-              openModalAction({
+              openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Wrong e-mail/password combination!`,
               })
             );
           case "Missing Credentials":
             return dispatch(
-              openModalAction({
+              openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Fields can't be empty!`,
               })
             );
           case "Server error":
             return dispatch(
-              openModalAction({
+              openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Login error, please try again later.`,
               })
             );
           case "Detected used refresh token in user's cookies":
             dispatch(
-              openModalAction({
+              openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Someone has made requests without your permission. 
           If that wasn't you please login again and reset your password!`,
@@ -109,7 +109,7 @@ const Login = () => {
             });
           default:
             return dispatch(
-              openModalAction({
+              openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Unexpected error happened, please try again.`,
               })
@@ -162,35 +162,35 @@ const Login = () => {
         switch (data?.message) {
           case "Invalid Email":
             return dispatch(
-              openModalAction({
+              openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Invalid e-mail!`,
               })
             );
           case "Wrong email/password combinations":
             return dispatch(
-              openModalAction({
+              openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Wrong e-mail/password combination!`,
               })
             );
           case "Missing Credentials":
             return dispatch(
-              openModalAction({
+              openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Fields can't be empty!`,
               })
             );
           case "Server error":
             return dispatch(
-              openModalAction({
+              openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Login error, please try again later.`,
               })
             );
           case "Detected used refresh token in user's cookies":
             dispatch(
-              openModalAction({
+              openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Someone has made requests without your permission. 
           If that wasn't you please login again and reset your password!`,
@@ -203,7 +203,7 @@ const Login = () => {
             });
           default:
             return dispatch(
-              openModalAction({
+              openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Unexpected error happened, please try again.`,
               })

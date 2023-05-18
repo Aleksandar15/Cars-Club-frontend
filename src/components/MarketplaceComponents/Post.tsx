@@ -16,8 +16,8 @@ function Post() {
   const axiosCredentials = useAxiosInterceptor();
   const getImage = async () => {
     const { data } = await axiosCredentials.get(
-      // `/api/v1/post/getimagebyid/${1}`
-      `/api/v1/post/getimagebyid/${4}` //this is the PNG
+      `/api/v1/post/getimagebyid/${1}`
+      // `/api/v1/post/getimagebyid/${4}` //this is the PNG
       // { responseType: "arraybuffer" }
     );
     console.log("getImage DATA.imageSrc:::", data?.imageSrc);

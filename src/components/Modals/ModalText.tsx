@@ -7,7 +7,7 @@ import {
 } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
 
 import {
-  openModalAction,
+  openModalTextAction,
   selectorOpenModalText,
 } from "../../redux/slices/openModalTextSlice";
 
@@ -41,7 +41,7 @@ const ModalText = () => {
   }, [isModalOpen]);
 
   const setShowModalFN = () => {
-    dispatch(openModalAction({ isModalOpen: !isModalOpen, text: "" }));
+    dispatch(openModalTextAction({ isModalOpen: !isModalOpen, text: "" }));
   };
 
   return (

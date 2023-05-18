@@ -14,7 +14,7 @@ const openModalTextSlice = createSlice({
   name: "openModal",
   initialState,
   reducers: {
-    openModalAction: (state, action: PayloadAction<InitialState>) => {
+    openModalTextAction: (state, action: PayloadAction<InitialState>) => {
       // state.isModalOpen = action.payload.isModalOpen; //original
       // state = action.payload; //doesn't work
 
@@ -27,7 +27,7 @@ const openModalTextSlice = createSlice({
 
 export default openModalTextSlice.reducer;
 
-export const { openModalAction } = openModalTextSlice.actions;
+export const { openModalTextAction } = openModalTextSlice.actions;
 export const selectorOpenModalText = (state: {
   openModalTextSlice: InitialState;
 }) => state.openModalTextSlice;

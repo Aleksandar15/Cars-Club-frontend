@@ -9,7 +9,7 @@ import {
   useSelectorTyped,
 } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
 import {
-  openModalAction,
+  openModalTextAction,
   selectorOpenModalText,
 } from "../../redux/slices/openModalTextSlice";
 import { axiosDefaultReq } from "../../utilities/API/axios";
@@ -60,7 +60,7 @@ const Register = () => {
         // lines, however I keep using it for visual code cleanup
         // & styling-wise using: "white-space": "pre-line".
         dispatchTyped(
-          openModalAction({
+          openModalTextAction({
             isModalOpen: !isModalOpen,
             text: `Successfully registered!
             Welcome ${data?.user_info?.user_name}!
@@ -79,28 +79,28 @@ const Register = () => {
           switch (err?.response?.data?.message) {
             case "User already exists":
               return dispatchTyped(
-                openModalAction({
+                openModalTextAction({
                   isModalOpen: !isModalOpen,
                   text: `User is already registered!`,
                 })
               );
             case "Invalid Email":
               return dispatchTyped(
-                openModalAction({
+                openModalTextAction({
                   isModalOpen: !isModalOpen,
                   text: `Invalid e-mail!`,
                 })
               );
             case "Missing Credentials":
               return dispatchTyped(
-                openModalAction({
+                openModalTextAction({
                   isModalOpen: !isModalOpen,
                   text: `Fields can't be empty!`,
                 })
               );
             default:
               return dispatchTyped(
-                openModalAction({
+                openModalTextAction({
                   isModalOpen: !isModalOpen,
                   text: `Unexpected error happened, please try again!`,
                 })

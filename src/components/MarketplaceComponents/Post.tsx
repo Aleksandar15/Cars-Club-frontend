@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { Button, ButtonGroup, ButtonToolbar } from "react-bootstrap";
 import useAxiosInterceptor from "../../hooks/authHooks/useAxiosInterceptor";
+import { GotThreePostsROWS } from "../../utilities/Types/postsTypes";
 
 function Post() {
   // const handleDelete = () => {
@@ -14,39 +15,159 @@ function Post() {
   //
   const [dataImg, setDataImg] = useState("");
   const axiosCredentials = useAxiosInterceptor();
+  const [posts, setPosts] = useState<GotThreePostsROWS[]>([]);
+  // // Posts empty data so that I can check copy & reset state if needed
+  // const postsInitial = [
+  //   {
+  //     post_title: "",
+  //     post_image_buffer: undefined,
+  //     post_description: "",
+  //     post_contact_number: "",
+  //     post_asking_price: "",
+  //     post_asking_price_currency: "",
+  //     post_id: "",
+  //     user_id: "",
+  //     post_created_at: "",
+  //   },
+  // ];
+  console.log('posts:",posts:', posts);
   const getImage = async () => {
     const { data } = await axiosCredentials.get(
       // `/api/v1/post/getimagebyid/${1}`
-      `/api/v1/post/getimagebyid/${4}` //this is the PNG
+      // `/api/v1/post/getimagebyid/${4}` //this is the PNG
       // { responseType: "arraybuffer" }
+      `/api/v1/post/getallposts`
     );
     console.log("getImage DATA.imageSrc:::", data?.imageSrc);
     console.log("getImage DATA.imageSrc.data:::", data?.imageSrc?.data);
     console.log("getImage DATA:::", data);
+    console.log("getImage DATA?.gotThreePostsROWS:::", data?.gotThreePostsROWS);
+    setPosts(data?.gotThreePostsROWS as GotThreePostsROWS[]);
     // setDataImg(data.imageSrc); //works when i use Buffer on the backend & kungfu `data:image/jpeg;base64,${base64img}`
 
     // Below is a new code by avoiding Base64
 
-    const buffer = new Uint8Array(data?.imageSrc?.data).buffer;
-    const blob = new Blob([buffer], { type: "image/jpeg" });
+    // // const buffer = new Uint8Array(data?.imageSrc?.data).buffer;
+    // const buffer = new Uint8Array(data?.imageSrc?.data).buffer;
+    // setBufferDataState(data?.imageSrc?.data);
+    // const blob = new Blob([buffer], { type: "image/jpeg" });
 
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      const binaryData = e?.target?.result;
-      console.log("binaryData:::::", binaryData);
-      console.log("URL.createObjectURL(blob):", URL.createObjectURL(blob));
-      const blobUrl = URL.createObjectURL(blob);
-      // setDataImg(URL.createObjectURL(blob));
-      setDataImg(blobUrl);
-    };
-    // reader.readAsDataURL(blob); // this doesn't require blobUrl
-    // // ^-> BUT converts it to Base64 and adds 33% aprox. size.
-    // Alternative to avoid size increments:
-    reader.readAsArrayBuffer(blob);
+    // const reader = new FileReader();
+    // reader.onload = function (e) {
+    //   const binaryData = e?.target?.result;
+    //   console.log("binaryData:::::", binaryData);
+    //   console.log("URL.createObjectURL(blob):", URL.createObjectURL(blob));
+    //   const blobUrl = URL.createObjectURL(blob);
+    //   // setDataImg(URL.createObjectURL(blob));
+    //   setDataImg(blobUrl);
+    // };
+    // // reader.readAsDataURL(blob); // this doesn't require blobUrl
+    // // // ^-> BUT converts it to Base64 and adds 33% aprox. size.
+    // // Alternative to avoid size increments:
+    // reader.readAsArrayBuffer(blob);
+  };
+
+  const [bufferDataState, setBufferDataState] = useState();
+  console.log("bufferDataState:", bufferDataState);
+  // // const convertBufferToImgSRC = (bufferData: any) => {
+  // const convertBufferToImgSRC = (bufferData: ArrayBufferLike | undefined) => {
+  //   console.log("bufferDataState IN convertBufferToImgSRC:", bufferDataState);
+  //   const buffer = new Uint8Array(bufferData as ArrayBufferLike).buffer;
+  //   // const buffer = new Uint8Array(bufferDataState as ArrayBufferLike).buffer;
+  //   const blob = new Blob([buffer], { type: "image/jpeg" });
+
+  //   const reader = new FileReader();
+  //   let blobUrl;
+  //   reader.onload = function (e) {
+  //     const binaryData = e?.target?.result;
+  //     console.log("binaryData:::::", binaryData);
+  //     console.log("URL.createObjectURL(blob):", URL.createObjectURL(blob));
+  //     // const blobUrl = URL.createObjectURL(blob);
+  //     blobUrl = URL.createObjectURL(blob);
+  //     console.log("blobUrl convertBuffertoIMGsrc11111:", blobUrl);
+  //     return blobUrl;
+  //   };
+  //   console.log("blobUrl convertBuffertoIMGsrc22222:", blobUrl);
+  //   // reader.readAsDataURL(blob); // this doesn't require blobUrl
+  //   // // ^-> BUT converts it to Base64 and adds 33% aprox. size.
+  //   // Alternative to avoid size increments:
+  //   reader.readAsArrayBuffer(blob);
+  // };
+  // // // console.log("convertBufferToImgSRC():", convertBufferToImgSRC());
+  // 2:
+  // const convertBufferToImgSRC = async (
+  //   bufferData: ArrayBufferLike | undefined
+  // ) => {
+  //   console.log("bufferDataState IN convertBufferToImgSRC:", bufferDataState);
+  //   const buffer = new Uint8Array(bufferData as ArrayBufferLike).buffer;
+  //   const blob = new Blob([buffer], { type: "image/jpeg" });
+  //   console.log(
+  //     "~> IMPORTANT URL.createObjectURL(blob):",
+  //     URL.createObjectURL(blob)
+  //   );
+
+  //   const reader = new FileReader();
+  //   let blobUrl;
+
+  //   await new Promise<void>((resolve, reject) => {
+  //     reader.onload = function (e) {
+  //       const binaryData = e?.target?.result;
+  //       console.log("binaryData convertBufferToImgSRC11::", binaryData);
+  //       blobUrl = URL.createObjectURL(blob);
+  //       console.log("blobUrl convertBuffertoIMGsrc11111:", blobUrl);
+  //       resolve();
+  //     };
+
+  //     reader.onerror = function (e) {
+  //       reject(e);
+  //     };
+
+  //     reader.readAsArrayBuffer(blob);
+  //   });
+
+  //   console.log("blobUrl convertBuffertoIMGsrc22222:", blobUrl);
+  //   return blobUrl;
+  // };
+  // 3:
+  const convertBufferToImgSRC = (bufferData: ArrayBufferLike | undefined) => {
+    console.log("bufferDataState IN convertBufferToImgSRC:", bufferDataState);
+    const buffer = new Uint8Array(bufferData as ArrayBufferLike).buffer;
+    // const buffer = new Uint8Array(bufferDataState as ArrayBufferLike).buffer;
+    const blob = new Blob([buffer], { type: "image/jpeg" });
+    const blobToURL = URL.createObjectURL(blob);
+    console.log("blobToURL:", blobToURL);
+    return blobToURL;
+
+    // const reader = new FileReader();
+    // let blobUrl;
+    // reader.onload = function (e) {
+    //   const binaryData = e?.target?.result;
+    //   console.log("binaryData:::::", binaryData);
+    //   console.log("URL.createObjectURL(blob):", URL.createObjectURL(blob));
+    //   // const blobUrl = URL.createObjectURL(blob);
+    //   blobUrl = URL.createObjectURL(blob);
+    //   console.log("blobUrl convertBuffertoIMGsrc11111:", blobUrl);
+    //   return blobUrl;
+    // };
+    // console.log("blobUrl convertBuffertoIMGsrc22222:", blobUrl);
+    // // reader.readAsDataURL(blob); // this doesn't require blobUrl
+    // // // ^-> BUT converts it to Base64 and adds 33% aprox. size.
+    // // Alternative to avoid size increments:
+    // reader.readAsArrayBuffer(blob);
   };
 
   return (
     <>
+      <button
+        onClick={() => {
+          console.log(
+            "convertBufferToImgSRC():",
+            convertBufferToImgSRC(bufferDataState)
+          );
+        }}
+      >
+        CLICK
+      </button>
       <button onClick={getImage}>GET IMAGE</button>
       <img
         id="img"
@@ -55,6 +176,62 @@ function Post() {
         src={dataImg} // Only when the `data:image/jpeg;base64,${base64Image}` is added on top of the Buffer.from().
         // src={"blob:http://localhost:5173/fccfd3c8-daf4-431e-9762-d1c7e8470007"}
       />
+      {/*  */}
+      {/*  */}
+      {/*  */}
+      {posts.length > 0 &&
+        posts.map((post) => {
+          {
+            console.log("post:", post);
+          }
+          return (
+            <div className="post" key={post.post_id}>
+              <div className="post-header">
+                <h2>{"title"}</h2>
+                <div className="post-actions">
+                  <ButtonGroup>
+                    <Button
+                      className="bg-warning btn-outline-warning text-light"
+                      style={{
+                        maxWidth: "70px",
+                        width: "70px",
+                        zIndex: "0",
+                        // marginLeft: "0px",
+                      }}
+                      onClick={() => console.log("Edit clicked")}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      className="bg-danger btn-outline-danger text-light"
+                      style={{ maxWidth: "70px", width: "70px" }}
+                    >
+                      Delete
+                    </Button>
+                  </ButtonGroup>
+                </div>
+              </div>
+              <div className="post-image-wrapper-center">
+                <div className="post-image-wrapper">
+                  <img
+                    src={convertBufferToImgSRC(post.post_image_buffer?.data)}
+                    alt={"title"}
+                    className="post-image"
+                  />
+                </div>
+              </div>
+              <p>{"description ".repeat(100)}</p>
+              <div className="post-comments">
+                <h6>Comments:</h6>
+              </div>
+            </div>
+          );
+        })}
+      {/*  */}
+      {/*  */}
+      {/*  */}
+      {/*  */}
+      {/*  */}
       <div className="post">
         <div className="post-header">
           {/* <h2>{title}</h2> */}

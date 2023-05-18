@@ -1,0 +1,8 @@
+Note that I don't need to use `dotenv` library because there's a Vite improvisation of it and to use it instead of the classical `REACT_APP_API_KEY` with `dotenv` where `REACT_APP_` is a _must_ prefix, in Vite I can simply use `VITE_REACT_` without any library:
+
+`VITE_REACT_API_KEY = "123"`
+
+`VITE_REACT_API_URL = "https://url`
+
+For more info:
+https://www.youtube.com/watch?v=yGNGtd-d3ro

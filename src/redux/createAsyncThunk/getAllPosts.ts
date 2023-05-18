@@ -1,4 +1,5 @@
 import {
+  AnyAction,
   AsyncThunk,
   createAsyncThunk,
   createSlice,
@@ -11,9 +12,12 @@ import { RootState } from "../store";
 const axiosCredentials = useAxiosInterceptor();
 
 // Define the async thunk
-export const getAllPosts: AsyncThunk<Post[], void, {}> = createAsyncThunk(
+// export const getAllPosts: AsyncThunk<Post[], void, {}> = createAsyncThunk(
+// export const getAllPosts: AnyAction = createAsyncThunk(
+export const getAllPosts = createAsyncThunk(
   "posts/getAllPosts",
   async (_, thunkAPI) => {
+    // thunkAPI must be 2nd argument
     try {
       const { data } = await axiosCredentials("/api/v1/post/getallposts");
       return data;
@@ -42,6 +46,7 @@ const postsSlice = createSlice({
   initialState,
   reducers: {
     postsReceived: {
+      // This reducer is not required
       reducer(state: InitialState, action: PayloadAction<Post[]>) {
         state.posts = action.payload;
       },
@@ -73,3 +78,10 @@ const postsSlice = createSlice({
 // Export the async thunk and the posts reducer
 // export { getAllPosts }; // already exported inline
 export default postsSlice.reducer;
+
+export const selectorPostsData = (state: RootState) =>
+  state?.getAllPosts?.posts;
+export const selectorPostsStatus = (state: RootState) =>
+  state?.getAllPosts?.status;
+export const selectorPostsError = (state: RootState) =>
+  state?.getAllPosts?.error;

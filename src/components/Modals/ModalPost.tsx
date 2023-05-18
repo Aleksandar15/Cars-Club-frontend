@@ -109,24 +109,45 @@ const ModalPost = () => {
     const sanitizedValue = value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
     // By using RegEx the non-numeric inputs are converted into "" ('nothing').
 
-    // FIX for "askingPrice" being unable to be editing in-between-digits
-    // const deFormatedValue = deformatNumber(value);
+    // FIX for "askingPrice" being unable to edit the value in-between-digits
     const deFormatedValue = deformatNumber(sanitizedValue);
+    // Still mini-bug exists, but requires lots of IF checks
+    // to check if length is 5 then only 1 dot/comma must exist
+    // otherwise if there's 6,7 or 8 digits then 2 dots/commas must exist
+    // IF NOT: then do NOT update the state.. there'd be too many IF Conditions.
+    // Note2
+    // Current mini bug example: 1.234.567
+    // then removing or modifying any digit except the last one will cause cursor
+    // to move to the last digit -> so user can't modify it to: 188.234.567 in a
+    // single go because: one input '8' causes cursor to move to the back (after '7'), so
+    // the second input '8' is added at the end (after '7') resulting in: 182.345.678 UNLESS
+    // & ONLY UNLESS: the User re-moves the cursor between '8' and '2' and writes '8' again
+    //  (and so in repeat...) & that happens even when User tries to remove the DOT (or COMMA)
+    // and that's good that NOTHING is modified, but mini-bug of number exists because of it
+    //  I've tried various ways to fix but to no avail.
+    // Note3
+    // The only workaround is to have 2 inputs fields: 1 unclickable (& formatted) and the
+    // other 1 pure numbers (& editable).
+    // Note4
+    // It's purely UI/UX feature which turned complex because input 1234 becomes 1.234
+    // but input 12345 = 12.345; input 123456 = 123.456, etc. -> It's not fixed as
+    // Verification Codes who uses fixed "-" at between 3 digits
 
     if (sanitizedValue.length <= 18) {
       // Test2 UI/UX:
       if (name === "askingPrice") {
-        // const formatedSanitzedValue = formatNumber(sanitizedValue); // Custom function
         const formatedSanitzedValue = formatNumber(deFormatedValue); // Custom function
         setPostState({ ...postState, [name]: formatedSanitzedValue });
 
         // Alternatively (for both IF and ELSE statements):
         // Check if the value is a number or an empty string
         // & AVOIDS State Updating
-        // if (!isNaN(Number(value)) || value === "") {
+        // if (!isNaN(Number(value)) || value !== "") {
+        //   // if (!isNaN(Number(sanitizedValue)) || value !== "") {
         //   // With this condition I can use [name]: value -> works as fine.
-        //   // || value === "" -> checks against empty spaces
-        //   setPostState({ ...postState, [name]: sanitizedValue });
+        //   // || value !== "" -> checks against empty spaces
+        //   // setPostState({ ...postState, [name]: sanitizedValue });
+        //   setPostState({ ...postState, [name]: formatedSanitzedValue });
         // }
         setIsEmptyFieldValue(false);
       } else {

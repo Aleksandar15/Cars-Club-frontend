@@ -1,4 +1,4 @@
-export type GotThreePostsROWS = {
+export type Post = {
   post_title: string;
   post_image_buffer: Post_image_buffer | undefined;
   post_description: string;

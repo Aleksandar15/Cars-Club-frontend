@@ -1,7 +1,16 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button, ButtonGroup, ButtonToolbar } from "react-bootstrap";
+import { useDispatch } from "react-redux";
 import useAxiosInterceptor from "../../hooks/authHooks/useAxiosInterceptor";
-import { GotThreePostsROWS } from "../../utilities/Types/postsTypes";
+import {
+  getAllPosts,
+  selectorPostsData,
+} from "../../redux/createAsyncThunk/getAllPosts";
+import {
+  useDispatchTyped,
+  useSelectorTyped,
+} from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
+import { Post } from "../../utilities/Types/postsTypes";
 
 function Post() {
   // const handleDelete = () => {
@@ -15,7 +24,7 @@ function Post() {
   //
   const [dataImg, setDataImg] = useState("");
   const axiosCredentials = useAxiosInterceptor();
-  const [posts, setPosts] = useState<GotThreePostsROWS[]>([]);
+  // const [posts, setPosts] = useState<Post[]>([]);
   // // Posts empty data so that I can check copy & reset state if needed
   // const postsInitial = [
   //   {
@@ -30,7 +39,7 @@ function Post() {
   //     post_created_at: "",
   //   },
   // ];
-  console.log('posts:",posts:', posts);
+  // console.log('posts:",posts:', posts);
   const getImage = async () => {
     const { data } = await axiosCredentials.get(
       // `/api/v1/post/getimagebyid/${1}`
@@ -42,123 +51,35 @@ function Post() {
     console.log("getImage DATA.imageSrc.data:::", data?.imageSrc?.data);
     console.log("getImage DATA:::", data);
     console.log("getImage DATA?.gotThreePostsROWS:::", data?.gotThreePostsROWS);
-    setPosts(data?.gotThreePostsROWS as GotThreePostsROWS[]);
-    // setDataImg(data.imageSrc); //works when i use Buffer on the backend & kungfu `data:image/jpeg;base64,${base64img}`
-
-    // Below is a new code by avoiding Base64
-
-    // // const buffer = new Uint8Array(data?.imageSrc?.data).buffer;
-    // const buffer = new Uint8Array(data?.imageSrc?.data).buffer;
-    // setBufferDataState(data?.imageSrc?.data);
-    // const blob = new Blob([buffer], { type: "image/jpeg" });
-
-    // const reader = new FileReader();
-    // reader.onload = function (e) {
-    //   const binaryData = e?.target?.result;
-    //   console.log("binaryData:::::", binaryData);
-    //   console.log("URL.createObjectURL(blob):", URL.createObjectURL(blob));
-    //   const blobUrl = URL.createObjectURL(blob);
-    //   // setDataImg(URL.createObjectURL(blob));
-    //   setDataImg(blobUrl);
-    // };
-    // // reader.readAsDataURL(blob); // this doesn't require blobUrl
-    // // // ^-> BUT converts it to Base64 and adds 33% aprox. size.
-    // // Alternative to avoid size increments:
-    // reader.readAsArrayBuffer(blob);
+    // setPosts(data?.gotThreePostsROWS as Post[]);
   };
 
-  const [bufferDataState, setBufferDataState] = useState();
-  console.log("bufferDataState:", bufferDataState);
-  // // const convertBufferToImgSRC = (bufferData: any) => {
-  // const convertBufferToImgSRC = (bufferData: ArrayBufferLike | undefined) => {
-  //   console.log("bufferDataState IN convertBufferToImgSRC:", bufferDataState);
-  //   const buffer = new Uint8Array(bufferData as ArrayBufferLike).buffer;
-  //   // const buffer = new Uint8Array(bufferDataState as ArrayBufferLike).buffer;
-  //   const blob = new Blob([buffer], { type: "image/jpeg" });
-
-  //   const reader = new FileReader();
-  //   let blobUrl;
-  //   reader.onload = function (e) {
-  //     const binaryData = e?.target?.result;
-  //     console.log("binaryData:::::", binaryData);
-  //     console.log("URL.createObjectURL(blob):", URL.createObjectURL(blob));
-  //     // const blobUrl = URL.createObjectURL(blob);
-  //     blobUrl = URL.createObjectURL(blob);
-  //     console.log("blobUrl convertBuffertoIMGsrc11111:", blobUrl);
-  //     return blobUrl;
-  //   };
-  //   console.log("blobUrl convertBuffertoIMGsrc22222:", blobUrl);
-  //   // reader.readAsDataURL(blob); // this doesn't require blobUrl
-  //   // // ^-> BUT converts it to Base64 and adds 33% aprox. size.
-  //   // Alternative to avoid size increments:
-  //   reader.readAsArrayBuffer(blob);
-  // };
-  // // // console.log("convertBufferToImgSRC():", convertBufferToImgSRC());
-  // 2:
-  // const convertBufferToImgSRC = async (
-  //   bufferData: ArrayBufferLike | undefined
-  // ) => {
-  //   console.log("bufferDataState IN convertBufferToImgSRC:", bufferDataState);
-  //   const buffer = new Uint8Array(bufferData as ArrayBufferLike).buffer;
-  //   const blob = new Blob([buffer], { type: "image/jpeg" });
-  //   console.log(
-  //     "~> IMPORTANT URL.createObjectURL(blob):",
-  //     URL.createObjectURL(blob)
-  //   );
-
-  //   const reader = new FileReader();
-  //   let blobUrl;
-
-  //   await new Promise<void>((resolve, reject) => {
-  //     reader.onload = function (e) {
-  //       const binaryData = e?.target?.result;
-  //       console.log("binaryData convertBufferToImgSRC11::", binaryData);
-  //       blobUrl = URL.createObjectURL(blob);
-  //       console.log("blobUrl convertBuffertoIMGsrc11111:", blobUrl);
-  //       resolve();
-  //     };
-
-  //     reader.onerror = function (e) {
-  //       reject(e);
-  //     };
-
-  //     reader.readAsArrayBuffer(blob);
-  //   });
-
-  //   console.log("blobUrl convertBuffertoIMGsrc22222:", blobUrl);
-  //   return blobUrl;
-  // };
-  // 3:
   const convertBufferToImgSRC = (bufferData: ArrayBufferLike | undefined) => {
-    console.log("bufferDataState IN convertBufferToImgSRC:", bufferDataState);
     const buffer = new Uint8Array(bufferData as ArrayBufferLike).buffer;
     // const buffer = new Uint8Array(bufferDataState as ArrayBufferLike).buffer;
     const blob = new Blob([buffer], { type: "image/jpeg" });
     const blobToURL = URL.createObjectURL(blob);
     console.log("blobToURL:", blobToURL);
     return blobToURL;
-
-    // const reader = new FileReader();
-    // let blobUrl;
-    // reader.onload = function (e) {
-    //   const binaryData = e?.target?.result;
-    //   console.log("binaryData:::::", binaryData);
-    //   console.log("URL.createObjectURL(blob):", URL.createObjectURL(blob));
-    //   // const blobUrl = URL.createObjectURL(blob);
-    //   blobUrl = URL.createObjectURL(blob);
-    //   console.log("blobUrl convertBuffertoIMGsrc11111:", blobUrl);
-    //   return blobUrl;
-    // };
-    // console.log("blobUrl convertBuffertoIMGsrc22222:", blobUrl);
-    // // reader.readAsDataURL(blob); // this doesn't require blobUrl
-    // // // ^-> BUT converts it to Base64 and adds 33% aprox. size.
-    // // Alternative to avoid size increments:
-    // reader.readAsArrayBuffer(blob);
   };
+
+  // const dispatchTyped = useDispatchTyped();
+  const dispatch = useDispatch();
+  const posts = useSelectorTyped(selectorPostsData);
+  useEffect(() => {
+    // dispatchTyped(getAllPosts()); // ERROR:
+    // // (alias) getAllPosts(): AsyncThunkAction<any, void, AsyncThunkConfig>
+    // // import getAllPosts
+    // // Argument of type 'AsyncThunkAction<any, void, AsyncThunkConfig>'
+    // // is not assignable to parameter of type 'AnyAction'.ts(2345)
+    // // ^->Instead I must use the normal useDispatch
+    dispatch(getAllPosts());
+  }, []);
+  // console.log('posts:',posts)
 
   return (
     <>
-      <button
+      {/* <button
         onClick={() => {
           console.log(
             "convertBufferToImgSRC():",
@@ -167,7 +88,7 @@ function Post() {
         }}
       >
         CLICK
-      </button>
+      </button> */}
       <button onClick={getImage}>GET IMAGE</button>
       <img
         id="img"

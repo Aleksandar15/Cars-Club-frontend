@@ -1,9 +1,15 @@
 import axios, { AxiosError } from "axios";
 
-// const BASE_URL = "http://localhost:3000";
-const BASE_URL = "https://cars-club.netlify.app/api";
+console.log("import.metea.env:", import.meta.env);
+// DEFAULT VALUES by Vite (CRA React requires: npm i dotenv):
+// {BASE_URL: '/', MODE: 'development', DEV: true, PROD: false, SSR: false}
+// NOTE: MODE changes by Vite's checkings
 
-export const axiosDefaultReq = axios.create({ baseURL: BASE_URL });
+let BASE_URL: string = "";
+if (import.meta.env?.DEV) BASE_URL = "http://localhost:3000" as string;
+else if (import.meta.env?.PROD) BASE_URL = "https://cars-club.netlify.app/api";
+
+export const axiosDefaultReq = axios.create({ baseURL: BASE_URL as string });
 
 export const axiosCredentials = axios.create({
   baseURL: BASE_URL,

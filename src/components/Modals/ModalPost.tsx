@@ -215,11 +215,21 @@ const ModalPost = () => {
             },
           }
         );
-        console.log("submitpost DATA:", data);
-        if (data) {
+        // console.log("submitpost DATA:", data);
+        if (data?.isSuccessful) {
           setLoading(false);
-        }
+          setPostState({
+            title: "",
+            image: "",
+            description: "",
+            contactNumber: "",
+            askingPrice: "",
+            currency: "USD",
+          });
+        } // Resets fields back to initial values
+        setShowModalFN(); // Close modal
       } else {
+        // Else if fields are empty
         setIsEmptyFieldValue(true); // Shows the 'Fields can't be empty'
       }
     } catch (err) {

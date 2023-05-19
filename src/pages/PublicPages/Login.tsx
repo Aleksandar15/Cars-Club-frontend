@@ -14,6 +14,7 @@ import {
   selectorOpenModalText,
 } from "../../redux/slices/openModalTextSlice";
 import Loading from "../../components/Loading/Loading";
+import { userInfoAction } from "../../redux/slices/userInfoSlice";
 
 interface LoginFields {
   email: string;
@@ -25,12 +26,15 @@ type LoginData = {
   isSuccessful?: boolean;
   message?: string;
   accessToken?: string;
+  user_name: string;
+  user_email: string;
+  user_id: string;
 };
 
 const Login = () => {
   const navigatePage = useMyNavigate();
 
-  const dispatch = useDispatchTyped();
+  const dispatchTyped = useDispatchTyped();
 
   const [loginFields, setLoginFields] = useState<LoginFields>({
     email: "",
@@ -60,42 +64,49 @@ const Login = () => {
 
       if (typeof accessToken === "string") {
         navigatePage("/");
-        dispatch(authorize({ userStatus: { isUserAuthorized: true } }));
+        dispatchTyped(authorize({ userStatus: { isUserAuthorized: true } }));
+        dispatchTyped(
+          userInfoAction({
+            user_id: data?.user_id,
+            user_email: data?.user_email,
+            user_name: data?.user_name,
+          })
+        );
       }
 
       if (data?.isSuccessful === false) {
         setLoading(false);
         switch (data?.message) {
           case "Invalid Email":
-            return dispatch(
+            return dispatchTyped(
               openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Invalid e-mail!`,
               })
             );
           case "Wrong email/password combinations":
-            return dispatch(
+            return dispatchTyped(
               openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Wrong e-mail/password combination!`,
               })
             );
           case "Missing Credentials":
-            return dispatch(
+            return dispatchTyped(
               openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Fields can't be empty!`,
               })
             );
           case "Server error":
-            return dispatch(
+            return dispatchTyped(
               openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Login error, please try again later.`,
               })
             );
           case "Detected used refresh token in user's cookies":
-            dispatch(
+            dispatchTyped(
               openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Someone has made requests without your permission. 
@@ -108,7 +119,7 @@ const Login = () => {
               loginForever: false,
             });
           default:
-            return dispatch(
+            return dispatchTyped(
               openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Unexpected error happened, please try again.`,
@@ -153,7 +164,7 @@ const Login = () => {
       const accessToken = data?.accessToken;
       if (typeof accessToken === "string") {
         navigatePage("/");
-        dispatch(authorize({ userStatus: { isUserAuthorized: true } }));
+        dispatchTyped(authorize({ userStatus: { isUserAuthorized: true } }));
         setLoading(false);
       }
 
@@ -161,35 +172,35 @@ const Login = () => {
         setLoading(false);
         switch (data?.message) {
           case "Invalid Email":
-            return dispatch(
+            return dispatchTyped(
               openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Invalid e-mail!`,
               })
             );
           case "Wrong email/password combinations":
-            return dispatch(
+            return dispatchTyped(
               openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Wrong e-mail/password combination!`,
               })
             );
           case "Missing Credentials":
-            return dispatch(
+            return dispatchTyped(
               openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Fields can't be empty!`,
               })
             );
           case "Server error":
-            return dispatch(
+            return dispatchTyped(
               openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Login error, please try again later.`,
               })
             );
           case "Detected used refresh token in user's cookies":
-            dispatch(
+            dispatchTyped(
               openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Someone has made requests without your permission. 
@@ -202,7 +213,7 @@ const Login = () => {
               loginForever: false,
             });
           default:
-            return dispatch(
+            return dispatchTyped(
               openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Unexpected error happened, please try again.`,

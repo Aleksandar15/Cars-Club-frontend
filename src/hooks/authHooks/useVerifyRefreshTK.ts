@@ -1,6 +1,10 @@
 import axios from "axios";
-import { useDispatchTyped } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
+import {
+  useDispatchTyped,
+  useSelectorTyped,
+} from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
 import { openModalTextAction } from "../../redux/slices/openModalTextSlice";
+import { selectorUserInfo } from "../../redux/slices/userInfoSlice";
 import { authorize, unauthorized } from "../../redux/slices/verifySlice";
 import {
   axiosCredentials,
@@ -22,6 +26,9 @@ const useVerifyRefreshTK = (
   const dispatchTyped = useDispatchTyped();
 
   // const timestamp = Date.now();
+
+  const data = useSelectorTyped(selectorUserInfo);
+  console.log("useverifyrefreshtk DATA:", data);
 
   if (isUserAuthorized === undefined) {
     const verifyRefreshToken = async () => {

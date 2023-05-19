@@ -3,7 +3,9 @@ import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import useAxiosInterceptor from "../../hooks/authHooks/useAxiosInterceptor";
 import useModalPost_formatNum from "../../hooks/ModalPostHooks/useModalPost_formatNum";
+import { getAllPosts } from "../../redux/createAsyncThunk/getAllPosts";
 import {
+  useDispatchAsyncThunk,
   useDispatchTyped,
   useSelectorTyped,
 } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
@@ -15,7 +17,7 @@ import {
 import modalPost_checkEmptyValueFN from "../../utilities/modalPost_FN/modalPost_checkEmptyValueFN";
 import { Currency, PostState } from "../../utilities/Types/modalPostTypes";
 import LoadingModalPost from "../Loading/LoadingModalPost";
-import ModalText from "./ModalText";
+// import ModalText from "./ModalText";
 
 const ModalPost = () => {
   const { isModalPostOpen, text } = useSelectorTyped(selectorOpenModalPost);
@@ -180,6 +182,8 @@ const ModalPost = () => {
   // text of "Fields can't be empty".
   // There's more workarounds but this is "cheapest" CPU-wise.
 
+  const dispatchAsyncThunk = useDispatchAsyncThunk();
+
   // const submitPost = async (e: MouseEvent<HTMLButtonElement>) => {
   const submitPost = async (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -217,7 +221,7 @@ const ModalPost = () => {
         );
         // console.log("submitpost DATA:", data);
         if (data?.isSuccessful) {
-          setLoading(false);
+          setLoading(false); // Stop Loading
           setPostState({
             title: "",
             image: "",
@@ -228,6 +232,10 @@ const ModalPost = () => {
           });
         } // Resets fields back to initial values
         setShowModalFN(); // Close modal
+        dispatchAsyncThunk(getAllPosts); // WIll have to modify since
+        // ^ the logic would be to show 2 posts per page
+        // so instead I'll just run the LIMIT 2 SQL command, because
+        // whenever User creates a post -> show him latest posts.
       } else {
         // Else if fields are empty
         setIsEmptyFieldValue(true); // Shows the 'Fields can't be empty'

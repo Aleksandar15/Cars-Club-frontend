@@ -6,15 +6,17 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 import useAxiosInterceptor from "../../hooks/authHooks/useAxiosInterceptor";
-import { Post } from "../../utilities/Types/postsTypes";
+import { axiosCredentials } from "../../utilities/API/axios";
+import { PostType } from "../../utilities/Types/postsTypes";
 import { RootState } from "../store";
 
-const axiosCredentials = useAxiosInterceptor();
+// const axiosCredentials = useAxiosInterceptor();
+// // ^ Invalid hook call. Only inside of the body of a fn component.
 
 // Define the async thunk
-// export const getAllPosts: AsyncThunk<Post[], void, {}> = createAsyncThunk(
-// export const getAllPosts: AnyAction = createAsyncThunk(
-export const getAllPosts = createAsyncThunk(
+export const getAllPosts: AsyncThunk<PostType[], void, {}> = createAsyncThunk(
+  // export const getAllPosts: AnyAction = createAsyncThunk(
+  // export const getAllPosts = createAsyncThunk(
   "posts/getAllPosts",
   async (_, thunkAPI) => {
     // thunkAPI must be 2nd argument
@@ -32,7 +34,7 @@ export const getAllPosts = createAsyncThunk(
 
 // Create the posts slice
 interface InitialState {
-  posts: Post[];
+  posts: PostType[];
   status: "idle" | "loading" | "succeeded" | "failed";
   error: null | string;
 }
@@ -47,10 +49,10 @@ const postsSlice = createSlice({
   reducers: {
     postsReceived: {
       // This reducer is not required
-      reducer(state: InitialState, action: PayloadAction<Post[]>) {
+      reducer(state: InitialState, action: PayloadAction<PostType[]>) {
         state.posts = action.payload;
       },
-      prepare: (payload: Post[]) => {
+      prepare: (payload: PostType[]) => {
         return { payload };
       },
     },

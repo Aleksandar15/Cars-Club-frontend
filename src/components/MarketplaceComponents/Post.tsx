@@ -11,6 +11,7 @@ import {
   selectorPostsStatus,
 } from "../../redux/createAsyncThunk/getAllPosts";
 import {
+  useDispatchAsyncThunk,
   useDispatchTyped,
   useSelectorTyped,
 } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
@@ -78,8 +79,9 @@ function Post() {
   // const dispatch =
   //   useDispatch<ThunkDispatch<PostType[], void, { type: "posts" }>>();
   // const dispatch = useDispatch<ThunkDispatch<PostType[], void, AnyAction>>(); //works
-  const dispatch = useDispatch<ThunkDispatch<RootState, void, AnyAction>>(); // works more universally
+  // const dispatch = useDispatch<ThunkDispatch<RootState, void, AnyAction>>(); // works more universally
   // const dispatch = useDispatch<ThunkActionDispatch>(); //error requires 1 arg
+  const dispatchAsyncThunk = useDispatchAsyncThunk();
   const posts = useSelectorTyped(selectorPostsData);
   const postsStatus = useSelectorTyped(selectorPostsStatus);
   const postsError = useSelectorTyped(selectorPostsError);
@@ -94,8 +96,10 @@ function Post() {
     // works with: <ThunkDispatch<PostType[], void, { type: "posts" }>>
     // type is required but iDK what to pass to it
 
+    // //
+    // dispatch(getAllPosts()); // works but types any x3 is cheap fix
     //
-    dispatch(getAllPosts()); // works but types any x3 is cheap fix
+    dispatchAsyncThunk(getAllPosts()); //
   }, []);
   console.log("posts:", posts);
   console.log("postsStatus:", postsStatus);

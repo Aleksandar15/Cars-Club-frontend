@@ -10,7 +10,8 @@ export type PostType = {
   post_created_at: string;
 };
 
-export type Currency = "EUR" | "USD" | "Select currency" | "";
+// export type Currency = "EUR" | "USD" | "Select currency" | "";
+export type Currency = "EUR" | "USD" | "Select currency";
 
 export type Post_image_buffer = {
   type: "Buffer";

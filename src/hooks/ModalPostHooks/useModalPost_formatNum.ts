@@ -1,13 +1,14 @@
 import { Currency } from "../../utilities/Types/modalPostTypes";
 
-const useModalPost_formatNum = (currency: Currency) => {
+const useModalPost_formatNum = (currency?: Currency) => {
   const formatNumber = (
     value: string,
-    currencyArg = currency as Currency
+    currencyArg = currency as Currency // Defaults to currency Hook arg.
   ): string => {
     if (currencyArg === "EUR") {
       // // Format the number with commas for Europe AND add € at the end
       // return value.replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "€";
+
       // // For UX preference I decided not to use "€" at the end.
       return value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     } else {

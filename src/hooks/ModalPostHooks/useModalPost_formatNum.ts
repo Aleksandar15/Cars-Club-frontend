@@ -11,10 +11,12 @@ const useModalPost_formatNum = (currency?: Currency) => {
 
       // // For UX preference I decided not to use "€" at the end.
       return value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    } else {
+    } else if (currencyArg === "USD") {
       // Format the number with dots for the USA AND add $ at the beginning
       // return "$" + value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
       return value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    } else {
+      return value;
     }
   };
 

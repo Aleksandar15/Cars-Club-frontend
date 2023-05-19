@@ -1,16 +1,21 @@
+import { AnyAction, AsyncThunkAction, ThunkDispatch } from "@reduxjs/toolkit";
 import { useEffect, useRef, useState } from "react";
 import { Button, ButtonGroup, ButtonToolbar } from "react-bootstrap";
 import { useDispatch } from "react-redux";
+import { ThunkActionDispatch } from "redux-thunk";
 import useAxiosInterceptor from "../../hooks/authHooks/useAxiosInterceptor";
 import {
   getAllPosts,
   selectorPostsData,
+  selectorPostsError,
+  selectorPostsStatus,
 } from "../../redux/createAsyncThunk/getAllPosts";
 import {
   useDispatchTyped,
   useSelectorTyped,
 } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
-import { Post } from "../../utilities/Types/postsTypes";
+import { AppDispatch, RootState } from "../../redux/store";
+import { PostType } from "../../utilities/Types/postsTypes";
 
 function Post() {
   // const handleDelete = () => {
@@ -24,7 +29,7 @@ function Post() {
   //
   const [dataImg, setDataImg] = useState("");
   const axiosCredentials = useAxiosInterceptor();
-  // const [posts, setPosts] = useState<Post[]>([]);
+  // const [posts, setPosts] = useState<PostType[]>([]);
   // // Posts empty data so that I can check copy & reset state if needed
   // const postsInitial = [
   //   {
@@ -64,18 +69,37 @@ function Post() {
   };
 
   // const dispatchTyped = useDispatchTyped();
-  const dispatch = useDispatch();
+  // const dispatchTyped: AppDispatch = useDispatchTyped<AppDispatch>();
+  // const dispatchTyped = useDispatchTyped<AppDispatch>();
+  //
+  // const dispatch = useDispatch();
+  // const dispatch = useDispatch<ThunkDispatch<any, any, any>>(); //works
+  // const dispatch = useDispatch<ThunkDispatch<PostType[], void, {}>>();
+  // const dispatch =
+  //   useDispatch<ThunkDispatch<PostType[], void, { type: "posts" }>>();
+  // const dispatch = useDispatch<ThunkDispatch<PostType[], void, AnyAction>>(); //works
+  const dispatch = useDispatch<ThunkDispatch<RootState, void, AnyAction>>(); // works more universally
+  // const dispatch = useDispatch<ThunkActionDispatch>(); //error requires 1 arg
   const posts = useSelectorTyped(selectorPostsData);
+  const postsStatus = useSelectorTyped(selectorPostsStatus);
+  const postsError = useSelectorTyped(selectorPostsError);
   useEffect(() => {
     // dispatchTyped(getAllPosts()); // ERROR:
-    // // (alias) getAllPosts(): AsyncThunkAction<any, void, AsyncThunkConfig>
-    // // import getAllPosts
     // // Argument of type 'AsyncThunkAction<any, void, AsyncThunkConfig>'
-    // // is not assignable to parameter of type 'AnyAction'.ts(2345)
-    // // ^->Instead I must use the normal useDispatch
-    dispatch(getAllPosts());
+    // // is not assignable to parameter of type 'AnyAction'.
+
+    // getAllPosts() // Works
+    // but issue with dispatch seems to be @types/react-redux
+    // 2:
+    // works with: <ThunkDispatch<PostType[], void, { type: "posts" }>>
+    // type is required but iDK what to pass to it
+
+    //
+    dispatch(getAllPosts()); // works but types any x3 is cheap fix
   }, []);
-  // console.log('posts:',posts)
+  console.log("posts:", posts);
+  console.log("postsStatus:", postsStatus);
+  console.log("postsError:", postsError);
 
   return (
     <>

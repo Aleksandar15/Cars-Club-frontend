@@ -15,8 +15,6 @@ import { RootState } from "../store";
 
 // Define the async thunk
 export const getAllPosts: AsyncThunk<PostType[], void, {}> = createAsyncThunk(
-  // export const getAllPosts: AnyAction = createAsyncThunk(
-  // export const getAllPosts = createAsyncThunk(
   "posts/getAllPosts",
   async (_, thunkAPI) => {
     // thunkAPI must be 2nd argument

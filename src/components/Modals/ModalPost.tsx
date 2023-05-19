@@ -232,7 +232,7 @@ const ModalPost = () => {
           });
         } // Resets fields back to initial values
         setShowModalFN(); // Close modal
-        dispatchAsyncThunk(getAllPosts); // WIll have to modify since
+        dispatchAsyncThunk(getAllPosts()); // WIll have to modify since
         // ^ the logic would be to show 2 posts per page
         // so instead I'll just run the LIMIT 2 SQL command, because
         // whenever User creates a post -> show him latest posts.

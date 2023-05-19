@@ -151,8 +151,8 @@ function Post() {
                 <span className="fw-bold">Asking price:</span>{" "}
                 {post.post_asking_price_currency === "USD" ? "$" : null}
                 {formatNumber(
-                  post.post_asking_price
-                  // post.post_asking_price_currency as Currency
+                  post.post_asking_price,
+                  post.post_asking_price_currency as Currency
                 )}
                 {post.post_asking_price_currency === "EUR" ? "€" : null}
               </p>

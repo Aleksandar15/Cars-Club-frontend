@@ -104,6 +104,7 @@ function Post() {
         posts.map((post) => {
           {
             console.log("post:", post);
+            console.log("post.post_id:", post.post_id);
           }
           return (
             <div className="post" key={post.post_id}>

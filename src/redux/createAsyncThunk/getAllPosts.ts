@@ -20,7 +20,12 @@ export const getAllPosts: AsyncThunk<PostType[], void, {}> = createAsyncThunk(
     // thunkAPI must be 2nd argument
     try {
       const { data } = await axiosCredentials("/api/v1/post/getallposts");
-      return data;
+      // return data; // Works but I rather access the real data:
+      // Because destructuring this in Post component causes TSC error
+
+      // return data?.gotThreePostsROWS; // perfect, however "LIMIT 3" was my backend test
+
+      return data?.gotAllPostsROWS; //updated
     } catch (error) {
       // throw new Error("Error fetching posts");
       // Instead answer by Drew Reese stackoverflow:

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, ButtonGroup, ButtonToolbar } from "react-bootstrap";
 import useAxiosInterceptor from "../../hooks/authHooks/useAxiosInterceptor";
+import useModalPost_formatNum from "../../hooks/ModalPostHooks/useModalPost_formatNum";
 import {
   getAllPosts,
   selectorPostsData,
@@ -12,7 +13,7 @@ import {
   useSelectorTyped,
 } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
 import { AppDispatch, RootState } from "../../redux/store";
-import { PostType } from "../../utilities/Types/postsTypes";
+import { Currency, PostType } from "../../utilities/Types/postsTypes";
 import Loading from "../Loading/Loading";
 
 function Post() {
@@ -78,6 +79,8 @@ function Post() {
   console.log("postsStatus:", postsStatus);
   console.log("postsError:", postsError);
 
+  const { formatNumber } = useModalPost_formatNum();
+
   if (postsStatus === "idle" || postsStatus === "loading") {
     // Might need to move these inside parent: MarketPlace.tsx
     return <Loading />;
@@ -89,14 +92,14 @@ function Post() {
 
   return (
     <>
-      <button onClick={getImage}>GET IMAGE</button>
+      {/* <button onClick={getImage}>GET IMAGE</button>
       <img
         id="img"
         alt="image test"
         // src={`data:image/jpeg;base64,${dataImg}`} // ONLY when Buffer.from...toString("Base64") is Sent
         src={dataImg} // Only when the `data:image/jpeg;base64,${base64Image}` is added on top of the Buffer.from().
         // src={"blob:http://localhost:5173/fccfd3c8-daf4-431e-9762-d1c7e8470007"}
-      />
+      /> */}
       {/*  */}
       {/*  */}
       {/*  */}
@@ -109,7 +112,7 @@ function Post() {
           return (
             <div className="post" key={post.post_id}>
               <div className="post-header">
-                <h2>{"title"}</h2>
+                <h2>{post.post_title}</h2>
                 <div className="post-actions">
                   <ButtonGroup>
                     <Button
@@ -142,7 +145,21 @@ function Post() {
                   />
                 </div>
               </div>
-              <p>{"description ".repeat(100)}</p>
+              <h6 className="mt-3 fw-bold">Description:</h6>
+              <p>{post.post_description}</p>
+              <p>
+                <span className="fw-bold">Asking price:</span>{" "}
+                {post.post_asking_price_currency === "USD" ? "$" : null}
+                {formatNumber(
+                  post.post_asking_price
+                  // post.post_asking_price_currency as Currency
+                )}
+                {post.post_asking_price_currency === "EUR" ? "€" : null}
+              </p>
+              <p>
+                <span className="fw-bold">Contact number:</span>{" "}
+                {post.post_contact_number}
+              </p>
               <div className="post-comments">
                 <h6>Comments:</h6>
               </div>

@@ -14,7 +14,11 @@ const useModalPost_formatNum = (currency?: Currency) => {
     } else if (currencyArg === "USD") {
       // Format the number with dots for the USA AND add $ at the beginning
       // return "$" + value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-      return value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+      // return value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+      // Update even USD is using `,` -> google answers confused me before.
+      return value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     } else {
       return value;
     }

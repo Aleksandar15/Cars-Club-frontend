@@ -168,21 +168,22 @@ const Login = () => {
       if (typeof accessToken === "string") {
         // navigatePage("/"); // No need because it's handled by Redux states
         // dispatchTyped(authorize({ userStatus: { isUserAuthorized: true } }));
-        // // ^ Above modified into:
+        // // ^ Above dispatchTyped modified into a single:
         dispatchTyped(
           authorize({
-            userStatus: { isUserAuthorized: "LOGINmustSendUserInfo" },
+            userStatus: {
+              // isUserAuthorized: "LOGINmustSendUserInfo",
+              // Modified it back to "true" because refreshing resets the Redux
+              // state, however I must keep User Info below, on login as well.
+              isUserAuthorized: true,
+              user_id: data?.user_id,
+              user_email: data?.user_email,
+              user_name: data?.user_name,
+            },
           })
         );
-        // setLoading(false); // No need on success because ProtectedRoute's
-        // Redux state re-triggers a call
-        dispatchTyped(
-          userInfoAction({
-            user_id: data?.user_id,
-            user_email: data?.user_email,
-            user_name: data?.user_name,
-          })
-        );
+        // setLoading(false); // No need because on success: ProtectedRoute's
+        // // Redux state receives a state update and shows Protected Routes.
       }
 
       if (data?.isSuccessful === false) {

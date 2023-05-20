@@ -24,7 +24,8 @@ const NavBar = () => {
         {/* NAV */}
         <Nav className={`navCustomClass`}>
           {/* NAV2 */}
-          {isUserAuthorized === true ? (
+          {isUserAuthorized === true ||
+          isUserAuthorized === "LOGINmustSendUserInfo" ? (
             <>
               <Nav.Link to="/" as={NavLink} className="fs-5">
                 Home

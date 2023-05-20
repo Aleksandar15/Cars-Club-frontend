@@ -1,10 +1,14 @@
 import axios from "axios";
+import { useState } from "react";
 import {
   useDispatchTyped,
   useSelectorTyped,
 } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
 import { openModalTextAction } from "../../redux/slices/openModalTextSlice";
-import { selectorUserInfo } from "../../redux/slices/userInfoSlice";
+import {
+  selectorUserInfo,
+  userInfoAction,
+} from "../../redux/slices/userInfoSlice";
 import { authorize, unauthorized } from "../../redux/slices/verifySlice";
 import {
   axiosCredentials,
@@ -27,16 +31,34 @@ const useVerifyRefreshTK = (
 
   // const timestamp = Date.now();
 
-  const data = useSelectorTyped(selectorUserInfo);
-  console.log("useverifyrefreshtk DATA:", data);
+  // const data = useSelectorTyped(selectorUserInfo);
+  const { user_email, user_name, user_id } = useSelectorTyped(selectorUserInfo);
+  console.log("useverifyrefreshtk user_email:", user_email);
 
-  if (isUserAuthorized === undefined) {
+  // console.log(
+  //   "~~~~~~~~~~~~~~~~~~IMPORTANT isUserAUthorized:",
+  //   isUserAuthorized
+  // );
+  if (
+    isUserAuthorized === undefined ||
+    isUserAuthorized === "LOGINmustSendUserInfo"
+  ) {
+    console.count("~~~~~~~~~~~~~~~~~~IMPORTANT useVeirfyRefreshTK RUNS");
+    // console.log(
+    //   "~~~~~~~~~~~~~~~~~~IMPORTANT isUserAUthorized:",
+    //   isUserAuthorized
+    // );
     const verifyRefreshToken = async () => {
       try {
         // GET /verifyrefreshtoken
-        const { data } = await axiosCredentialsNonInterceptors.get(
+        // const { data } = await axiosCredentialsNonInterceptors.get(
+        // UPDATE: POST /verifyrefreshtoken & send USER INFO from LOGIN
+        console.log("~~~~~~IMPORTANT user_email:", user_email);
+        const { data } = await axiosCredentialsNonInterceptors.post(
           // `/api/v1/auth/verifyrefreshtoken${timestamp}`,
-          `/api/v1/auth/verifyrefreshtoken`
+          `/api/v1/auth/verifyrefreshtoken`,
+          { user_email, user_name, user_id }
+
           // {
           //   headers: {
           //     "Cache-Control": "no-cache",
@@ -86,6 +108,7 @@ const useVerifyRefreshTK = (
               },
             })
           );
+          console.log("dataTyped:", dataTyped);
         }
         // Error is handled in the Catch block
       } catch (err) {

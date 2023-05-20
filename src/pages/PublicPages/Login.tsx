@@ -29,6 +29,7 @@ type LoginData = {
   user_name: string;
   user_email: string;
   user_id: string;
+  user_role: string;
 };
 
 const Login = () => {
@@ -65,15 +66,27 @@ const Login = () => {
       // NOTE: whatever's updated in here make sure to udpate in LoginTest
       if (typeof accessToken === "string") {
         navigatePage("/");
-        dispatchTyped(authorize({ userStatus: { isUserAuthorized: true } }));
         dispatchTyped(
-          userInfoAction({
-            user_id: data?.user_id,
-            user_email: data?.user_email,
-            user_name: data?.user_name,
+          authorize({
+            userStatus: {
+              isUserAuthorized: true,
+              user_id: data?.user_id,
+              user_email: data?.user_email,
+              user_name: data?.user_name,
+              user_role: data?.user_role,
+            },
           })
         );
-        // No need to turn off Loading because Navigation is enough.
+        // dispatchTyped(
+        //   userInfoAction({
+        //     user_id: data?.user_id,
+        //     user_email: data?.user_email,
+        //     user_name: data?.user_name,
+        //   })
+        // ); // Moved this in a single state
+
+        // Don't update 'setLoading(false)' state because Redux updates
+        // PublicRoutes & causes navigation.
       }
 
       if (data?.isSuccessful === false) {

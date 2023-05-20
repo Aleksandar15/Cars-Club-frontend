@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Button, ButtonGroup, ButtonToolbar } from "react-bootstrap";
-import useAxiosInterceptor from "../../hooks/authHooks/useAxiosInterceptor";
 import useModalPost_formatNum from "../../hooks/ModalPostHooks/useModalPost_formatNum";
 import {
   getAllPosts,
@@ -12,7 +11,7 @@ import {
   useDispatchAsyncThunk,
   useSelectorTyped,
 } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
-import { AppDispatch, RootState } from "../../redux/store";
+import { selectVerifyUser } from "../../redux/slices/verifySlice";
 import { Currency, PostType } from "../../utilities/Types/postsTypes";
 import Loading from "../Loading/Loading";
 
@@ -26,8 +25,6 @@ function Post() {
   // };
 
   //
-  const [dataImg, setDataImg] = useState("");
-  const axiosCredentials = useAxiosInterceptor();
   // const [posts, setPosts] = useState<PostType[]>([]);
   // // Posts empty data so that I can check copy & reset state if needed
   // const postsInitial = [
@@ -45,26 +42,11 @@ function Post() {
   // ];
   // console.log('posts:",posts:', posts);
 
-  const getImage = async () => {
-    const { data } = await axiosCredentials.get(
-      // `/api/v1/post/getimagebyid/${1}`
-      // `/api/v1/post/getimagebyid/${4}` //this is the PNG
-      // { responseType: "arraybuffer" }
-      `/api/v1/post/getallposts`
-    );
-    console.log("getImage DATA.imageSrc:::", data?.imageSrc);
-    console.log("getImage DATA.imageSrc.data:::", data?.imageSrc?.data);
-    console.log("getImage DATA:::", data);
-    console.log("getImage DATA?.gotThreePostsROWS:::", data?.gotThreePostsROWS);
-    // setPosts(data?.gotThreePostsROWS as Post[]);
-  };
-
   const convertBufferToImgSRC = (bufferData: ArrayBufferLike | undefined) => {
     const buffer = new Uint8Array(bufferData as ArrayBufferLike).buffer;
-    // const buffer = new Uint8Array(bufferDataState as ArrayBufferLike).buffer;
     const blob = new Blob([buffer], { type: "image/jpeg" });
     const blobToURL = URL.createObjectURL(blob);
-    console.log("blobToURL:", blobToURL);
+    // console.log("blobToURL:", blobToURL);
     return blobToURL;
   };
 
@@ -75,15 +57,17 @@ function Post() {
   useEffect(() => {
     dispatchAsyncThunk(getAllPosts());
   }, []);
-  console.log("posts:", posts);
-  console.log("postsStatus:", postsStatus);
-  console.log("postsError:", postsError);
+  // console.log("posts:", posts);
+  // console.log("postsStatus:", postsStatus);
+  // console.log("postsError:", postsError);
 
   const { formatNumber } = useModalPost_formatNum();
 
+  const { user_id } = useSelectorTyped(selectVerifyUser);
+
   if (postsStatus === "idle" || postsStatus === "loading") {
     // Might need to move these inside parent: MarketPlace.tsx
-    return <Loading />;
+    return <Loading />; // Looks good here as well
   }
 
   if (postsStatus === "failed") {
@@ -92,17 +76,6 @@ function Post() {
 
   return (
     <>
-      {/* <button onClick={getImage}>GET IMAGE</button>
-      <img
-        id="img"
-        alt="image test"
-        // src={`data:image/jpeg;base64,${dataImg}`} // ONLY when Buffer.from...toString("Base64") is Sent
-        src={dataImg} // Only when the `data:image/jpeg;base64,${base64Image}` is added on top of the Buffer.from().
-        // src={"blob:http://localhost:5173/fccfd3c8-daf4-431e-9762-d1c7e8470007"}
-      /> */}
-      {/*  */}
-      {/*  */}
-      {/*  */}
       {posts.length > 0 &&
         posts.map((post) => {
           {
@@ -114,26 +87,28 @@ function Post() {
               <div className="post-header">
                 <h2>{post.post_title}</h2>
                 <div className="post-actions">
-                  <ButtonGroup>
-                    <Button
-                      className="bg-warning btn-outline-warning text-light"
-                      style={{
-                        maxWidth: "70px",
-                        width: "70px",
-                        zIndex: "0",
-                        // marginLeft: "0px",
-                      }}
-                      onClick={() => console.log("Edit clicked")}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      className="bg-danger btn-outline-danger text-light"
-                      style={{ maxWidth: "70px", width: "70px" }}
-                    >
-                      Delete
-                    </Button>
-                  </ButtonGroup>
+                  {post.user_id === user_id ? (
+                    <ButtonGroup>
+                      <Button
+                        className="bg-warning btn-outline-warning text-light"
+                        style={{
+                          maxWidth: "70px",
+                          width: "70px",
+                          zIndex: "0",
+                          // marginLeft: "0px",
+                        }}
+                        onClick={() => console.log("Edit clicked")}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        className="bg-danger btn-outline-danger text-light"
+                        style={{ maxWidth: "70px", width: "70px" }}
+                      >
+                        Delete
+                      </Button>
+                    </ButtonGroup>
+                  ) : null}
                 </div>
               </div>
               <div className="post-image-wrapper-center">
@@ -160,9 +135,26 @@ function Post() {
                 <span className="fw-bold">Contact number:</span>{" "}
                 {post.post_contact_number}
               </p>
-              <div className="post-comments">
+              <p>
+                <span className="fw-bold">Posted by:</span>{" "}
+                {post.post_created_by_user_name}
+              </p>
+              <p>
+                <span className="fw-bold">Date posted:</span>{" "}
+                {post.post_created_at.slice(0, 10)}
+                {/* {console.log("new Date():", new Date(post.post_created_at))} */}
+                {/* ^: Thu May 18 2023 10:05:02 GMT+0200 (Central European SUmmer TIme) */}
+              </p>
+              {/* <div className="post-comments">
                 <h6>Comments:</h6>
-              </div>
+                <ul className="post-comments-ul">
+                  {comments.map((comment, index) => (
+                    <li key={index} className="post-comments-li">
+                      {comment}
+                    </li>
+                  ))}
+                </ul>
+              </div> */}
             </div>
           );
         })}

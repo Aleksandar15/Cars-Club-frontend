@@ -8,6 +8,9 @@ export type PostType = {
   post_id: string;
   user_id: string;
   post_created_at: string;
+  post_created_by_user_name: string;
+  post_created_by_user_email: string;
+  post_created_by_user_role: string;
 };
 
 // export type Currency = "EUR" | "USD" | "Select currency" | "";

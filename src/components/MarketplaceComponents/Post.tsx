@@ -87,7 +87,10 @@ function Post() {
               <div className="post-header">
                 <h2>{post.post_title}</h2>
                 <div className="post-actions">
-                  {post.user_id === user_id ? (
+                  {post.user_id === user_id ||
+                  // AT LEAST it's Post's owner, otherwise moderators:
+                  post.post_created_by_user_role === "owner" ||
+                  post.post_created_by_user_role === "super-admin" ? (
                     <ButtonGroup>
                       <Button
                         className="bg-warning btn-outline-warning text-light"

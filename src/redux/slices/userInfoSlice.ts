@@ -1,5 +1,8 @@
+// NOTE
+// NOT using this userInfoSlice because I've moved it all
+// in a single verifySlice.ts state.
+
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IsUserAuthorized } from "../../utilities/Types/verifyUserTypes";
 import { RootState } from "../store";
 
 interface UserInfo {
@@ -19,14 +22,20 @@ export const userInfoSlice = createSlice({
   initialState,
   reducers: {
     userInfoAction: (state, action: PayloadAction<UserInfo>) => {
-      // state.userStatus = {
-      //   isUserAuthorized: action.payload.userStatus.isUserAuthorized,
-      // };
-      state = action?.payload;
+      // state = action?.payload; // Issues: No errors but doesn't work
+      // console.log("state userInfoActioN11111:", state);
+      // ^ gets updated in here BUT NOT in selectorUserInfo
+
+      state.user_email = action?.payload?.user_email;
+      state.user_id = action?.payload?.user_id;
+      state.user_name = action?.payload?.user_name;
+      // console.log("state userInfoActioN22222:", state);
     },
   },
 });
 
+export default userInfoSlice?.reducer;
+
 export const { userInfoAction } = userInfoSlice.actions;
 
-export const selectorUserInfo = (state: RootState) => state;
+export const selectorUserInfo = (state: RootState) => state?.userInfoSlice;

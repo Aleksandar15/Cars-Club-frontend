@@ -62,6 +62,7 @@ const Login = () => {
 
       const accessToken = data?.accessToken;
 
+      // NOTE: whatever's updated in here make sure to udpate in LoginTest
       if (typeof accessToken === "string") {
         navigatePage("/");
         dispatchTyped(authorize({ userStatus: { isUserAuthorized: true } }));
@@ -72,6 +73,7 @@ const Login = () => {
             user_name: data?.user_name,
           })
         );
+        // No need to turn off Loading because Navigation is enough.
       }
 
       if (data?.isSuccessful === false) {
@@ -161,11 +163,26 @@ const Login = () => {
         })
       )) as LoginData;
 
+      // NOTE everything updated in here must be updated in LoginUser FN too
       const accessToken = data?.accessToken;
       if (typeof accessToken === "string") {
-        navigatePage("/");
-        dispatchTyped(authorize({ userStatus: { isUserAuthorized: true } }));
-        setLoading(false);
+        // navigatePage("/"); // No need because it's handled by Redux states
+        // dispatchTyped(authorize({ userStatus: { isUserAuthorized: true } }));
+        // // ^ Above modified into:
+        dispatchTyped(
+          authorize({
+            userStatus: { isUserAuthorized: "LOGINmustSendUserInfo" },
+          })
+        );
+        // setLoading(false); // No need on success because ProtectedRoute's
+        // Redux state re-triggers a call
+        dispatchTyped(
+          userInfoAction({
+            user_id: data?.user_id,
+            user_email: data?.user_email,
+            user_name: data?.user_name,
+          })
+        );
       }
 
       if (data?.isSuccessful === false) {

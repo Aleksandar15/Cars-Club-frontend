@@ -69,13 +69,44 @@ background: blue;
   /* object-fit: contain; */
   /* object-fit: cover; */
 }
-.post-comments .post-comments-ul {
+/* ----- COMMENTS #1 ----- */
+/* COMMENTS1-styling */
+/* .post-comments .post-comments-ul {
   list-style-type: none;
   padding: 0;
 }
 .post-comments .post-comments-li {
   margin-bottom: 5px;
+} */
+/* ----- COMMENTS2 #2 ----- */
+/* COMMENTS2-styling */
+/* .comments-section {
+  margin-top: 20px;
 }
+
+.comments-heading {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.comments-list {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.comment {
+  margin-bottom: 5px;
+}
+
+.commenter-name {
+  font-weight: bold;
+}
+
+.comment-content {
+  margin-left: 5px;
+} */
+
 /* POSTS Styling ends. */
 
 

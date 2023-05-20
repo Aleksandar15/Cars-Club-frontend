@@ -9,7 +9,11 @@ import {
   selectorUserInfo,
   userInfoAction,
 } from "../../redux/slices/userInfoSlice";
-import { authorize, unauthorized } from "../../redux/slices/verifySlice";
+import {
+  authorize,
+  selectVerifyUser,
+  unauthorized,
+} from "../../redux/slices/verifySlice";
 import {
   axiosCredentials,
   axiosCredentialsNonInterceptors,
@@ -31,34 +35,12 @@ const useVerifyRefreshTK = (
 
   // const timestamp = Date.now();
 
-  // const data = useSelectorTyped(selectorUserInfo);
-  const { user_email, user_name, user_id } = useSelectorTyped(selectorUserInfo);
-  console.log("useverifyrefreshtk user_email:", user_email);
-
-  // console.log(
-  //   "~~~~~~~~~~~~~~~~~~IMPORTANT isUserAUthorized:",
-  //   isUserAuthorized
-  // );
-  if (
-    isUserAuthorized === undefined ||
-    isUserAuthorized === "LOGINmustSendUserInfo"
-  ) {
-    console.count("~~~~~~~~~~~~~~~~~~IMPORTANT useVeirfyRefreshTK RUNS");
-    // console.log(
-    //   "~~~~~~~~~~~~~~~~~~IMPORTANT isUserAUthorized:",
-    //   isUserAuthorized
-    // );
+  if (isUserAuthorized === undefined) {
     const verifyRefreshToken = async () => {
       try {
         // GET /verifyrefreshtoken
-        // const { data } = await axiosCredentialsNonInterceptors.get(
-        // UPDATE: POST /verifyrefreshtoken & send USER INFO from LOGIN
-        console.log("~~~~~~IMPORTANT user_email:", user_email);
-        const { data } = await axiosCredentialsNonInterceptors.post(
-          // `/api/v1/auth/verifyrefreshtoken${timestamp}`,
-          `/api/v1/auth/verifyrefreshtoken`,
-          { user_email, user_name, user_id }
-
+        const { data } = await axiosCredentialsNonInterceptors.get(
+          `/api/v1/auth/verifyrefreshtoken`
           // {
           //   headers: {
           //     "Cache-Control": "no-cache",
@@ -105,10 +87,13 @@ const useVerifyRefreshTK = (
             authorize({
               userStatus: {
                 isUserAuthorized: true,
+                user_email: dataTyped?.user_email,
+                user_name: dataTyped?.user_name,
+                user_id: dataTyped?.user_id,
+                user_role: dataTyped?.user_role,
               },
             })
           );
-          console.log("dataTyped:", dataTyped);
         }
         // Error is handled in the Catch block
       } catch (err) {

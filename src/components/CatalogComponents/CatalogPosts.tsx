@@ -1,19 +1,24 @@
 // NOTE they must be hardcoded because
 // they are "Catalog" posted by the website owners
 
+import catalogArray from "./catalogArray";
+
 const CatalogPosts = () => {
   return (
-    <div className="post">
-      <div className="post-header">
-        {/* <h2>{title}</h2> */}
-        <h2>{"Mercedes Benz E63s AMG 4matic"}</h2>
+    <>
+      {catalogArray.map((post) => {
+        return (
+          <div className="post" key={post.post_id}>
+            <div className="post-header">
+              <h2>{post.post_car_title}</h2>
+              {/* <h2>{"Mercedes Benz E63s AMG 4matic"}</h2> */}
 
-        {/* NO NEED FOR BUTTONS ON CATALOG PAGE! */}
-        <div className="post-actions">
-          {/* NO NEED FOR BUTTONS ON CATALOG PAGE! */}
-          {/* <button onClick={handleDelete}>Delete</button>
+              {/* NO NEED FOR BUTTONS ON CATALOG PAGE! */}
+              <div className="post-actions">
+                {/* NO NEED FOR BUTTONS ON CATALOG PAGE! */}
+                {/* <button onClick={handleDelete}>Delete</button>
           <button onClick={handleEdit}>Edit</button> */}
-          {/* <ButtonGroup>
+                {/* <ButtonGroup>
             <Button
               className="bg-warning btn-outline-warning text-light"
               // variant="bg-warning btn-outline-warning text-light"
@@ -42,30 +47,26 @@ const CatalogPosts = () => {
               Delete
             </Button>
           </ButtonGroup> */}
-        </div>
-        {/*  */}
-      </div>
-      <div className="post-image-wrapper-center">
-        <div className="post-image-wrapper">
-          {/* <img src={image} alt={title} /> */}
-          <img
-            src={"https://i.imgur.com/bc7IsSE.jpg"}
-            alt={"2021 mercedes benz amg e63s 4matic 21"}
-            className="post-image"
-          />
-        </div>
-      </div>
-      {/* <p>{description}</p> */}
-      {/* <p>{"description ".repeat(100)}</p> */}
-      <h5 className="mt-3 fw-bold">Description:</h5>
-      <p>
-        {`Year made 2021 Mercedes Benz AMG E63s 4matic. Horsepower: 603HP @ 5,750 - 6,500 RPM. 
-          Standard tires: Front - 265/35 ZR20; Rear - 295/30 ZR20. 
-          Top speed 186mph / 300km/h. Acceleration time 0-60mph / 0-100km/h in 2.8 seconds.`}
-      </p>
+              </div>
+              {/*  */}
+            </div>
+            <div className="post-image-wrapper-center">
+              <div className="post-image-wrapper">
+                {/* <img src={image} alt={title} /> */}
+                <img
+                  src={post.post_image_src_Link}
+                  alt={"2021 mercedes benz amg e63s 4matic 21"}
+                  className="post-image"
+                />
+              </div>
+            </div>
+            {/* <p>{description}</p> */}
+            {/* <p>{"description ".repeat(100)}</p> */}
+            <h5 className="mt-3 fw-bold">Description:</h5>
+            <p>{post.post_description}</p>
 
-      {/* NO COMMENTS ON CATALOG PAGE!:) */}
-      {/* <div className="post-comments">
+            {/* NO COMMENTS ON CATALOG PAGE!:) */}
+            {/* <div className="post-comments">
         <h6>Comments:</h6>
         <ul className="post-comments-ul">
           {comments.map((comment, index) => (
@@ -74,15 +75,19 @@ const CatalogPosts = () => {
         </ul>
       </div> */}
 
-      {/* <h6>Posted by:</h6>
+            {/* <h6>Posted by:</h6>
       <p>Cars Club</p> */}
-      <h5 className="fw-bold">
-        Posted by: <span className="fw-normal">Cars Club</span>
-      </h5>
-      <h5 className="fw-bold">
-        Price: <span className="fw-normal">MSRP $108,550 / 100.000€</span>
-      </h5>
-    </div>
+            <h5 className="fw-bold">
+              Posted by:{" "}
+              <span className="fw-normal">{post.post_posted_by}</span>
+            </h5>
+            <h5 className="fw-bold">
+              Price: <span className="fw-normal">{post.post_car_price}</span>
+            </h5>
+          </div>
+        );
+      })}
+    </>
   );
 };
 

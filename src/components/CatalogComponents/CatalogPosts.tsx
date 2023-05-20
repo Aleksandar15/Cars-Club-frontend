@@ -70,14 +70,16 @@ const CatalogPosts = () => {
     // UI/UX add those '3 dots' from Bootstrap Pagination styling
     if (firstPage > 1) {
       // Add ellipsis before first page
-      pageItems.unshift(<Pagination.Ellipsis key="ellipsis-start" />);
+      pageItems.unshift(
+        <Pagination.Ellipsis key="ellipsis-start" disabled={true} />
+      );
       pageItems.unshift(
         <Pagination.Item
           key={1}
           active={1 === currentPage}
           onClick={() => {
-            setCurrentPage(1); // it does nothing anyway
-            window.scrollTo(0, 0); // Scroll to top // NOT Necessary
+            setCurrentPage(1); // "firstPage"-Number clicks
+            window.scrollTo(0, 0); // Scroll to top
           }}
         >
           1
@@ -86,14 +88,16 @@ const CatalogPosts = () => {
     }
     if (lastPage < totalPages) {
       // Add ellipsis after last page
-      pageItems.push(<Pagination.Ellipsis key="ellipsis-end" />);
+      pageItems.push(
+        <Pagination.Ellipsis key="ellipsis-end" disabled={true} />
+      );
       pageItems.push(
         <Pagination.Item
           key={totalPages}
           active={totalPages === currentPage}
           onClick={() => {
-            setCurrentPage(totalPages); // it does nothing anyway
-            window.scrollTo(0, 0); // Scroll to top // NOT Necessary
+            setCurrentPage(totalPages); // "lastPage"-Number clicks
+            window.scrollTo(0, 0); // Scroll to top
           }}
         >
           {totalPages}

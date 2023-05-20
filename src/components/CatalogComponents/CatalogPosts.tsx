@@ -6,7 +6,7 @@ const CatalogPosts = () => {
     <div className="post">
       <div className="post-header">
         {/* <h2>{title}</h2> */}
-        <h2>{"Mercedes Benz E63s AMG 4matic 2021"}</h2>
+        <h2>{"Mercedes Benz E63s AMG 4matic"}</h2>
 
         {/* NO NEED FOR BUTTONS ON CATALOG PAGE! */}
         <div className="post-actions">
@@ -58,7 +58,11 @@ const CatalogPosts = () => {
       {/* <p>{description}</p> */}
       {/* <p>{"description ".repeat(100)}</p> */}
       <h5 className="mt-3 fw-bold">Description:</h5>
-      <p>{"Year made 2021 Mercedes Benz AMG E63s 4matic"}</p>
+      <p>
+        {`Year made 2021 Mercedes Benz AMG E63s 4matic. Horsepower: 603HP @ 5,750 - 6,500 RPM. 
+          Standard tires: Front - 265/35 ZR20; Rear - 295/30 ZR20. 
+          Top speed 186mph / 300km/h. Acceleration time 0-60mph / 0-100km/h in 2.8 seconds.`}
+      </p>
 
       {/* NO COMMENTS ON CATALOG PAGE!:) */}
       {/* <div className="post-comments">
@@ -74,6 +78,9 @@ const CatalogPosts = () => {
       <p>Cars Club</p> */}
       <h5 className="fw-bold">
         Posted by: <span className="fw-normal">Cars Club</span>
+      </h5>
+      <h5 className="fw-bold">
+        Price: <span className="fw-normal">MSRP $108,550 / 100.000€</span>
       </h5>
     </div>
   );

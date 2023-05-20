@@ -57,3 +57,10 @@
       since it ONLY runs on status code 500 (server down ONLY;
       unless I have deployed some bugs:)).
 3.  I thought UI/UX would be much better if I had "Posted by" username in the `Marketplace` component, but my logic was not implemented in the JWT token: and instead I had modified on the backend both `loginController` and `verifyRefreshTokenController` to incldue `user_name` in the response & for the `verifyRefreshTokenController` I must query to my Database instead of including private info like `user_email`/`user_name` in the JWT Token. Then on the Frontend also use Redux Toolkit when `useVerifyRefreshToken` is successful & has received that `user_name`, `user_role`, `user_email`, `user_id` -> For Posts UPDATE & DELETE Buttons to be rendered conditionally based on `post.user_id === user_id`.
+
+##### Further plans (_reminders for me_)
+
+1. Have an "edit username" & "edit e-mail" features, but that **will** require me to also run SQL Query against my PostgreSQL database `posts` table to run `UPDATE posts SET post_created_by_username=$1 WHERE user_id=$2` & respectively if I've choosen to show e-mail.
+   - For `post_created_by_email` I might even implement a conditional checking in `ModalPost.tsx` (& edits Posts) to make User decide whether to show "contact number" or "contact e-mail" or both. A toggler.
+2. Have a comments section that will relate with each `post` Row of the `posts` table and FOREIGN KEY "user_id" column to REFERENCE `users` table.
+3. Have a replies sections: they will have to connect with "comment_id" from `comments` & the "user_id" from `users` table

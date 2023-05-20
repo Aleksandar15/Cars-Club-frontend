@@ -2,7 +2,7 @@ import { Dropdown, DropdownButton } from "react-bootstrap";
 import useLogouts from "../../hooks/logouts/useLogouts";
 import useMyNavigate from "../../hooks/useMyNavigate/useMyNavigate";
 
-const NavBarDropDown = () => {
+const NavBarDropDownPrivate = () => {
   const navigatePage = useMyNavigate();
   const clickCatalog = () => navigatePage("/catalog");
   const clickMarketplace = () => navigatePage("/marketplace");
@@ -56,4 +56,4 @@ const NavBarDropDown = () => {
   );
 };
 
-export default NavBarDropDown;
+export default NavBarDropDownPrivate;

@@ -4,7 +4,7 @@ import { useSelectorTyped } from "../../redux/reduxCustomTypes/ReduxTypedHooks/t
 import { selectorOpenModalPost } from "../../redux/slices/openModalPostSlice";
 import { selectorOpenModalText } from "../../redux/slices/openModalTextSlice";
 import { selectVerifyUser } from "../../redux/slices/verifySlice";
-import NavBarDropDown from "./NavBarDropDown";
+import NavBarDropDownPrivate from "./NavBarDropDownPrivate";
 import NavDropDownPublic from "./NavDropDownPublic";
 
 const NavBar = () => {
@@ -24,8 +24,7 @@ const NavBar = () => {
         {/* NAV */}
         <Nav className={`navCustomClass`}>
           {/* NAV2 */}
-          {isUserAuthorized === true ||
-          isUserAuthorized === "LOGINmustSendUserInfo" ? (
+          {isUserAuthorized === true ? (
             <>
               <Nav.Link to="/" as={NavLink} className="fs-5">
                 Home
@@ -60,7 +59,7 @@ const NavBar = () => {
         <NavBarByBS.Brand className={`text-info fs-4 fw-bold navBarBrandTitle`}>
           CARS CLUB
         </NavBarByBS.Brand>
-        {isUserAuthorized ? <NavBarDropDown /> : <NavDropDownPublic />}
+        {isUserAuthorized ? <NavBarDropDownPrivate /> : <NavDropDownPublic />}
       </Container>
       {/* Container Outside */}
     </NavBarByBS>

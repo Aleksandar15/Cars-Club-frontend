@@ -14,6 +14,7 @@ import {
   openModalPostAction,
   selectorOpenModalPost,
 } from "../../redux/slices/openModalPostSlice";
+import { selectVerifyUser } from "../../redux/slices/verifySlice";
 import modalPost_checkEmptyValueFN from "../../utilities/modalPost_FN/modalPost_checkEmptyValueFN";
 import { Currency, PostState } from "../../utilities/Types/modalPostTypes";
 import LoadingModalPost from "../Loading/LoadingModalPost";
@@ -24,6 +25,7 @@ const ModalPost = () => {
   const dispatch = useDispatchTyped();
   const axiosCredentials = useAxiosInterceptor();
   const [loading, setLoading] = useState<boolean>(false);
+  const { user_name, user_email } = useSelectorTyped(selectVerifyUser);
 
   useEffect(() => {
     if (isModalPostOpen) {
@@ -207,6 +209,8 @@ const ModalPost = () => {
             formData.append(key, value);
           }
         });
+        formData.append("user_name", user_name as string);
+        formData.append("user_email", user_email as string);
 
         // Start Loading
         setLoading(true);

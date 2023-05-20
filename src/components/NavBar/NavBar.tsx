@@ -9,7 +9,6 @@ import NavDropDownPublic from "./NavDropDownPublic";
 
 const NavBar = () => {
   const { isUserAuthorized } = useSelectorTyped(selectVerifyUser);
-
   // Fixing a bug where sticky="top" persists and overrides my custom modal,
   // instead, based on the ModalText state toggle the "sticky" accordingly
   const { isModalOpen } = useSelectorTyped(selectorOpenModalText);
@@ -25,11 +24,7 @@ const NavBar = () => {
         {/* NAV */}
         <Nav className={`navCustomClass`}>
           {/* NAV2 */}
-          {isUserAuthorized === undefined ? (
-            <Nav.Link to="/" as={NavLink} className="fs-5">
-              Home
-            </Nav.Link>
-          ) : isUserAuthorized === true ? (
+          {isUserAuthorized === true ? (
             <>
               <Nav.Link to="/" as={NavLink} className="fs-5">
                 Home
@@ -41,7 +36,7 @@ const NavBar = () => {
                 Marketplace
               </Nav.Link>
             </>
-          ) : (
+          ) : isUserAuthorized === false ? (
             <>
               <Nav.Link to="/" as={NavLink} className="fs-5">
                 Home
@@ -53,6 +48,10 @@ const NavBar = () => {
                 Register
               </Nav.Link>
             </>
+          ) : (
+            <Nav.Link to="/" as={NavLink} className="fs-5">
+              Home
+            </Nav.Link>
           )}
         </Nav>
         {/* NAV OUTSIDE */}

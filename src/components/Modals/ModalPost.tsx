@@ -29,6 +29,24 @@ import ModalPost_Create_or_Edit_Button from "./ModalPost_Create_or_Edit_Button";
 // import ModalText from "./ModalText";
 
 const ModalPost = () => {
+  // const [loading, setLoading] = useState<boolean>(false);
+  const loading = useSelectorTyped<boolean>(selectorOpenModalPostLoading);
+  if (loading) {
+    // Make screen unclickable while Loading (below) is rendered
+    document.body.style.pointerEvents = "none";
+    // One concern is users with slow internet.
+  } else {
+    document.body.style.pointerEvents = "auto";
+  }
+  // NOTE about pointerEvents:
+  // To make outsides unclickable for my slow internet users
+  // to not send x2 x3 subsequential HTTP Requests
+  // with SAME refreshToken. On top of it I add
+  // "flag guards" and use "flag" state as "disabled"
+  // value to the "buttons", that works the same as
+  // useEffect's cleanup function; but just in case I'd forget
+  // to use 'flag' somewhere, this will be one more guard.
+
   // const { isModalPostOpen, text } = useSelectorTyped(selectorOpenModalPost);
   const modalPostState = useSelectorTyped(selectorOpenModalPost);
   // I avoided direct destructure so I can pass spread syntax when updating.
@@ -43,8 +61,6 @@ const ModalPost = () => {
   } = modalPostState as InitialStateModalPost;
   const dispatchTyped = useDispatchTyped();
   const axiosCredentials = useAxiosInterceptor();
-  // const [loading, setLoading] = useState<boolean>(false);
-  const loading = useSelectorTyped<boolean>(selectorOpenModalPostLoading);
   const { user_name, user_email } = useSelectorTyped(selectVerifyUser);
   const modalPostButtonValue = useSelectorTyped(
     selectorOpenModalPostButtonValue
@@ -59,6 +75,22 @@ const ModalPost = () => {
       // document.body.style.pointerEvents = "none";
     } else {
       document.body.style.overflow = "auto";
+    }
+
+    // Fixing a React bug where on EDIT POST clicks the Loading's
+    // outside is clickable but not scrollable
+    // Unlike when using /CREATEPOST where on my part the HTTP
+    // Request is triggered WHILE the ModalPost is open so the
+    // Loading both is UNCLICKABLE & UNSCROLLABLE, well,
+    // on the "EDIT POST" it's Only UNSCROLLABLE
+    // and below is the FIX; I've also tried to move the top-level
+    // .pointerEvents="none" setters ABOVE the useEffect but
+    // nothing fixed it as much as condition below, EVEN without
+    // 'LOADING' as a dependency (Vite shuts those warnings off).
+    // ... I've tested 100s times BUT this is the ONLY fix.
+    if (loading) {
+      // Make screen unclickable while Loading element is rendered
+      document.body.style.pointerEvents = "none";
     }
 
     // return a cleanup function to set the overflow style
@@ -295,22 +327,6 @@ const ModalPost = () => {
   //   }
   // };
 
-  if (loading) {
-    // Make screen unclickable while Loading (below) is rendered
-    document.body.style.pointerEvents = "none";
-    // One concern is users with slow internet.
-  } else {
-    document.body.style.pointerEvents = "auto";
-  }
-  // NOTE about pointerEvents:
-  // To make outsides unclickable for my slow internet users
-  // to not send x2 x3 subsequential HTTP Requests
-  // with SAME refreshToken. On top of it I add
-  // "flag guards" and use "flag" state as "disabled"
-  // value to the "buttons", that works the same as
-  // useEffect's cleanup function; but just in case
-  // I forget it somewhere, this will be one more guard
-
   return (
     <>
       {/* <ModalText /> */}
@@ -328,6 +344,8 @@ const ModalPost = () => {
             alignItems: "center",
             justifyContent: "center",
           }}
+          // disabled={loading} // TypeScript error prop doesnt exist on DIV
+          // // ^ Also doesn't have any effects on my Redux Bug workaround.
           onClick={setShowModalFN}
         >
           <div

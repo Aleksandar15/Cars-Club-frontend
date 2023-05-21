@@ -5,6 +5,17 @@ import { RootState } from "../store";
 interface ToggleModalPostWithInitialInputValues {
   isModalPostOpen: boolean;
 }
+// Update so I have created this new action that will be used
+// ONLY to toggle ModalPost to open/close; I've been thinking
+// to separate those states as "ModalPostData" and keep this
+// one with a single 'isModalPostOpen' state, but I decided
+// not to, because I'm filtering this state out of my FormData
+// but I don't have to do it because sending my isModalPostOpen
+// state data to the backend doesn't do any harm.
+// -> Hence I can even use it for an evidence in Express: if
+// req.body.isModalPostOpen is missing, that could be a hacker
+// trying to modify a Post data on behalf of the victimized
+// user, but I won't do it for now because it requires testing.
 
 export interface InitialStateModalPost {
   isModalPostOpen: boolean;

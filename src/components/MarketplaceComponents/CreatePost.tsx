@@ -1,10 +1,19 @@
 import { Button } from "react-bootstrap";
-import { useDispatchTyped } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
-import { openModalPostAction } from "../../redux/slices/openModalPostSlice";
+import {
+  useDispatchTyped,
+  useSelectorTyped,
+} from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
+import {
+  openModalPostAction,
+  selectorOpenModalPost,
+} from "../../redux/slices/openModalPostSlice";
 import CreatePostSVG from "../../utilities/icons-setup/createPost-SVG";
 
 const CreatePostButton = () => {
   const dispatchTyped = useDispatchTyped();
+  // Update for reusability I must pass the rest of non-empty values
+  // / InitiialState's values where TypeScript helped me.
+  const modalPostState = useSelectorTyped(selectorOpenModalPost);
 
   return (
     <div>
@@ -16,7 +25,9 @@ const CreatePostButton = () => {
           size="lg"
           className="btn-lg ms-4 mb-1 btn-outline-info bg-info "
           onClick={() => {
-            dispatchTyped(openModalPostAction({ isModalPostOpen: true }));
+            dispatchTyped(
+              openModalPostAction({ ...modalPostState, isModalPostOpen: true })
+            );
           }}
         >
           <CreatePostSVG />

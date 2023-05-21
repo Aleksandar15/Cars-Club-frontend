@@ -80,6 +80,17 @@
    req.body.isModalPostOpen is missing, that could be a hacker
    trying to modify a Post data on behalf of the victimized
    user, but I won't do it for now because it requires testing.
+8. `ModalPostSuccessText` logic for now is that
+   setShowModalFN ALWAYS calls getAllPosts() Async Thunk,
+   in the future for reusability I can use my new state in my
+   updated slice `modalPostSuccessTextSlice`:'`typeOfResponse`' state
+   to conditionally render different BUTTONS & its `onClick`'s.
+   (As well as pagination future plans will requires new Thunk.)
+   Example:
+   - Failed response will move the User back to `ModalPost` (re-open)
+     with its field input states values UNCHANGED
+     VS a successful response will trigger Async Thunk to trigger
+     a re-render of my `MarketPlace.tsx` & **_also_** resets `ModalPost`\`s input fields state values after that successful response.
 
 ##### Further plans (_reminders for me_)
 

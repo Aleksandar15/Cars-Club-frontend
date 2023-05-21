@@ -58,7 +58,7 @@ const Post_Action_Buttons = ({
         const { data } = await axiosCredentials.get(
           `/api/v1/post/getonepost/${post_id}/${user_id}`
         );
-        console.log("edit DATA iS:", data);
+        // console.log("edit DATA iS:", data);
         if (data?.isSuccessful === true) {
           const foundOnePostRowsTyped =
             data.foundOnePostRows as Posts_view_except_post_image;

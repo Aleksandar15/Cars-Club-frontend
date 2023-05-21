@@ -41,8 +41,6 @@ const ModalPost = () => {
     // askingPrice,
     // currency,
   } = modalPostState as InitialStateModalPost;
-  console.log("modalPostState:", modalPostState);
-  console.log("modalPostState.currency:", modalPostState?.currency);
   const dispatchTyped = useDispatchTyped();
   const axiosCredentials = useAxiosInterceptor();
   // const [loading, setLoading] = useState<boolean>(false);
@@ -56,8 +54,8 @@ const ModalPost = () => {
     if (isModalPostOpen) {
       document.body.style.overflow = "hidden";
 
-      // below would work but makes even the modal unclickable
-      // so my new solution is div wrapper :)
+      // Below would work but makes even the modal unclickable
+      // (ModalPost.tsx I have this below in an: if (loading))
       // document.body.style.pointerEvents = "none";
     } else {
       document.body.style.overflow = "auto";
@@ -304,6 +302,14 @@ const ModalPost = () => {
   } else {
     document.body.style.pointerEvents = "auto";
   }
+  // NOTE about pointerEvents:
+  // To make outsides unclickable for my slow internet users
+  // to not send x2 x3 subsequential HTTP Requests
+  // with SAME refreshToken. On top of it I add
+  // "flag guards" and use "flag" state as "disabled"
+  // value to the "buttons", that works the same as
+  // useEffect's cleanup function; but just in case
+  // I forget it somewhere, this will be one more guard
 
   return (
     <>

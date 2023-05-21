@@ -35,7 +35,7 @@ const ModalPost_Create_or_Edit_Button = () => {
   const { post_user_id, post_post_id } = useSelectorTyped(
     selectorOpenModalPostEditPost
   );
-  console.log("post_user_id,:", post_user_id, "& post_post_id:", post_post_id);
+  // console.log("post_user_id,:", post_user_id, "& post_post_id:", post_post_id);
 
   // const submitPost = async (e: MouseEvent<HTMLButtonElement>) => {
   const submitPost = async (e: FormEvent<HTMLButtonElement>) => {
@@ -102,8 +102,10 @@ const ModalPost_Create_or_Edit_Button = () => {
             })
           );
         } // Resets fields back to initial values
-        // setShowModalFN(); // Close modal I don't need anymore because
-        // "isModalPostOpen: false" Closes the Modal.
+        // setShowModalFN(); // Close modal I don't need anymore BECAUSE
+        // "isModalPostOpen: false" above Closes the Modal.
+
+        // Update /marketplace on Successful EDIT:
         dispatchAsyncThunk(getAllPosts()); // WIll have to modify since
         // ^ the logic would be to show 2 posts per page
         // so instead I'll just run the LIMIT 2 SQL command, because
@@ -142,6 +144,13 @@ const ModalPost_Create_or_Edit_Button = () => {
 
     console.count("editPost clicked");
 
+    // FUTURE PLANS:
+    // In the future I can check if the current modalPostState values
+    // coming from `Post_Action_Buttons.tsx` are matching against
+    // yet another SLICE I'd have to create of prePostData and if
+    // they match -> then User hasn't modified anything so DON'T send any
+    // new Request to the server & warn the User about unchanged-values.
+
     try {
       if (modalPost_checkEmptyValueFN(modalPostState, "edit-post")) {
         const formData = new FormData();
@@ -177,7 +186,9 @@ const ModalPost_Create_or_Edit_Button = () => {
           })
         );
         const { data } = await axiosCredentials.put(
-          `http://localhost:3000/api/v1/post/editpost`,
+          // URL can't be on a new lines with string literals because it either fails
+          // or if I have ${post_post_id} on a new line the ID gets "   " at the end.
+          `http://localhost:3000/api/v1/post/editpost/${post_post_id}/${post_user_id}`,
           formData,
           {
             headers: {
@@ -185,7 +196,7 @@ const ModalPost_Create_or_Edit_Button = () => {
             },
           }
         );
-        console.log("editPost DATA:", data);
+        // console.log("editPost DATA:", data);
         if (data?.isSuccessful) {
           // setLoading(false); // Stop Loading
           dispatchTyped(
@@ -193,6 +204,7 @@ const ModalPost_Create_or_Edit_Button = () => {
               modalPostLoading: false, // Stop ModalPost's loading
             })
           );
+          // After successful EDIT set ModalPost to Initial Values
           dispatchTyped(
             openModalPostAction({
               isModalPostOpen: false,
@@ -205,8 +217,10 @@ const ModalPost_Create_or_Edit_Button = () => {
             })
           );
         } // Resets fields back to initial values
-        // setShowModalFN(); // Close modal I don't need anymore because
-        // "isModalPostOpen: false" Closes the Modal.
+        // setShowModalFN(); // Close modal I don't need anymore BECAUSE
+        // "isModalPostOpen: false" above Closes the Modal.
+
+        // Update /marketplace on Successful EDIT:
         dispatchAsyncThunk(getAllPosts()); // WIll have to modify since
         // ^ the logic would be to show 2 posts per page
         // so instead I'll just run the LIMIT 2 SQL command, because
@@ -218,7 +232,7 @@ const ModalPost_Create_or_Edit_Button = () => {
         dispatchTyped(
           setModalPostEmptyFieldValueAction({
             modalPostEmptyFieldValue: true,
-          })
+          }) // Shows the 'Fields can't be empty' P-tag.
         );
       }
     } catch (err) {

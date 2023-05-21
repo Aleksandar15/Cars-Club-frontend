@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { getAllPosts } from "../../redux/createAsyncThunk/getAllPosts";
 import {
+  useDispatchAsyncThunk,
   useDispatchTyped,
   useSelectorTyped,
 } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
@@ -17,13 +19,8 @@ const ModalPostSuccessText = () => {
   const { isModalPostSuccessTextOpen, text } = useSelectorTyped(
     selectorOpenModalPostSuccessText
   );
-  const dispatch = useDispatchTyped();
-  console.log(
-    "IMPORTANT isModalPostSuccessTextOpen:",
-    isModalPostSuccessTextOpen,
-    "& text:",
-    text
-  );
+  const dispatchTyped = useDispatchTyped();
+  const dispatchAsyncThunk = useDispatchAsyncThunk();
 
   useEffect(() => {
     if (isModalPostSuccessTextOpen) {
@@ -49,13 +46,30 @@ const ModalPostSuccessText = () => {
   }, [isModalPostSuccessTextOpen]);
 
   const setShowModalFN = () => {
-    dispatch(
+    dispatchTyped(
       openModalPostSuccessTextAction({
         isModalPostSuccessTextOpen: !isModalPostSuccessTextOpen,
         text: "",
       })
     );
+    // /marketplace on Successful CREATION:
+    dispatchAsyncThunk(getAllPosts()); // WIll have to modify since
+    // // ^ the logic would be to show 2 posts per page
+    // // so instead I'll just run the LIMIT 2 SQL command, because
+    // // whenever User creates a post -> show him latest posts.
   };
+  // VERY IMPORTANT NOTES about my setShowModalFN LOGIC:
+  // ModalPostSuccessText logic for now is that
+  // setShowModalFN ALWAYS calls getAllPosts() Async Thunk,
+  // in the future for reusability I can use my new state in my
+  // updated slice modalPostSuccessTextSlice:'typeOfResponse' state
+  // to conditionally render different BUTTONS & its onClick's.
+  // (As well as pagination future plans will requires new Thunk.)
+  // Example:
+  // failed response will move the User back to ModalPost (re-open)
+  // with its field input states values UNCHANGED
+  // VS a successful response will trigger Async Thunk to trigger
+  // a re-render of my MarketPlace.tsx & reset ModalPost`s fields.
 
   return (
     <>

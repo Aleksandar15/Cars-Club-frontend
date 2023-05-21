@@ -1,7 +1,14 @@
-import { openModalTextAction } from "../../redux/slices/openModalTextSlice";
-import { PostState } from "../Types/modalPostTypes";
+import { InitialStateModalPost } from "../../redux/slices/openModalPostSlice";
+// Not using openModalTextAction since (custom) MODAL over MODAL won't open.
+// import { openModalTextAction } from "../../redux/slices/openModalTextSlice";
+// Stopped using Type below since TSC must "SEE" same Types from ModalPost.tsx
+// import { PostState } from "../Types/modalPostTypes";
 
-const modalPost_checkEmptyValueFN = (postState: PostState): boolean => {
+// const modalPost_checkEmptyValueFN = (postState: PostState): boolean => {
+// Updated ModalPost for reusability in "EditPost":
+const modalPost_checkEmptyValueFN = (
+  postState: InitialStateModalPost
+): boolean => {
   // // The first approach
   // const isEmpty = Object.values(postState).some(value => value === "");
 
@@ -22,7 +29,10 @@ const modalPost_checkEmptyValueFN = (postState: PostState): boolean => {
   for (const key in postState) {
     if (
       postState.hasOwnProperty(key) &&
-      postState[key as keyof PostState] === ""
+      // postState[key as keyof PostState] === "" // Updated type:
+      postState[key as keyof InitialStateModalPost] === "" &&
+      // Update for reusability I'm having unimportant Boolean: isModalPostOpen
+      key !== "isModalPostOpen"
     ) {
       isEmpty = true;
       break;

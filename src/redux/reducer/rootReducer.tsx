@@ -9,6 +9,7 @@ import userInfoSlice from "../slices/userInfoSlice";
 import modalPostButtonValueSlice from "../slices/modalPostButtonValueSlice";
 import modalPostLoadingSlice from "../slices/modalPostLoading";
 import modalPostEmptyFieldValueSlice from "../slices/modalPostEmptyFieldValue";
+import modalPostEditPostSlice from "../slices/modalPostEditPostSlice";
 
 const rootReducer = combineReducers({
   // searchBar,
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   modalPostButtonValueSlice,
   modalPostLoadingSlice,
   modalPostEmptyFieldValueSlice,
+  modalPostEditPostSlice,
 });
 
 // While this RootState works,

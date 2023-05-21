@@ -8,8 +8,9 @@ import {
 import useAxiosInterceptor from "../../hooks/authHooks/useAxiosInterceptor";
 import {
   axiosCredentials,
-  axiosCredentialsNonInterceptors, // Expectedly fails->read the rest below.
+  // axiosCredentialsNonInterceptors, // Expectedly fails->read the rest below.
 } from "../../utilities/API/axios";
+// import axiosCredentialsUtils from "../../utilities/axiosInterceptor/axiosInterceptor";
 import { PostType } from "../../utilities/Types/postsTypes";
 import { RootState } from "../store";
 
@@ -37,6 +38,11 @@ import { RootState } from "../store";
 // "const axiosInterceptor = useAxiosInterceptor()"
 // -> "export default axiosInterceptor" -> and in here (AsyncThunk)
 // I'll IMPORT that instance from that custom Util.
+// => TRIED the #2nd workaround doesn't work, it sitl lsays Invalid hook call
+// ~> SO my MarketPlace component MUST call useAxiosInterceptor() for the
+// sake of delivering intercepted axiosCredentials to my Future "editPost"
+// Async Thunk.
+// -> OR maybe perhaps even calling it inside App.ts or Axios.ts file?
 
 // Define the async thunk
 export const getAllPosts: AsyncThunk<PostType[], void, {}> = createAsyncThunk(
@@ -48,6 +54,7 @@ export const getAllPosts: AsyncThunk<PostType[], void, {}> = createAsyncThunk(
       // const { data } = await axiosCredentialsNonInterceptors( // Expectedly fails
       //   "/api/v1/post/getallposts"
       // );
+      // const { data } = await axiosCredentialsUtils("/api/v1/post/getallposts"); // Doesn't work
       // return data; // Works but I rather access the real data:
       // Because destructuring this in Post component causes TSC error
 

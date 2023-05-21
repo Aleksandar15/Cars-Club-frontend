@@ -2,6 +2,10 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Currency } from "../../utilities/Types/modalPostTypes";
 import { RootState } from "../store";
 
+interface ToggleModalPostWithInitialInputValues {
+  isModalPostOpen: boolean;
+}
+
 export interface InitialStateModalPost {
   isModalPostOpen: boolean;
   // text?: string;
@@ -45,12 +49,21 @@ const openModalPostSlice = createSlice({
       state.askingPrice = action.payload.askingPrice;
       state.currency = action.payload.currency;
     },
+    toggleModalPostWithInitialValuesAction: (
+      state,
+      action: PayloadAction<ToggleModalPostWithInitialInputValues>
+    ) => {
+      state.isModalPostOpen = action.payload?.isModalPostOpen;
+    },
   },
 });
 
 export default openModalPostSlice.reducer;
 
-export const { openModalPostAction } = openModalPostSlice.actions;
+// export const { openModalPostAction } = openModalPostSlice.actions;
+export const { openModalPostAction, toggleModalPostWithInitialValuesAction } =
+  openModalPostSlice.actions;
+
 // export const selectorOpenModalPost = (state: {
 //   openModalPostSlice: InitialStateModalPost;
 // }) => state.openModalPostSlice;

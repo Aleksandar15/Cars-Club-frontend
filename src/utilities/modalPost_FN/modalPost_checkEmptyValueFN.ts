@@ -7,7 +7,9 @@ import { InitialStateModalPost } from "../../redux/slices/openModalPostSlice";
 // const modalPost_checkEmptyValueFN = (postState: PostState): boolean => {
 // Updated ModalPost for reusability in "EditPost":
 const modalPost_checkEmptyValueFN = (
-  postState: InitialStateModalPost
+  postState: InitialStateModalPost,
+  // UPDATE2: for reusability I've added actionType
+  actionType: string
 ): boolean => {
   // // The first approach
   // const isEmpty = Object.values(postState).some(value => value === "");
@@ -26,16 +28,35 @@ const modalPost_checkEmptyValueFN = (
   // of type 'string' can't be used to index type 'PostState'.
   // No index signature with a parameter of type 'string' was found on type 'PostState'
   // 'keyof' produces union type of PostState ('title' | 'image' | etc.)
-  for (const key in postState) {
-    if (
-      postState.hasOwnProperty(key) &&
-      // postState[key as keyof PostState] === "" // Updated type:
-      postState[key as keyof InitialStateModalPost] === "" &&
-      // Update for reusability I'm having unimportant Boolean: isModalPostOpen
-      key !== "isModalPostOpen"
-    ) {
-      isEmpty = true;
-      break;
+  // UPDATE2: for reusability I've added actionType
+  if (actionType === "create-post") {
+    for (const key in postState) {
+      if (
+        postState.hasOwnProperty(key) &&
+        // postState[key as keyof PostState] === "" // Updated type:
+        postState[key as keyof InitialStateModalPost] === "" &&
+        // Update for reusability I'm having unimportant Boolean: isModalPostOpen
+        key !== "isModalPostOpen"
+      ) {
+        isEmpty = true;
+        break;
+      }
+    }
+  }
+  if (actionType === "edit-post") {
+    for (const key in postState) {
+      if (
+        postState.hasOwnProperty(key) &&
+        // postState[key as keyof PostState] === "" // Updated type:
+        postState[key as keyof InitialStateModalPost] === "" &&
+        // Update for reusability I'm having unimportant Boolean: isModalPostOpen
+        key !== "isModalPostOpen" &&
+        // IF 'edit-post' action: then user doesn't need to include a new image
+        key !== "image"
+      ) {
+        isEmpty = true;
+        break;
+      }
     }
   }
 

@@ -107,14 +107,16 @@ const ModalPost_Create_or_Edit_Button = () => {
         // setShowModalFN(); // Close modal I don't need anymore BECAUSE
         // "isModalPostOpen: false" above Closes the Modal.
 
-        // Update2 /marketplace on Successful EDIT ModalPostSuccessText:
+        // Update2: /marketplace update on Successful CREATE will be triggered
+        // by ModalPostSuccessText`s Component's Button call to getAllPosts()
+        // Async Thunk (or in the future a pagination-SORTing Async Thunk).
         dispatchTyped(
           openModalPostSuccessTextAction({
             isModalPostSuccessTextOpen: true,
             text: data?.message,
           })
         );
-        // // Update /marketplace on Successful EDIT:
+        // // Update /marketplace on Successful CREATION:
         // dispatchAsyncThunk(getAllPosts()); // WIll have to modify since
         // // ^ the logic would be to show 2 posts per page
         // // so instead I'll just run the LIMIT 2 SQL command, because
@@ -229,7 +231,9 @@ const ModalPost_Create_or_Edit_Button = () => {
         // setShowModalFN(); // Close modal I don't need anymore BECAUSE
         // "isModalPostOpen: false" above Closes the Modal.
 
-        // Update2 /marketplace on Successful EDIT ModalPostSuccessText:
+        // Update2: /marketplace`s re-render on Successful EDIT will be triggered
+        // by ModalPostSuccessText`s Component's Button call to getAllPosts()
+        // Async Thunk (or in the future a pagination-SORTing Async Thunk).
         dispatchTyped(
           openModalPostSuccessTextAction({
             isModalPostSuccessTextOpen: true,

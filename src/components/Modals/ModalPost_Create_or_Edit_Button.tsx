@@ -19,6 +19,8 @@ import { getAllPosts } from "../../redux/createAsyncThunk/getAllPosts";
 import axios from "axios";
 import { setModalPostEmptyFieldValueAction } from "../../redux/slices/modalPostEmptyFieldValue";
 import { selectorOpenModalPostEditPost } from "../../redux/slices/modalPostEditPostSlice";
+// import { openModalTextAction } from "../../redux/slices/openModalTextSlice";
+import { openModalPostSuccessTextAction } from "../../redux/slices/modalPostSuccessTextSlice";
 const ModalPost_Create_or_Edit_Button = () => {
   const dispatchTyped = useDispatchTyped();
   const dispatchAsyncThunk = useDispatchAsyncThunk();
@@ -105,11 +107,18 @@ const ModalPost_Create_or_Edit_Button = () => {
         // setShowModalFN(); // Close modal I don't need anymore BECAUSE
         // "isModalPostOpen: false" above Closes the Modal.
 
-        // Update /marketplace on Successful EDIT:
-        dispatchAsyncThunk(getAllPosts()); // WIll have to modify since
-        // ^ the logic would be to show 2 posts per page
-        // so instead I'll just run the LIMIT 2 SQL command, because
-        // whenever User creates a post -> show him latest posts.
+        // Update2 /marketplace on Successful EDIT ModalPostSuccessText:
+        dispatchTyped(
+          openModalPostSuccessTextAction({
+            isModalPostSuccessTextOpen: true,
+            text: data?.message,
+          })
+        );
+        // // Update /marketplace on Successful EDIT:
+        // dispatchAsyncThunk(getAllPosts()); // WIll have to modify since
+        // // ^ the logic would be to show 2 posts per page
+        // // so instead I'll just run the LIMIT 2 SQL command, because
+        // // whenever User creates a post -> show him latest posts.
       } else {
         // Else if fields are empty
         // setIsEmptyFieldValue(true); // Shows the 'Fields can't be empty'
@@ -220,8 +229,15 @@ const ModalPost_Create_or_Edit_Button = () => {
         // setShowModalFN(); // Close modal I don't need anymore BECAUSE
         // "isModalPostOpen: false" above Closes the Modal.
 
+        // Update2 /marketplace on Successful EDIT ModalPostSuccessText:
+        dispatchTyped(
+          openModalPostSuccessTextAction({
+            isModalPostSuccessTextOpen: true,
+            text: data?.message,
+          })
+        );
         // Update /marketplace on Successful EDIT:
-        dispatchAsyncThunk(getAllPosts()); // WIll have to modify since
+        // dispatchAsyncThunk(getAllPosts()); // WIll have to modify since
         // ^ the logic would be to show 2 posts per page
         // so instead I'll just run the LIMIT 2 SQL command, because
         // whenever User creates a post -> show him latest posts.

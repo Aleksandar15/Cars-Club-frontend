@@ -1,7 +1,19 @@
 import axios from "axios";
-import { useDispatchTyped } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
+import { useState } from "react";
+import {
+  useDispatchTyped,
+  useSelectorTyped,
+} from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
 import { openModalTextAction } from "../../redux/slices/openModalTextSlice";
-import { authorize, unauthorized } from "../../redux/slices/verifySlice";
+import {
+  selectorUserInfo,
+  userInfoAction,
+} from "../../redux/slices/userInfoSlice";
+import {
+  authorize,
+  selectVerifyUser,
+  unauthorized,
+} from "../../redux/slices/verifySlice";
 import {
   axiosCredentials,
   axiosCredentialsNonInterceptors,
@@ -28,7 +40,6 @@ const useVerifyRefreshTK = (
       try {
         // GET /verifyrefreshtoken
         const { data } = await axiosCredentialsNonInterceptors.get(
-          // `/api/v1/auth/verifyrefreshtoken${timestamp}`,
           `/api/v1/auth/verifyrefreshtoken`
           // {
           //   headers: {
@@ -76,6 +87,10 @@ const useVerifyRefreshTK = (
             authorize({
               userStatus: {
                 isUserAuthorized: true,
+                user_email: dataTyped?.user_email,
+                user_name: dataTyped?.user_name,
+                user_id: dataTyped?.user_id,
+                user_role: dataTyped?.user_role,
               },
             })
           );

@@ -1,23 +1,37 @@
 import { Navbar as NavBarByBS, Container, Nav } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { useSelectorTyped } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
+import { selectorOpenModalPostSuccessText } from "../../redux/slices/modalPostSuccessTextSlice";
 import { selectorOpenModalPost } from "../../redux/slices/openModalPostSlice";
 import { selectorOpenModalText } from "../../redux/slices/openModalTextSlice";
 import { selectVerifyUser } from "../../redux/slices/verifySlice";
-import NavBarDropDown from "./NavBarDropDown";
+import NavBarDropDownPrivate from "./NavBarDropDownPrivate";
 import NavDropDownPublic from "./NavDropDownPublic";
 
 const NavBar = () => {
   const { isUserAuthorized } = useSelectorTyped(selectVerifyUser);
-
   // Fixing a bug where sticky="top" persists and overrides my custom modal,
   // instead, based on the ModalText state toggle the "sticky" accordingly
   const { isModalOpen } = useSelectorTyped(selectorOpenModalText);
   const { isModalPostOpen } = useSelectorTyped(selectorOpenModalPost);
+  const { isModalPostSuccessTextOpen } = useSelectorTyped(
+    selectorOpenModalPostSuccessText
+  );
+
+  // Logic behind `sticky`: must have "top" or UNDEFINED value, so if any of
+  // the Modals are open (their state is TRUE) then set 'sticky' to UNDEFINED
 
   return (
     <NavBarByBS
-      sticky={isModalOpen ? undefined : isModalPostOpen ? undefined : "top"}
+      sticky={
+        isModalOpen
+          ? undefined
+          : isModalPostOpen
+          ? undefined
+          : isModalPostSuccessTextOpen
+          ? undefined
+          : "top"
+      }
       className="mb-5 bg-white shadow-sm"
     >
       {/* Cars Club */}
@@ -25,11 +39,7 @@ const NavBar = () => {
         {/* NAV */}
         <Nav className={`navCustomClass`}>
           {/* NAV2 */}
-          {isUserAuthorized === undefined ? (
-            <Nav.Link to="/" as={NavLink} className="fs-5">
-              Home
-            </Nav.Link>
-          ) : isUserAuthorized === true ? (
+          {isUserAuthorized === true ? (
             <>
               <Nav.Link to="/" as={NavLink} className="fs-5">
                 Home
@@ -41,7 +51,7 @@ const NavBar = () => {
                 Marketplace
               </Nav.Link>
             </>
-          ) : (
+          ) : isUserAuthorized === false ? (
             <>
               <Nav.Link to="/" as={NavLink} className="fs-5">
                 Home
@@ -53,6 +63,10 @@ const NavBar = () => {
                 Register
               </Nav.Link>
             </>
+          ) : (
+            <Nav.Link to="/" as={NavLink} className="fs-5">
+              Home
+            </Nav.Link>
           )}
         </Nav>
         {/* NAV OUTSIDE */}
@@ -60,7 +74,7 @@ const NavBar = () => {
         <NavBarByBS.Brand className={`text-info fs-4 fw-bold navBarBrandTitle`}>
           CARS CLUB
         </NavBarByBS.Brand>
-        {isUserAuthorized ? <NavBarDropDown /> : <NavDropDownPublic />}
+        {isUserAuthorized ? <NavBarDropDownPrivate /> : <NavDropDownPublic />}
       </Container>
       {/* Container Outside */}
     </NavBarByBS>

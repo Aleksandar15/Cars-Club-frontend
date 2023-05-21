@@ -1,12 +1,15 @@
 import { Dropdown, DropdownButton } from "react-bootstrap";
 import useLogouts from "../../hooks/logouts/useLogouts";
 import useMyNavigate from "../../hooks/useMyNavigate/useMyNavigate";
+import { useSelectorTyped } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
+import { selectVerifyUser } from "../../redux/slices/verifySlice";
 
-const NavBarDropDown = () => {
+const NavBarDropDownPrivate = () => {
   const navigatePage = useMyNavigate();
   const clickCatalog = () => navigatePage("/catalog");
   const clickMarketplace = () => navigatePage("/marketplace");
   const { clickLogout, clickLogoutAll } = useLogouts();
+  const { user_name, user_email } = useSelectorTyped(selectVerifyUser);
 
   return (
     <>
@@ -18,6 +21,14 @@ const NavBarDropDown = () => {
         // className="ms-auto me-0"
         className="ms-auto me-5 mt-1"
       >
+        <p className="m-0">
+          My username: <span className="fw-bold">{user_name}</span>
+        </p>
+        <p className="m-0">
+          My e-mail: <span className="fw-bold">{user_email}</span>
+        </p>
+        {/* <p className="m-0">{"Test"}</p> */}
+        <Dropdown.Divider />
         <Dropdown.Item
           eventKey="1"
           onClick={clickCatalog}
@@ -56,4 +67,4 @@ const NavBarDropDown = () => {
   );
 };
 
-export default NavBarDropDown;
+export default NavBarDropDownPrivate;

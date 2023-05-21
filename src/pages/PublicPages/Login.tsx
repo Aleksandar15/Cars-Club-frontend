@@ -14,6 +14,7 @@ import {
   selectorOpenModalText,
 } from "../../redux/slices/openModalTextSlice";
 import Loading from "../../components/Loading/Loading";
+import { userInfoAction } from "../../redux/slices/userInfoSlice";
 
 interface LoginFields {
   email: string;
@@ -25,12 +26,16 @@ type LoginData = {
   isSuccessful?: boolean;
   message?: string;
   accessToken?: string;
+  user_name: string;
+  user_email: string;
+  user_id: string;
+  user_role: string;
 };
 
 const Login = () => {
   const navigatePage = useMyNavigate();
 
-  const dispatch = useDispatchTyped();
+  const dispatchTyped = useDispatchTyped();
 
   const [loginFields, setLoginFields] = useState<LoginFields>({
     email: "",
@@ -58,44 +63,65 @@ const Login = () => {
 
       const accessToken = data?.accessToken;
 
+      // NOTE: whatever's updated in here make sure to udpate in LoginTest
       if (typeof accessToken === "string") {
         navigatePage("/");
-        dispatch(authorize({ userStatus: { isUserAuthorized: true } }));
+        dispatchTyped(
+          authorize({
+            userStatus: {
+              isUserAuthorized: true,
+              user_id: data?.user_id,
+              user_email: data?.user_email,
+              user_name: data?.user_name,
+              user_role: data?.user_role,
+            },
+          })
+        );
+        // dispatchTyped(
+        //   userInfoAction({
+        //     user_id: data?.user_id,
+        //     user_email: data?.user_email,
+        //     user_name: data?.user_name,
+        //   })
+        // ); // Moved this in a single state
+
+        // Don't update 'setLoading(false)' state because Redux updates
+        // PublicRoutes & causes navigation.
       }
 
       if (data?.isSuccessful === false) {
         setLoading(false);
         switch (data?.message) {
           case "Invalid Email":
-            return dispatch(
+            return dispatchTyped(
               openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Invalid e-mail!`,
               })
             );
           case "Wrong email/password combinations":
-            return dispatch(
+            return dispatchTyped(
               openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Wrong e-mail/password combination!`,
               })
             );
           case "Missing Credentials":
-            return dispatch(
+            return dispatchTyped(
               openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Fields can't be empty!`,
               })
             );
           case "Server error":
-            return dispatch(
+            return dispatchTyped(
               openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Login error, please try again later.`,
               })
             );
           case "Detected used refresh token in user's cookies":
-            dispatch(
+            dispatchTyped(
               openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Someone has made requests without your permission. 
@@ -108,7 +134,7 @@ const Login = () => {
               loginForever: false,
             });
           default:
-            return dispatch(
+            return dispatchTyped(
               openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Unexpected error happened, please try again.`,
@@ -150,46 +176,62 @@ const Login = () => {
         })
       )) as LoginData;
 
+      // NOTE everything updated in here must be updated in LoginUser FN too
       const accessToken = data?.accessToken;
       if (typeof accessToken === "string") {
-        navigatePage("/");
-        dispatch(authorize({ userStatus: { isUserAuthorized: true } }));
-        setLoading(false);
+        // navigatePage("/"); // No need because it's handled by Redux states
+        // dispatchTyped(authorize({ userStatus: { isUserAuthorized: true } }));
+        // // ^ Above dispatchTyped modified into a single:
+        dispatchTyped(
+          authorize({
+            userStatus: {
+              // isUserAuthorized: "LOGINmustSendUserInfo",
+              // Modified it back to "true" because refreshing resets the Redux
+              // state, however I must keep User Info below, on login as well.
+              isUserAuthorized: true,
+              user_id: data?.user_id,
+              user_email: data?.user_email,
+              user_name: data?.user_name,
+            },
+          })
+        );
+        // setLoading(false); // No need because on success: ProtectedRoute's
+        // // Redux state receives a state update and shows Protected Routes.
       }
 
       if (data?.isSuccessful === false) {
         setLoading(false);
         switch (data?.message) {
           case "Invalid Email":
-            return dispatch(
+            return dispatchTyped(
               openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Invalid e-mail!`,
               })
             );
           case "Wrong email/password combinations":
-            return dispatch(
+            return dispatchTyped(
               openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Wrong e-mail/password combination!`,
               })
             );
           case "Missing Credentials":
-            return dispatch(
+            return dispatchTyped(
               openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Fields can't be empty!`,
               })
             );
           case "Server error":
-            return dispatch(
+            return dispatchTyped(
               openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Login error, please try again later.`,
               })
             );
           case "Detected used refresh token in user's cookies":
-            dispatch(
+            dispatchTyped(
               openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Someone has made requests without your permission. 
@@ -202,7 +244,7 @@ const Login = () => {
               loginForever: false,
             });
           default:
-            return dispatch(
+            return dispatchTyped(
               openModalTextAction({
                 isModalOpen: !isModalOpen,
                 text: `Unexpected error happened, please try again.`,

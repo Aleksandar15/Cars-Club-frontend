@@ -1,4 +1,4 @@
-export type GotThreePostsROWS = {
+export type PostType = {
   post_title: string;
   post_image_buffer: Post_image_buffer | undefined;
   post_description: string;
@@ -8,9 +8,13 @@ export type GotThreePostsROWS = {
   post_id: string;
   user_id: string;
   post_created_at: string;
+  post_created_by_user_name: string;
+  post_created_by_user_email: string;
+  post_created_by_user_role: string;
 };
 
-export type Currency = "EUR" | "USD" | "Select currency" | "";
+// export type Currency = "EUR" | "USD" | "Select currency" | "";
+export type Currency = "EUR" | "USD" | "Select currency";
 
 export type Post_image_buffer = {
   type: "Buffer";

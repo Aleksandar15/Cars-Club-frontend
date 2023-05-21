@@ -4,6 +4,13 @@ import { verifySlice } from "../slices/verifySlice";
 import openModalTextSlice from "../slices/openModalTextSlice";
 import refreshTokenSlice from "../slices/refreshTokenSlice";
 import openModalPostSlice from "../slices/openModalPostSlice";
+import getAllPosts from "../createAsyncThunk/getAllPosts";
+import userInfoSlice from "../slices/userInfoSlice";
+import modalPostButtonValueSlice from "../slices/modalPostButtonValueSlice";
+import modalPostLoadingSlice from "../slices/modalPostLoading";
+import modalPostEmptyFieldValueSlice from "../slices/modalPostEmptyFieldValue";
+import modalPostEditPostSlice from "../slices/modalPostEditPostSlice";
+import modalPostSuccessTextSlice from "../slices/modalPostSuccessTextSlice";
 
 const rootReducer = combineReducers({
   // searchBar,
@@ -13,6 +20,13 @@ const rootReducer = combineReducers({
   openModalTextSlice,
   refreshTokenSlice,
   openModalPostSlice,
+  getAllPosts,
+  userInfoSlice,
+  modalPostButtonValueSlice,
+  modalPostLoadingSlice,
+  modalPostEmptyFieldValueSlice,
+  modalPostEditPostSlice,
+  modalPostSuccessTextSlice,
 });
 
 // While this RootState works,

@@ -10,7 +10,7 @@ import {
 import ClearSVGicon from "../../utilities/icons-setup/clear-SVG-icon";
 import CreatePostSVG from "../../utilities/icons-setup/createPost-SVG";
 import SearchSVGicon from "../../utilities/icons-setup/search-SVG-icon";
-import CreatePostButton from "./CreatePost";
+import CreatePostButton from "./CreatePostButton";
 
 const FormSearchCars = () => {
   const handleSearch = (e: FormEvent<HTMLFormElement>): void => {

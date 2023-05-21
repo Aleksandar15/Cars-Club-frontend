@@ -1,5 +1,6 @@
 import { Button } from "react-bootstrap";
 import Loading from "../../components/Loading/Loading";
+import LoadingHomePageForRenderServer from "../../components/Loading/LoadingHomePageForRender";
 import useVerifyRefreshTK from "../../hooks/authHooks/useVerifyRefreshTK";
 import useMyNavigate from "../../hooks/useMyNavigate/useMyNavigate";
 import { useSelectorTyped } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
@@ -13,7 +14,8 @@ const HomePage = () => {
   useVerifyRefreshTK("dynamic", isUserAuthorized);
 
   if (isUserAuthorized === undefined || isUserAuthorized === "loading") {
-    return <Loading />;
+    // return <Loading />;
+    return <LoadingHomePageForRenderServer />;
   }
 
   return (

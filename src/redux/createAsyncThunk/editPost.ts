@@ -63,11 +63,18 @@ import { RootState } from "../store";
 // And YES I do can have editPost & createPost in a single REDUX file
 // where I'd have a separate AsyncThunk, but it's #1 NOT that useful
 // since there's no reusability usage; and #2 the MOST important issue
-// is the fact that I'll have to make sure I don't "just" call
-// useAxiosInterceptor() WITHOUT using its returned Axios in the
-// Component where I'd be calling that AsyncThunk & using the SAME
-// intercepted Axios BUT imported from Axios.ts just to make sure
+// is the fact that I'll have to make sure to "just" call
+// useAxiosInterceptor() WITHOUT using its returned Axios instance (if
+// it's not required) in the
+// Component where I'd be calling
+// (dispatching) that AsyncThunk & all the while using the SAME
+// intercepted Axios BUT imported from Axios.ts
+// (the EXACT 'reference Axios instance object' that's being intercepted
+// in my useAxiosInterceptor custom Hook)
+// just to make sure
 // my POST/PUT Requests won't fail by using a non-intercepted Axios instance.
+// A lot of workaround indeed. Overall forgetting to call useAxiosInterceptor
+//  would lead to Async Thunk failing on me.
 
 // Define the editPost async thunk
 export const getAllPosts: AsyncThunk<PostType[], void, {}> = createAsyncThunk(

@@ -18,6 +18,7 @@ import useModalPost_formatNum from "../../hooks/ModalPostHooks/useModalPost_form
 import { getAllPosts } from "../../redux/createAsyncThunk/getAllPosts";
 import axios from "axios";
 import { setModalPostEmptyFieldValueAction } from "../../redux/slices/modalPostEmptyFieldValue";
+import { selectorOpenModalPostEditPost } from "../../redux/slices/modalPostEditPostSlice";
 const ModalPost_Create_or_Edit_Button = () => {
   const dispatchTyped = useDispatchTyped();
   const dispatchAsyncThunk = useDispatchAsyncThunk();
@@ -31,6 +32,10 @@ const ModalPost_Create_or_Edit_Button = () => {
     // formatNumber, // not using
     deformatNumber,
   } = useModalPost_formatNum();
+  const { post_user_id, post_post_id } = useSelectorTyped(
+    selectorOpenModalPostEditPost
+  );
+  console.log("post_user_id,:", post_user_id, "& post_post_id:", post_post_id);
 
   // const submitPost = async (e: MouseEvent<HTMLButtonElement>) => {
   const submitPost = async (e: FormEvent<HTMLButtonElement>) => {
@@ -155,6 +160,8 @@ const ModalPost_Create_or_Edit_Button = () => {
           }
           //  else {
           // UPDATE: for reusability to NOT include isModalPostOpen
+          // UPDATE2: for 'edit-post' 'image' might be empty string
+          // so `editPostController` MUST NOT reject if it's empty.
           else if (key !== "isModalPostOpen") {
             formData.append(key, value);
           }
@@ -169,41 +176,41 @@ const ModalPost_Create_or_Edit_Button = () => {
             modalPostLoading: true, // STart Loading ModalPost
           })
         );
-        // const { data } = await axiosCredentials.post(
-        //   `http://localhost:3000/api/v1/post/createpost`,
-        //   formData,
-        //   {
-        //     headers: {
-        //       "Content-Type": "multipart/form-data",
-        //     },
-        //   }
-        // );
-        // // console.log("submitpost DATA:", data);
-        // if (data?.isSuccessful) {
-        //   // setLoading(false); // Stop Loading
-        //   dispatchTyped(
-        //     setModalPostLoadingAction({
-        //       modalPostLoading: false, // Stop ModalPost's loading
-        //     })
-        //   );
-        //   dispatchTyped(
-        //     openModalPostAction({
-        //       isModalPostOpen: false,
-        //       title: "",
-        //       image: "",
-        //       description: "",
-        //       contactNumber: "",
-        //       askingPrice: "",
-        //       currency: "USD",
-        //     })
-        //   );
-        // } // Resets fields back to initial values
-        // // setShowModalFN(); // Close modal I don't need anymore because
-        // // "isModalPostOpen: false" Closes the Modal.
-        // dispatchAsyncThunk(getAllPosts()); // WIll have to modify since
-        // // ^ the logic would be to show 2 posts per page
-        // // so instead I'll just run the LIMIT 2 SQL command, because
-        // // whenever User creates a post -> show him latest posts.
+        const { data } = await axiosCredentials.put(
+          `http://localhost:3000/api/v1/post/editpost`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        console.log("editPost DATA:", data);
+        if (data?.isSuccessful) {
+          // setLoading(false); // Stop Loading
+          dispatchTyped(
+            setModalPostLoadingAction({
+              modalPostLoading: false, // Stop ModalPost's loading
+            })
+          );
+          dispatchTyped(
+            openModalPostAction({
+              isModalPostOpen: false,
+              title: "",
+              image: "",
+              description: "",
+              contactNumber: "",
+              askingPrice: "",
+              currency: "USD",
+            })
+          );
+        } // Resets fields back to initial values
+        // setShowModalFN(); // Close modal I don't need anymore because
+        // "isModalPostOpen: false" Closes the Modal.
+        dispatchAsyncThunk(getAllPosts()); // WIll have to modify since
+        // ^ the logic would be to show 2 posts per page
+        // so instead I'll just run the LIMIT 2 SQL command, because
+        // whenever User creates a post -> show him latest posts.
       } else {
         // Else if fields are empty
         // setIsEmptyFieldValue(true); // Shows the 'Fields can't be empty'
@@ -216,9 +223,9 @@ const ModalPost_Create_or_Edit_Button = () => {
       }
     } catch (err) {
       if (axios.isAxiosError(err)) {
-        // console.log("submitPost err:", err);
-        // console.log("submitPost err?.response:", err?.response);
-        console.log("submitPost err?.response?.data:", err?.response?.data);
+        // console.log("editPost err:", err);
+        // console.log("editPost err?.response:", err?.response);
+        console.log("editPost err?.response?.data:", err?.response?.data);
         // setLoading(false);
         dispatchTyped(
           setModalPostLoadingAction({

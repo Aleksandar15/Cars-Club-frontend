@@ -4,6 +4,7 @@ import { Button } from "react-bootstrap";
 import useAxiosInterceptor from "../../hooks/authHooks/useAxiosInterceptor";
 import { useDispatchTyped } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
 import { setModalPostButtonValueAction } from "../../redux/slices/modalPostButtonValueSlice";
+import { setModalPostEditPostAction } from "../../redux/slices/modalPostEditPostSlice";
 import { setModalPostLoadingAction } from "../../redux/slices/modalPostLoading";
 import {
   openModalPostAction,
@@ -35,7 +36,9 @@ const Post_Action_Buttons = ({
   // UPDATE2:
   // I do have 2 securities: one is the ModalPost's Loading
   // screen doesn't allow for Clicks outside while Loading, but
-  // I'll still use the flag for 101% safety guards.
+  // I'll still use the flag for 101% safety guards -> because
+  // the 2nd issue is: ONLY the matching-button got disabled
+  // but the User can still try to Edit the rest of his Posts.
 
   const handleEdit = async (post_id: string, user_id: string) => {
     console.log("Edit clicked");
@@ -72,6 +75,15 @@ const Post_Action_Buttons = ({
               currency: foundOnePostTyped.post_asking_price_currency,
             })
           );
+          // Send the IDs to the `ModalPost_Create_or_Edit_Button.tsx`
+          // Using it for .PUT inside the editPost Function in there.
+          dispatchTyped(
+            setModalPostEditPostAction({
+              post_user_id: foundOnePostTyped.user_id,
+              post_post_id: foundOnePostTyped.post_id,
+            })
+          );
+
           // Trigger a change to the ModalPost's button to instead
           // show "EDIT A POST" button + also such a button has a
           // different onClick inside `ModalPost_Create_or_Edit`.

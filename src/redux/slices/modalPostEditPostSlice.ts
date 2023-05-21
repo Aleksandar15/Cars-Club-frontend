@@ -29,5 +29,5 @@ const modalPostEditPostSlice = createSlice({
 export default modalPostEditPostSlice.reducer;
 
 export const { setModalPostEditPostAction } = modalPostEditPostSlice.actions;
-export const selectorOpenModalPostButtonValue = (state: RootState) =>
+export const selectorOpenModalPostEditPost = (state: RootState) =>
   state.modalPostEditPostSlice;

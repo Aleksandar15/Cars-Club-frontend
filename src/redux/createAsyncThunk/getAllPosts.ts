@@ -44,6 +44,17 @@ import { RootState } from "../store";
 // Async Thunk.
 // -> OR maybe perhaps even calling it inside App.ts or Axios.ts file?
 
+// UPDATE3: The bug happened! I must switch to calling useAxiosInterceptor()
+// inside App.tsx
+// Issue:
+// Incidently removed (in my cleanup process) my useAxiosInterceptor call
+// from my ModalPost.tsx
+// BUG Results:
+// I couldn't retrieve my Data.
+// FIX for now:
+// I'm calling it in ModalPost.tsx but I might as well move it
+// inside my App.tsx but that requires some Performance testing.
+
 // Define the async thunk
 export const getAllPosts: AsyncThunk<PostType[], void, {}> = createAsyncThunk(
   "posts/getAllPosts",
@@ -60,6 +71,8 @@ export const getAllPosts: AsyncThunk<PostType[], void, {}> = createAsyncThunk(
 
       // return data?.gotThreePostsROWS; // perfect, however "LIMIT 3" was my backend test
 
+      console.log("data:", data);
+
       return data?.gotAllPostsROWS; //updated
     } catch (error) {
       // throw new Error("Error fetching posts");
@@ -71,6 +84,7 @@ export const getAllPosts: AsyncThunk<PostType[], void, {}> = createAsyncThunk(
       // the useAxiosInterceptor call inside ModalPost (where I use this Async Thunk)
       // so instead I manually fix the error:
       // "Uncaught TypeError: Cannot read properties of undefined (reading 'length')"
+      console.log("error:", error);
       return [];
     }
   }

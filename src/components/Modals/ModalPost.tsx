@@ -1,4 +1,5 @@
 import { ChangeEvent, FormEvent, MouseEvent, useEffect } from "react";
+import useAxiosInterceptor from "../../hooks/authHooks/useAxiosInterceptor";
 import useModalPost_formatNum from "../../hooks/ModalPostHooks/useModalPost_formatNum";
 import {
   // useDispatchAsyncThunk,
@@ -22,6 +23,16 @@ import ModalPost_Create_or_Edit_Button from "./ModalPost_Create_or_Edit_Button";
 // import ModalText from "./ModalText";
 
 const ModalPost = () => {
+  // VERY IMPORTANT CALL:
+  useAxiosInterceptor();
+  // Otherwise my intercepted axiosCredentials is FAILING inside my
+  // createAsyncThunk `getAllPosts`() -> because Redux can't call a Hook
+  // so I forgot and have removed this one & all my App bugs started:
+  // I couldn't retrieve my Data.
+  // So I'm calling it here but I might as well move it inside my App.tsx
+  // so that issues future won't happen in the future,
+  // but I must test Performance first before callinng it inside App.tsx.
+
   // const [loading, setLoading] = useState<boolean>(false);
   const loading = useSelectorTyped<boolean>(selectorOpenModalPostLoading);
   if (loading) {

@@ -1,4 +1,4 @@
-import { FormEvent } from "react";
+import { FormEvent, MouseEvent } from "react";
 import { Button } from "react-bootstrap";
 import { selectVerifyUser } from "../../redux/slices/verifySlice";
 import modalPost_checkEmptyValueFN from "../../utilities/modalPost_FN/modalPost_checkEmptyValueFN";
@@ -129,6 +129,14 @@ const ModalPost_Create_or_Edit_Button = () => {
   };
 
   // EDIT A POST BUTTON
+  const editPost = async (e: MouseEvent<HTMLButtonElement>) => {
+    // const editPost = async (e: FormEvent<HTMLButtonElement>) => {
+    // ^ Either would work, but I do need e.preventDefault()
+    // because they're inside a scope of a Form inside ModalPost.tsx
+    e.preventDefault();
+
+    console.count("editPost clicked");
+  };
 
   return (
     <>
@@ -146,7 +154,7 @@ const ModalPost_Create_or_Edit_Button = () => {
           variant={`btn bg-light btn-outline-info
       text-info  fw-bold`}
           type="submit"
-          // onClick={submitPost}
+          onClick={editPost}
         >
           {modalPostButtonValue}
         </Button>

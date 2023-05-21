@@ -76,7 +76,7 @@ const ModalPost_Create_or_Edit_Button = () => {
           })
         );
         const { data } = await axiosCredentials.post(
-          `http://localhost:3000/api/v1/post/createpost`,
+          `/api/v1/post/createpost`,
           formData,
           {
             headers: {
@@ -199,7 +199,7 @@ const ModalPost_Create_or_Edit_Button = () => {
         const { data } = await axiosCredentials.put(
           // URL can't be on a new lines with string literals because it either fails
           // or if I have ${post_post_id} on a new line the ID gets "   " at the end.
-          `http://localhost:3000/api/v1/post/editpost/${post_post_id}/${post_user_id}`,
+          `/api/v1/post/editpost/${post_post_id}/${post_user_id}`,
           formData,
           {
             headers: {

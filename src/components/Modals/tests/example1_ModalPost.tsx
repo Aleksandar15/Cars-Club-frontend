@@ -223,7 +223,7 @@
 //         // Start Loading
 //         setLoading(true);
 //         const { data } = await axiosCredentials.post(
-//           `http://localhost:3000/api/v1/post/createpost`,
+//           `/api/v1/post/createpost`,
 //           formData,
 //           {
 //             headers: {

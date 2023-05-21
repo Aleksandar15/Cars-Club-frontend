@@ -68,6 +68,8 @@
 
 - And I also wouldn't be able to call a DISPATCH function in my Redux file to fill my `ModalPost.tsx` input fields with the VALUES matching the `post_id` that the user has clicked on, because `useDispatch` is a Hook that also **can NOT** be called inside Redux files.
 
+6. My personal challenge on the Frontend's React part was to _ALWAYS_ use Redux Toolkit & never passing a props to Children Components, however the `Post.tsx` had a perfect spot for my `Post_Action_Buttons` child component to receive 2 props: `post.user_id` and `post.post_id` since those "EDIT" and "DELETE" buttons will be the "deepest children" -> 1 level deep, I thought it was very fine to pass those values as props since a button can never go any deeper than that. Even if I had anything else in my mind for the future: I do have those 2 props that I can further pass them by Redux Toolkit to the Children's of `Post_Action_Buttons` component.
+
 ##### Further plans (_reminders for me_)
 
 1. Have an "edit username" & "edit e-mail" features, but that **will** require me to also run SQL Query against my PostgreSQL database `posts` table to run `UPDATE posts SET post_created_by_username=$1 WHERE user_id=$2` & respectively if I've choosen to show e-mail.

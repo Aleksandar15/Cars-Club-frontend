@@ -71,8 +71,6 @@ export const getAllPosts: AsyncThunk<PostType[], void, {}> = createAsyncThunk(
 
       // return data?.gotThreePostsROWS; // perfect, however "LIMIT 3" was my backend test
 
-      console.log("data:", data);
-
       return data?.gotAllPostsROWS; //updated
     } catch (error) {
       // throw new Error("Error fetching posts");
@@ -84,7 +82,6 @@ export const getAllPosts: AsyncThunk<PostType[], void, {}> = createAsyncThunk(
       // the useAxiosInterceptor call inside ModalPost (where I use this Async Thunk)
       // so instead I manually fix the error:
       // "Uncaught TypeError: Cannot read properties of undefined (reading 'length')"
-      console.log("error:", error);
       return [];
     }
   }

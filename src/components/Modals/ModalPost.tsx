@@ -11,6 +11,7 @@ import {
 } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
 
 import {
+  InitialStateModalPost,
   openModalPostAction,
   selectorOpenModalPost,
 } from "../../redux/slices/openModalPostSlice";
@@ -21,8 +22,21 @@ import LoadingModalPost from "../Loading/LoadingModalPost";
 // import ModalText from "./ModalText";
 
 const ModalPost = () => {
-  const { isModalPostOpen, text } = useSelectorTyped(selectorOpenModalPost);
-  const dispatch = useDispatchTyped();
+  // const { isModalPostOpen, text } = useSelectorTyped(selectorOpenModalPost);
+  const modalPostState = useSelectorTyped(selectorOpenModalPost);
+  // I avoided direct destructure so I can pass spread syntax when updating.
+  const {
+    isModalPostOpen,
+    // title, // I don't use them as before
+    // image,
+    // description,
+    // contactNumber,
+    // askingPrice,
+    // currency,
+  } = modalPostState as InitialStateModalPost;
+  console.log("modalPostState:", modalPostState);
+  console.log("modalPostState.currency:", modalPostState?.currency);
+  const dispatchTyped = useDispatchTyped();
   const axiosCredentials = useAxiosInterceptor();
   const [loading, setLoading] = useState<boolean>(false);
   const { user_name, user_email } = useSelectorTyped(selectVerifyUser);
@@ -51,20 +65,21 @@ const ModalPost = () => {
   }, [isModalPostOpen]);
 
   const setShowModalFN = () => {
-    dispatch(
-      openModalPostAction({ isModalPostOpen: !isModalPostOpen, text: "" })
+    dispatchTyped(
+      openModalPostAction({
+        // isModalPostOpen: !isModalPostOpen,
+        // // text:"",
+        // // In here I can close it with setting state back to
+        // // initial state of EMPTY VALUES, however I prefer not to.
+        // // NEW:
+        // // TypeScript error (props are no longer optional) a fix:
+        ...modalPostState,
+        isModalPostOpen: !isModalPostOpen,
+      })
     );
   };
 
-  // BODY STATES
-  const [postState, setPostState] = useState<PostState>({
-    title: "",
-    image: "",
-    description: "",
-    contactNumber: "",
-    askingPrice: "",
-    currency: "USD",
-  });
+  // BODY STATES UPDATES
   const handlePostChanges = async (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name, files } = e.target;
     console.log("value handlePostChanges:", value);
@@ -78,25 +93,27 @@ const ModalPost = () => {
       files !== null && files !== undefined ? files[0] : value;
 
     const capitalizedValue =
-      // valueCheck.charAt(0).toUpperCase() + valueCheck.slice(1);
-      // Property 'charAt' does not exist on type 'string | File'.
-      // Property 'charAt' does not exist on type 'File'.
       typeof valueCheck === "string" && // this already is enough of a fix
       (valueCheck as string).charAt(0).toUpperCase() + valueCheck.slice(1);
 
-    setPostState({
-      ...postState,
-      // Also don't forget to NOT pass capitalizedValue if 'name===image'.
-      // && the: files !== null check is TypeScript-specific fix.
-      [name]: name === "image" && files !== null ? files[0] : capitalizedValue,
-    });
+    dispatchTyped(
+      openModalPostAction({
+        ...modalPostState,
+        // Also don't forget to NOT pass capitalizedValue if 'name===image'.
+        // && the: files !== null check is TypeScript-specific fix.
+        [name]:
+          name === "image" && files !== null ? files[0] : capitalizedValue,
+      })
+    );
     setIsEmptyFieldValue(false);
   };
 
   const handleTextAreaChanges = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value, maxLength } = e.target;
     const capitalizedValue = value.charAt(0).toUpperCase() + value.slice(1);
-    setPostState({ ...postState, [name]: capitalizedValue });
+    dispatchTyped(
+      openModalPostAction({ ...modalPostState, [name]: capitalizedValue })
+    );
 
     const remainingChars = maxLength - value.length;
     const charCounterSPAN = document.getElementById("descriptionCounterSPAN");
@@ -115,47 +132,23 @@ const ModalPost = () => {
 
     // FIX for "askingPrice" being unable to edit the value in-between-digits
     const deFormatedValue = deformatNumber(sanitizedValue);
-    // Still mini-bug exists, but requires lots of IF checks
-    // to check if length is 5 then only 1 dot/comma must exist
-    // otherwise if there's 6,7 or 8 digits then 2 dots/commas must exist
-    // IF NOT: then do NOT update the state.. there'd be too many IF Conditions.
-    // Note2
-    // Current mini bug example: 1.234.567
-    // then removing or modifying any digit except the last one will cause cursor
-    // to move to the last digit -> so user can't modify it to: 188.234.567 in a
-    // single go because: one input '8' causes cursor to move to the back (after '7'), so
-    // the second input '8' is added at the end (after '7') resulting in: 182.345.678 UNLESS
-    // & ONLY UNLESS: the User re-moves the cursor between '8' and '2' and writes '8' again
-    //  (and so in repeat...) & that happens even when User tries to remove the DOT (or COMMA)
-    // and that's good that NOTHING is modified, but mini-bug of number exists because of it
-    //  I've tried various ways to fix but to no avail.
-    // Note3
-    // The only workaround is to have 2 inputs fields: 1 unclickable (& formatted) and the
-    // other 1 pure numbers (& editable).
-    // Note4
-    // It's purely UI/UX feature which turned complex because input 1234 becomes 1.234
-    // but input 12345 = 12.345; input 123456 = 123.456, etc. -> It's not fixed as
-    // Verification Codes who uses fixed "-" at between 3 digits
 
     if (sanitizedValue.length <= 18) {
       // Test2 UI/UX:
       if (name === "askingPrice") {
         const formatedSanitzedValue = formatNumber(deFormatedValue); // Custom function
-        setPostState({ ...postState, [name]: formatedSanitzedValue });
+        dispatchTyped(
+          openModalPostAction({
+            ...modalPostState,
+            [name]: formatedSanitzedValue,
+          })
+        );
 
-        // Alternatively (for both IF and ELSE statements):
-        // Check if the value is a number or an empty string
-        // & AVOIDS State Updating
-        // if (!isNaN(Number(value)) || value !== "") {
-        //   // if (!isNaN(Number(sanitizedValue)) || value !== "") {
-        //   // With this condition I can use [name]: value -> works as fine.
-        //   // || value !== "" -> checks against empty spaces
-        //   // setPostState({ ...postState, [name]: sanitizedValue });
-        //   setPostState({ ...postState, [name]: formatedSanitzedValue });
-        // }
         setIsEmptyFieldValue(false);
       } else {
-        setPostState({ ...postState, [name]: sanitizedValue });
+        dispatchTyped(
+          openModalPostAction({ ...modalPostState, [name]: sanitizedValue })
+        );
         setIsEmptyFieldValue(false);
       }
     }
@@ -165,23 +158,29 @@ const ModalPost = () => {
     const selectedCurrency = e?.target?.value as Currency;
 
     // Update the value as well
-    const deFormatedValue = deformatNumber(postState.askingPrice);
+    const deFormatedValue = deformatNumber(modalPostState.askingPrice);
     const reFormatedValue = formatNumber(deFormatedValue, selectedCurrency);
-    setPostState({
-      ...postState,
-      ["askingPrice"]: reFormatedValue,
-      ["currency"]: selectedCurrency,
-    });
+    dispatchTyped(
+      openModalPostAction({
+        ...modalPostState,
+        ["askingPrice"]: reFormatedValue,
+        ["currency"]: selectedCurrency,
+      })
+    );
   };
   const { formatNumber, deformatNumber } = useModalPost_formatNum(
-    postState.currency
+    modalPostState.currency
   );
 
-  // Call this setter fn after every input type
+  // Call this setter fn after every input value changes (except currency)
+  // (currency has initial value that is NEVER empty.)
   const [isEmptyFieldValue, setIsEmptyFieldValue] = useState<boolean>(false);
-  // Then submitPost will set it to true IF my custom FN checker returns
-  // 'true' to empty values, then next input type will hide the P tag
-  // text of "Fields can't be empty".
+  // The LOGIC:
+  // Then submitPost will set it to TRUE
+  // IF my custom FN checker "modalPost_checkEmptyValueFN" returns
+  // 'TRUE' to empty values checks -> then my hidden P tag with text of "Fields
+  // can't be empty" will become VISIBLE, then the next handleChange FN will
+  // hide the P tag text of "Fields can't be empty" by setIsEmptyFieldValue(false)
   // There's more workarounds but this is "cheapest" CPU-wise.
 
   const dispatchAsyncThunk = useDispatchAsyncThunk();
@@ -191,21 +190,24 @@ const ModalPost = () => {
     e.preventDefault();
     console.count("submitPost click");
     try {
-      if (modalPost_checkEmptyValueFN(postState)) {
+      if (modalPost_checkEmptyValueFN(modalPostState)) {
         const formData = new FormData();
-        // formData.append("title", postState.title);
-        // formData.append("image", postState.image);
+        // formData.append("title", modalPostState.title);
+        // formData.append("image", modalPostState.image);
 
         // ... Alternative loop for DRY:
-        // for (const key in postState) {
-        //   formData.append(key, postState[key]); // TypeScript errors
+        // for (const key in modalPostState) {
+        //   formData.append(key, modalPostState[key]); // TypeScript errors
         // }
         // Alternatively for alternative:
-        Object.entries(postState).forEach(([key, value]) => {
+        Object.entries(modalPostState).forEach(([key, value]) => {
           if (key === "askingPrice") {
             // Remove dots/commas for the 'price' number
             formData.append(key, deformatNumber(value));
-          } else {
+          }
+          //  else {
+          // UPDATE: for reusability to NOT include isModalPostOpen
+          else if (key !== "isModalPostOpen") {
             formData.append(key, value);
           }
         });
@@ -226,14 +228,17 @@ const ModalPost = () => {
         // console.log("submitpost DATA:", data);
         if (data?.isSuccessful) {
           setLoading(false); // Stop Loading
-          setPostState({
-            title: "",
-            image: "",
-            description: "",
-            contactNumber: "",
-            askingPrice: "",
-            currency: "USD",
-          });
+          dispatchTyped(
+            openModalPostAction({
+              isModalPostOpen: false,
+              title: "",
+              image: "",
+              description: "",
+              contactNumber: "",
+              askingPrice: "",
+              currency: "USD",
+            })
+          );
         } // Resets fields back to initial values
         setShowModalFN(); // Close modal
         dispatchAsyncThunk(getAllPosts()); // WIll have to modify since
@@ -320,7 +325,7 @@ const ModalPost = () => {
                       id="title"
                       name="title"
                       placeholder="Car name"
-                      value={postState.title}
+                      value={modalPostState.title}
                       onChange={handlePostChanges}
                     />
                     {/* <br /> */}
@@ -331,7 +336,7 @@ const ModalPost = () => {
                       <input
                         id="image"
                         name="image"
-                        // value={postState.image}
+                        // value={modalPostState.image}
                         onChange={handlePostChanges}
                         type="file"
                         accept="image/jpeg, image/jpg, image/png"
@@ -351,7 +356,7 @@ const ModalPost = () => {
                       id="description"
                       name="description"
                       placeholder="Description here ..."
-                      value={postState.description}
+                      value={modalPostState.description}
                       onChange={handleTextAreaChanges}
                       rows={3}
                       cols={33}
@@ -367,7 +372,7 @@ const ModalPost = () => {
                         id="contact"
                         name="contactNumber"
                         placeholder="888888 (fake it)"
-                        value={postState.contactNumber}
+                        value={modalPostState.contactNumber}
                         // onChange={handlePostChanges}
                         onChange={handlePostNumberChange}
                         type="tel"
@@ -385,11 +390,11 @@ const ModalPost = () => {
                       Currency:
                     </label>
                     <select
-                      value={postState.currency}
+                      value={modalPostState.currency}
                       onChange={handleCurrencyChange}
                       style={{
                         fontSize:
-                          postState.currency === "Select currency"
+                          modalPostState.currency === "Select currency"
                             ? "13px"
                             : "15px",
                       }} // This isn't required; Changed logic: default is "USD".
@@ -411,9 +416,9 @@ const ModalPost = () => {
                     </select>
                     <br />
                     <span style={{ fontWeight: "bold", fontSize: "21px" }}>
-                      {postState.currency === "EUR"
+                      {modalPostState.currency === "EUR"
                         ? "€"
-                        : postState.currency === "USD"
+                        : modalPostState.currency === "USD"
                         ? "$"
                         : ""}
                     </span>
@@ -422,7 +427,7 @@ const ModalPost = () => {
                       id="price"
                       name="askingPrice"
                       placeholder="8888 (fake it for test)"
-                      value={postState.askingPrice}
+                      value={modalPostState.askingPrice}
                       // onChange={handlePostChanges}
                       onChange={handlePostNumberChange}
                       // type="number"

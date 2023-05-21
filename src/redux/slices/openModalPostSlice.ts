@@ -1,28 +1,49 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Currency } from "../../utilities/Types/modalPostTypes";
+import { RootState } from "../store";
 
-interface InitialState {
+export interface InitialStateModalPost {
   isModalPostOpen: boolean;
-  text?: string;
-  title?: string;
-  image?: string;
-  description?: string;
-  contactNumber?: number;
-  askingPrice?: number;
+  // text?: string;
+  title: string;
+  image: string;
+  description: string;
+  contactNumber: string;
+  askingPrice: string;
+  currency: Currency;
 }
 
-const initialState: InitialState = {
+const initialState: InitialStateModalPost = {
   isModalPostOpen: false,
-  text: "",
+  // text: "",
+  title: "",
+  image: "",
+  description: "",
+  contactNumber: "",
+  askingPrice: "",
+  currency: "USD",
 };
 
 const openModalPostSlice = createSlice({
   name: "openModal",
   initialState,
   reducers: {
-    openModalPostAction: (state, action: PayloadAction<InitialState>) => {
-      return action.payload; //Works as well, alternatively to:
-      // state.isModalPostOpen = action.payload.isModalPostOpen;
-      // state.text = action.payload.text; // etc.
+    openModalPostAction: (
+      state,
+      action: PayloadAction<InitialStateModalPost>
+    ) => {
+      // return action.payload; //Works as well, alternatively to:
+      // // state.isModalPostOpen = action.payload.isModalPostOpen;
+      // // state.text = action.payload.text; // etc.
+
+      // Update for modifying all of the states
+      state.isModalPostOpen = action.payload.isModalPostOpen;
+      state.title = action.payload.title;
+      state.image = action.payload.image;
+      state.description = action.payload.description;
+      state.contactNumber = action.payload.contactNumber;
+      state.askingPrice = action.payload.askingPrice;
+      state.currency = action.payload.currency;
     },
   },
 });
@@ -30,6 +51,8 @@ const openModalPostSlice = createSlice({
 export default openModalPostSlice.reducer;
 
 export const { openModalPostAction } = openModalPostSlice.actions;
-export const selectorOpenModalPost = (state: {
-  openModalPostSlice: InitialState;
-}) => state.openModalPostSlice;
+// export const selectorOpenModalPost = (state: {
+//   openModalPostSlice: InitialStateModalPost;
+// }) => state.openModalPostSlice;
+export const selectorOpenModalPost = (state: RootState) =>
+  state.openModalPostSlice;

@@ -21,7 +21,7 @@ export interface InitialStateModalPost {
   isModalPostOpen: boolean;
   // text?: string;
   title: string;
-  image: string;
+  image: string | File;
   description: string;
   contactNumber: string;
   askingPrice: string;

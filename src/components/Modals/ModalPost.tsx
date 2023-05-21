@@ -1,15 +1,11 @@
-import axios from "axios";
-import { ChangeEvent, FormEvent, MouseEvent, useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
+import { ChangeEvent, FormEvent, MouseEvent, useEffect } from "react";
 import useAxiosInterceptor from "../../hooks/authHooks/useAxiosInterceptor";
 import useModalPost_formatNum from "../../hooks/ModalPostHooks/useModalPost_formatNum";
-import { getAllPosts } from "../../redux/createAsyncThunk/getAllPosts";
 import {
-  useDispatchAsyncThunk,
+  // useDispatchAsyncThunk,
   useDispatchTyped,
   useSelectorTyped,
 } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
-import { selectorOpenModalPostButtonValue } from "../../redux/slices/modalPostButtonValueSlice";
 import {
   selectorOpenModalPostEmptyFieldValue,
   setModalPostEmptyFieldValueAction,
@@ -21,14 +17,22 @@ import {
   openModalPostAction,
   selectorOpenModalPost,
 } from "../../redux/slices/openModalPostSlice";
-import { selectVerifyUser } from "../../redux/slices/verifySlice";
-import modalPost_checkEmptyValueFN from "../../utilities/modalPost_FN/modalPost_checkEmptyValueFN";
 import { Currency, PostState } from "../../utilities/Types/modalPostTypes";
 import LoadingModalPost from "../Loading/LoadingModalPost";
 import ModalPost_Create_or_Edit_Button from "./ModalPost_Create_or_Edit_Button";
 // import ModalText from "./ModalText";
 
 const ModalPost = () => {
+  // VERY IMPORTANT CALL:
+  useAxiosInterceptor();
+  // Otherwise my intercepted axiosCredentials is FAILING inside my
+  // createAsyncThunk `getAllPosts`() -> because Redux can't call a Hook
+  // so I forgot and have removed this one & all my App bugs started:
+  // I couldn't retrieve my Data.
+  // So I'm calling it here but I might as well move it inside my App.tsx
+  // so that issues future won't happen in the future,
+  // but I must test Performance first before callinng it inside App.tsx.
+
   // const [loading, setLoading] = useState<boolean>(false);
   const loading = useSelectorTyped<boolean>(selectorOpenModalPostLoading);
   if (loading) {
@@ -60,11 +64,6 @@ const ModalPost = () => {
     // currency,
   } = modalPostState as InitialStateModalPost;
   const dispatchTyped = useDispatchTyped();
-  const axiosCredentials = useAxiosInterceptor();
-  const { user_name, user_email } = useSelectorTyped(selectVerifyUser);
-  const modalPostButtonValue = useSelectorTyped(
-    selectorOpenModalPostButtonValue
-  );
 
   useEffect(() => {
     if (isModalPostOpen) {
@@ -136,6 +135,8 @@ const ModalPost = () => {
     const capitalizedValue =
       typeof valueCheck === "string" && // this already is enough of a fix
       (valueCheck as string).charAt(0).toUpperCase() + valueCheck.slice(1);
+    // Now I'm using 'capitalized' CSS style and I do can keep this above
+    // because that's how it's sent to backend server for now.
 
     dispatchTyped(
       openModalPostAction({
@@ -146,6 +147,40 @@ const ModalPost = () => {
           name === "image" && files !== null ? files[0] : capitalizedValue,
       })
     );
+    // Issue: title was not limited to 50 characters (SQL Limits it to 50)
+    if (name === "image" && files !== null) {
+      dispatchTyped(
+        openModalPostAction({
+          ...modalPostState,
+          ["image"]: files[0],
+        })
+      );
+    }
+    console.log("modalPostState.title.length", modalPostState.title.length);
+    console.log(
+      "modalPostState.title.length <= 50",
+      modalPostState.title.length <= 50
+    );
+    console.log(
+      `name === "title" &&
+    typeof capitalizedValue === "string" &&
+    modalPostState.title.length <= 50`,
+      name === "title" &&
+        typeof capitalizedValue === "string" &&
+        modalPostState.title.length <= 50
+    );
+    if (name === "title" && typeof capitalizedValue === "string") {
+      dispatchTyped(
+        openModalPostAction({
+          ...modalPostState,
+          ["title"]:
+            capitalizedValue.length <= 50
+              ? capitalizedValue
+              : modalPostState.title,
+        })
+      );
+    }
+
     // setIsEmptyFieldValue(false);
     // Updated redux reusability:
     dispatchTyped(
@@ -250,82 +285,6 @@ const ModalPost = () => {
   // can't be empty" will become VISIBLE, then the next handleChange FN will
   // hide the P tag text of "Fields can't be empty" by setIsEmptyFieldValue(false)
   // There's more workarounds but this is "cheapest" CPU-wise.
-
-  const dispatchAsyncThunk = useDispatchAsyncThunk();
-
-  // // const submitPost = async (e: MouseEvent<HTMLButtonElement>) => {
-  // const submitPost = async (e: FormEvent<HTMLButtonElement>) => {
-  //   e.preventDefault();
-  //   console.count("submitPost click");
-  //   try {
-  //     if (modalPost_checkEmptyValueFN(modalPostState)) {
-  //       const formData = new FormData();
-  //       // formData.append("title", modalPostState.title);
-  //       // formData.append("image", modalPostState.image);
-
-  //       // ... Alternative loop for DRY:
-  //       // for (const key in modalPostState) {
-  //       //   formData.append(key, modalPostState[key]); // TypeScript errors
-  //       // }
-  //       // Alternatively for alternative:
-  //       Object.entries(modalPostState).forEach(([key, value]) => {
-  //         if (key === "askingPrice") {
-  //           // Remove dots/commas for the 'price' number
-  //           formData.append(key, deformatNumber(value));
-  //         }
-  //         //  else {
-  //         // UPDATE: for reusability to NOT include isModalPostOpen
-  //         else if (key !== "isModalPostOpen") {
-  //           formData.append(key, value);
-  //         }
-  //       });
-  //       formData.append("user_name", user_name as string);
-  //       formData.append("user_email", user_email as string);
-
-  //       // Start Loading
-  //       setLoading(true);
-  //       const { data } = await axiosCredentials.post(
-  //         `/api/v1/post/createpost`,
-  //         formData,
-  //         {
-  //           headers: {
-  //             "Content-Type": "multipart/form-data",
-  //           },
-  //         }
-  //       );
-  //       // console.log("submitpost DATA:", data);
-  //       if (data?.isSuccessful) {
-  //         setLoading(false); // Stop Loading
-  //         dispatchTyped(
-  //           openModalPostAction({
-  //             isModalPostOpen: false,
-  //             title: "",
-  //             image: "",
-  //             description: "",
-  //             contactNumber: "",
-  //             askingPrice: "",
-  //             currency: "USD",
-  //           })
-  //         );
-  //       } // Resets fields back to initial values
-  //       setShowModalFN(); // Close modal
-  //       dispatchAsyncThunk(getAllPosts()); // WIll have to modify since
-  //       // ^ the logic would be to show 2 posts per page
-  //       // so instead I'll just run the LIMIT 2 SQL command, because
-  //       // whenever User creates a post -> show him latest posts.
-  //     } else {
-  //       // Else if fields are empty
-  //       setIsEmptyFieldValue(true); // Shows the 'Fields can't be empty'
-  //     }
-  //   } catch (err) {
-  //     if (axios.isAxiosError(err)) {
-  //       // console.log("submitPost err:", err);
-  //       // console.log("submitPost err?.response:", err?.response);
-  //       console.log("submitPost err?.response?.data:", err?.response?.data);
-  //       setLoading(false);
-  //     }
-  //   }
-  // };
 
   return (
     <>

@@ -66,31 +66,33 @@
     intercepted Axios in the Async Thunk Redux file **BUT** imported from Axios.ts (the **EXACT** 'reference Axios instance object' that's being intercepted in my `useAxiosInterceptor` custom Hook) just to make sure
     my POST/PUT Requests won't fail by using a non-intercepted Axios instance. A lot of workaround indeed. Overall forgetting to call `useAxiosInterceptor` would lead to Async Thunk failing on me and causing bugs to my App.
 
-- And I also wouldn't be able to call a DISPATCH function in my Redux file to fill my `ModalPost.tsx` input fields with the VALUES matching the `post_id` that the user has clicked on, because `useDispatch` is a Hook that also **can NOT** be called inside Redux files.
+    - And I also wouldn't be able to call a DISPATCH function in my Redux file to fill my `ModalPost.tsx` input fields with the VALUES matching the `post_id` that the user has clicked on, because `useDispatch` is a Hook that also **can NOT** be called inside Redux files.
+    - **UPDATE on the issue**: the bug happened. I was cleaning up my `ModalPost.tsx` (because I'm splitting my component into parts) & then all of a sudden I couldn't retrieve data in my `/Marketplace` because I incidently removed my `useAxiosInterceptor()` from my `ModalPost` and my `/refreshtoken` endpoint wasn't being hit because the `axiosCredentials` instance inside of my `getAllPosts` Async Thunk wasn't intercepting the 403 Request so it ended up with 401 Requests and 0 Data being displayed on the screen: I've jumped to check my PostgreSQL database and the Data was there then I reminded myself of the issue and re-added the code `useAxiosInterceptor` call inside `ModalPost`.
+      - I'm thinking to avoid such future issues I may just call my `useAxiosInterceptor()` in the top upmost level of component - that's my `App.tsx` however I won't do it for now since I need to test Performance for such a modification. So the possible issues in the future exists if Response is not being intercepted in my future Async Thunks then I must just call `useAxiosInterceptor()` **AT LEAST** in the component where I'm calling that given Async Thunk, otherwise once I'm finished with Performance testing and if it turns out there's no Performance hits by calling `useAxiosInterceptor()` inside `App.tsx` then I'll just do that once and that would **also mean** that I **won't** need to ever again call `useAxiosInterceptor()` but instead directly import the intercepted `axiosCredentials` Axios object from my `axios.ts` file and use it across any component.
 
-6. My personal challenge on the Frontend's React part was to _ALWAYS_ use Redux Toolkit & never passing a props to Children Components, however the `Post.tsx` had a perfect spot for my `Post_Action_Buttons` child component to receive 2 props: `post.user_id` and `post.post_id` since those "EDIT" and "DELETE" buttons will be the "deepest children" -> 1 level deep, I thought it was very fine to pass those values as props since a button can never go any deeper than that. Even if I had anything else in my mind for the future: I do have those 2 props that I can further pass them by Redux Toolkit to the Children's of `Post_Action_Buttons` component.
-7. Update on `openModalPostSlice` -> I have created this new action that will be used
-   ONLY to toggle ModalPost to open/close; I've been thinking
-   to separate those states as "ModalPostData" and keep this
-   one with a single 'isModalPostOpen' state, but I decided
-   not to, because I'm filtering this state out of my FormData
-   but I don't have to do it because sending my isModalPostOpen
-   state data to the backend doesn't do any harm.
-   -> Hence I can even use it for an evidence in Express: if
-   req.body.isModalPostOpen is missing, that could be a hacker
-   trying to modify a Post data on behalf of the victimized
-   user, but I won't do it for now because it requires testing.
-8. `ModalPostSuccessText` logic for now is that
-   setShowModalFN ALWAYS calls getAllPosts() Async Thunk,
-   in the future for reusability I can use my new state in my
-   updated slice `modalPostSuccessTextSlice`:'`typeOfResponse`' state
-   to conditionally render different BUTTONS & its `onClick`'s.
-   (As well as pagination future plans will requires new Thunk.)
-   Example:
-   - Failed response will move the User back to `ModalPost` (re-open)
-     with its field input states values UNCHANGED
-     VS a successful response will trigger Async Thunk to trigger
-     a re-render of my `MarketPlace.tsx` & **_also_** resets `ModalPost`\`s input fields state values after that successful response.
+6.  My personal challenge on the Frontend's React part was to _ALWAYS_ use Redux Toolkit & never passing a props to Children Components, however the `Post.tsx` had a perfect spot for my `Post_Action_Buttons` child component to receive 2 props: `post.user_id` and `post.post_id` since those "EDIT" and "DELETE" buttons will be the "deepest children" -> 1 level deep, I thought it was very fine to pass those values as props since a button can never go any deeper than that. Even if I had anything else in my mind for the future: I do have those 2 props that I can further pass them by Redux Toolkit to the Children's of `Post_Action_Buttons` component.
+7.  Update on `openModalPostSlice` -> I have created this new action that will be used
+    ONLY to toggle ModalPost to open/close; I've been thinking
+    to separate those states as "ModalPostData" and keep this
+    one with a single 'isModalPostOpen' state, but I decided
+    not to, because I'm filtering this state out of my FormData
+    but I don't have to do it because sending my isModalPostOpen
+    state data to the backend doesn't do any harm.
+    -> Hence I can even use it for an evidence in Express: if
+    req.body.isModalPostOpen is missing, that could be a hacker
+    trying to modify a Post data on behalf of the victimized
+    user, but I won't do it for now because it requires testing.
+8.  `ModalPostSuccessText` logic for now is that
+    setShowModalFN ALWAYS calls getAllPosts() Async Thunk,
+    in the future for reusability I can use my new state in my
+    updated slice `modalPostSuccessTextSlice`:'`typeOfResponse`' state
+    to conditionally render different BUTTONS & its `onClick`'s.
+    (As well as pagination future plans will requires new Thunk.)
+    Example:
+    - Failed response will move the User back to `ModalPost` (re-open)
+      with its field input states values UNCHANGED
+      VS a successful response will trigger Async Thunk to trigger
+      a re-render of my `MarketPlace.tsx` & **_also_** resets `ModalPost`\`s input fields state values after that successful response.
 
 ##### Further plans (_reminders for me_)
 

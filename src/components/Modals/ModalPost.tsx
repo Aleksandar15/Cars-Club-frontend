@@ -9,6 +9,7 @@ import {
   useDispatchTyped,
   useSelectorTyped,
 } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
+import { selectorOpenModalPostButtonValue } from "../../redux/slices/modalPostButtonValueSlice";
 
 import {
   InitialStateModalPost,
@@ -40,6 +41,9 @@ const ModalPost = () => {
   const axiosCredentials = useAxiosInterceptor();
   const [loading, setLoading] = useState<boolean>(false);
   const { user_name, user_email } = useSelectorTyped(selectVerifyUser);
+  const modalPostButtonValue = useSelectorTyped(
+    selectorOpenModalPostButtonValue
+  );
 
   useEffect(() => {
     if (isModalPostOpen) {
@@ -460,7 +464,18 @@ const ModalPost = () => {
                       // // className={"clickOKbutton mt-5"}
                       // className={"mt-4"}
                     >
-                      CREATE A POST
+                      {/* CREATE A POST */}
+                      {/* UPDATE: in order to show the dynamic
+                      'CREATE' or 'EDIT' a POST
+                      I'll use my custom function which returns Boolean */}
+                      {/* WORKS BUT ISSUES once VALUES are FILLED:
+                      it shows a "EDIT A POST" instead of "CREATE" */}
+                      {/* {modalPost_checkEmptyValueFN(modalPostState)
+                        ? "EDIT"
+                        : "CREATE"}{" "}
+                      A POST */}
+                      {/* ^^^ caused UI/UX issues */}
+                      {modalPostButtonValue}
                     </Button>
                   </form>
                 </div>

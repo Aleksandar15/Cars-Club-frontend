@@ -6,6 +6,7 @@ import refreshTokenSlice from "../slices/refreshTokenSlice";
 import openModalPostSlice from "../slices/openModalPostSlice";
 import getAllPosts from "../createAsyncThunk/getAllPosts";
 import userInfoSlice from "../slices/userInfoSlice";
+import modalPostButtonValueSlice from "../slices/modalPostButtonValueSlice";
 
 const rootReducer = combineReducers({
   // searchBar,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   openModalPostSlice,
   getAllPosts,
   userInfoSlice,
+  modalPostButtonValueSlice,
 });
 
 // While this RootState works,

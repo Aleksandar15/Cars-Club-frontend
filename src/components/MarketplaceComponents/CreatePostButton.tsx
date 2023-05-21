@@ -3,6 +3,7 @@ import {
   useDispatchTyped,
   useSelectorTyped,
 } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
+import { setModalPostButtonValueAction } from "../../redux/slices/modalPostButtonValueSlice";
 import {
   openModalPostAction,
   selectorOpenModalPost,
@@ -27,6 +28,11 @@ const CreatePostButton = () => {
           onClick={() => {
             dispatchTyped(
               openModalPostAction({ ...modalPostState, isModalPostOpen: true })
+            );
+            dispatchTyped(
+              setModalPostButtonValueAction({
+                modalPostButtonValue: "CREATE A POST",
+              })
             );
           }}
         >

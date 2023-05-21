@@ -72,7 +72,9 @@ function Post() {
           return (
             <div className="post" key={post.post_id}>
               <div className="post-header">
-                <h2>{post.post_title}</h2>
+                <h2 style={{ textTransform: "capitalize" }}>
+                  {post.post_title}
+                </h2>
                 <div className="post-actions">
                   {post.user_id === user_id ||
                   // AT LEAST it's Post's owner, otherwise moderators:

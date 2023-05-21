@@ -503,3 +503,11 @@
 // };
 
 // export default ModalPost;
+
+// FIXING Netlify BUILD Error:
+// src/components/Modals/tests/example1_ModalPost.tsx(1,1):
+// error TS1208: 'example1_ModalPost.tsx' cannot be compiled
+// under '--isolatedModules' because it is considered a global script file.
+// Add an import, export, or an empty 'export {}' statement to make it a module.
+
+export {};

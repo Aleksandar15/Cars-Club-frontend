@@ -103,6 +103,7 @@
     - I see some workarounds on selectors state (**_by slice Redux files_**) I had in `modalDeletePostSlice.ts` and `openModalTextSlice.tsx` (should be `.ts` as well).
     - Also works for `formSearchCarsSlice.ts`.
       - However as a side-note I must always make sure to exprot the Types in cases where I tried to import the from Slices directly but I've forgotten to `export` them first.
+    - Update#3: oh well I had such an _SPECIFIC_-STATE export of Redux State inside of my `getAllPosts` Async Thunk & Slice combinations; & I will also use that such same exporting logic in my new `getSortedPosts.ts`. -> BY THAT I **FIGURED A MISTAKE I WAS DOING** is that I had imported the InitialState TYPES of the slices instead of creating a separate Types for the received States, so my fixed at this same #11 point about 'A bunch of TypeScript issues' was an easyfix: create a separate Types files for each of the components INSTEAD of importing them from the Slice's InitialState's Types.
 12. Very important decisions about my `FormSearchCars.tsx` Component:
     New logic: I must have to send a different state of the
     finalized searchCarsFieldsState.carNameInputField STATE

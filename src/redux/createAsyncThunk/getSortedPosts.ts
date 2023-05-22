@@ -43,8 +43,9 @@ export const getSortedPosts = createAsyncThunk<
       // UPDATED LOGIC:
       const { data }: { data: ReceivedDataSortedPosts } =
         await axiosCredentials.get<ReceivedDataSortedPosts>(
-          `/api/v1/getsortedposts?limit=${limit}&offset=${offset}&carNameTitle=${carNameTitle}`
+          `/api/v1/post/getsortedposts?limit=${limit}&offset=${offset}&carNameTitle=${carNameTitle}`
         );
+      console.log("getSortedPosts ASync Thunk DATA:", data);
       return data;
     } catch (error) {
       // // Handle any errors here

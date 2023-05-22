@@ -99,7 +99,7 @@ const initialState: InitialState = {
   error: null,
 };
 const postsSlice = createSlice({
-  name: "posts",
+  name: "postsPostedZXC",
   initialState,
   reducers: {
     postsReceived: {
@@ -110,6 +110,14 @@ const postsSlice = createSlice({
       prepare: (payload: PostType[]) => {
         return { payload };
       },
+    },
+    // Reducer for DELETE Button in 'ModalDeletePost'
+    filterPostsByIdAction(state: InitialState, action: PayloadAction<string>) {
+      const postId = action.payload;
+      const filteredPosts = state.posts.filter(
+        (post) => post.post_id !== postId
+      );
+      state.posts = filteredPosts;
     },
   },
   extraReducers: (builder) => {
@@ -143,3 +151,6 @@ export const selectorPostsStatus = (state: RootState) =>
   state?.getAllPosts?.status;
 export const selectorPostsError = (state: RootState) =>
   state?.getAllPosts?.error;
+
+// For my ModalDeletePost
+export const { filterPostsByIdAction } = postsSlice.actions;

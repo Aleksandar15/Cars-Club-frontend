@@ -3,7 +3,10 @@ import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import useAxiosInterceptor from "../../hooks/authHooks/useAxiosInterceptor";
-import { getAllPosts } from "../../redux/createAsyncThunk/getAllPosts";
+import {
+  filterPostsByIdAction,
+  getAllPosts,
+} from "../../redux/createAsyncThunk/getAllPosts";
 import {
   useDispatchAsyncThunk,
   useDispatchTyped,
@@ -72,7 +75,18 @@ const ModalDeletePost = () => {
         console.log("Delete DATA:", data);
 
         if (data?.isSuccessful) {
-          setFlag(false);
+          setFlag(false); // Allow for subsequent requests
+
+          // Filted the Deleted Post out of Posts state in Post.tsx
+          dispatchTyped(filterPostsByIdAction(post_post_id as string));
+
+          dispatchTyped(
+            // Close ModalDeletePost
+            openModalDeletePostAction({
+              isModalDeletePostOpen: !isModalDeletePostOpen,
+              text: "",
+            })
+          );
         }
 
         // LOGIC3: I think I will inded dispatch an sorting-action
@@ -85,8 +99,8 @@ const ModalDeletePost = () => {
         // // On success either a getAllPosts() or .filter the POSTS?
         // // which may introduce complications with SORT method (?) hm.
         // // /marketplace on Successful CREATION:
-        dispatchAsyncThunk(getAllPosts()); // WIll have to modify since
-        // // ^ the logic would be to show 2 posts per page
+        // dispatchAsyncThunk(getAllPosts()); // WIll have to modify
+        // // ^ since the future logic would be to show 2 posts per page
         // // so instead I'll just run the LIMIT 2 SQL command, because
         // // whenever User creates a post -> show him latest posts.
       }

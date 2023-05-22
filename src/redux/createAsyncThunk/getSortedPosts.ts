@@ -14,19 +14,30 @@ export const getSortedPosts = createAsyncThunk<
   { state: RootState }
 >(
   "posts/getSortedPosts",
-  async ({ limit, offset, carTitleName }, { getState }) => {
+  async function (
+    { limit, offset, carTitleName },
+    // Part below 'getState' is optional: to get current state
+    // Use cases:
+    // example: to conditionally dispatch actions
+    // based on the current state
+    // or to perform some logic based on the state values.
+    { getState }
+  ) {
     try {
       // Perform sorted API GET request.
       // However I can also give it yet another params
-      // like 'sortByName' -> so in the future I can have
+      // like '/sortByName' -> so in the future I can have
       // different kinds of sorting
       // BUT on the backend server I'd have to have a lot of
       // code with condtiional checkings against req.params &
       // to .query against Database accordingly.
-      const response = await axiosCredentials.get(
+      // NOTE that the PARAM can come from Arguments as well.
+      const { data } = await axiosCredentials.get<{
+        gotSortedPosts: PostSorted[];
+      }>(
         `/api/v1/getsortedposts?limit=${limit}&offset=${offset}&cartTitleName=${carTitleName}`
       );
-      return response.data;
+      return data?.gotSortedPosts;
     } catch (error) {
       // // Handle any errors here
       // throw new Error("Failed to fetch posts");

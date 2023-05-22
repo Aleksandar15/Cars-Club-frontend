@@ -129,6 +129,8 @@
     if it's the same then the `handleSearchFN` clicks won't
     re-call the `useEffect` inside `Post.tsx` & Thus no re-fetch would be ever called if input hasn't changed (or any other value in the future updates that won't change===no re-fetch===by no re-calling of the `useEffect` inside `Post.tsx`). I consider that to be a very smart move or at least a much smarter move than my initial plan.
 
+    AGAIN: My final goal is to both have a pagination & button clicks on numbers at the bottom as re-fetching BUT also on Searching a Car to keep the same SORTING & page: ... Thinking about it now I may need to reset the LIMITS and OFFSET on my backend server: because the logic is not gonna go as planned if I keep the same logic for Search Button it would be
+
 ##### Further plans (_reminders for me_)
 
 1. Have an "edit username" & "edit e-mail" features, but that **will** require me to also run SQL Query against my PostgreSQL database `posts` table to run `UPDATE posts SET post_created_by_username=$1 WHERE user_id=$2` & respectively if I've choosen to show e-mail.

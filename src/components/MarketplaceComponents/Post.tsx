@@ -11,6 +11,10 @@ import {
   selectorPostsStatus,
 } from "../../redux/createAsyncThunk/getAllPosts";
 import {
+  getSortedPosts,
+  selectorSortedPostsData,
+} from "../../redux/createAsyncThunk/getSortedPosts";
+import {
   useDispatchAsyncThunk,
   useDispatchTyped,
   useSelectorTyped,
@@ -45,7 +49,9 @@ function Post() {
 
   const dispatchAsyncThunk = useDispatchAsyncThunk();
   const dispatchTyped = useDispatchTyped();
-  const posts = useSelectorTyped(selectorPostsData);
+  // const posts = useSelectorTyped(selectorPostsData);
+  const posts = useSelectorTyped(selectorSortedPostsData);
+  console.log("IMPORTANT posts Post.tsx:", posts);
   const postsStatus = useSelectorTyped(selectorPostsStatus);
   const postsError = useSelectorTyped(selectorPostsError);
 
@@ -56,29 +62,28 @@ function Post() {
   useEffect(() => {
     // dispatchAsyncThunk(getAllPosts());
 
-    // NOTE: IF i have 2 subsequental calls
-    // User will get logged out because of my backend rule
-    // 1 refreshToken/1 request -> 2nd Request logs out the User.
-    // UPDATE:
-    let flag = true;
-    const getTotalPostsFN = async () => {
-      const { data } = await axiosCredentials.get(
-        `/api/v1/post/getsortedposts/${5}/${3}`
-      );
-      console.log("getTotalPostsFN DATA:", data);
+    // In the next logic I'd have to check if
+    // sessionStorage
+    // has 'limit' and 'offset'
+    // ^->if user has refreshed=session isn't lost;
+    // However if it doesn't exist then provide the initial numbers.
+    dispatchAsyncThunk(
+      getSortedPosts({ limit: 5, offset: 1, carNameTitle: "" })
+    );
 
-      // dispatchTyped()
+    // const getTotalPostsFN = async () => {
+    //   const { data } = await axiosCredentials.get(
+    //     `/api/v1/post/getsortedposts/${5}/${3}`
+    //   );
+    //   console.log("getTotalPostsFN DATA:", data);
 
-      // Set it in here as well as in PaginationMarketplace
-      sessionStorage.setItem("total_posts", data.total_posts);
-    };
+    //   // dispatchTyped()
 
-    if (flag) {
-      getTotalPostsFN();
-    }
-    return () => {
-      flag = false;
-    };
+    //   // Set it in here as well as in PaginationMarketplace
+    //   sessionStorage.setItem("total_posts", data.total_posts);
+    // };
+
+    // No need for flags since I only will call it ONCE on Render
   }, []);
   // console.log("posts:", posts);
   // console.log("postsStatus:", postsStatus);

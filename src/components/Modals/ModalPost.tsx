@@ -348,6 +348,10 @@ const ModalPost = () => {
                         onChange={handlePostChanges}
                         type="file"
                         accept="image/jpeg, image/jpg, image/png"
+                        style={{
+                          // margin: "auto", // No effects for now
+                          maxWidth: "230px",
+                        }}
                       />
                     </div>
                     <label className="me-1 fw-bold mt-2" htmlFor="description">
@@ -368,7 +372,13 @@ const ModalPost = () => {
                       onChange={handleTextAreaChanges}
                       rows={3}
                       cols={33}
+                      // cols={30} // Might be needed for Galaxy S8+ (DevTools)
                       maxLength={1000}
+                      style={{
+                        // maxWidth: "250px", // overrides my COLS
+                        resize: "both", // lets it span horizontal & vertical
+                        // overflow: "auto", // unnecessary
+                      }}
                     />
                     <div>
                       <label className="me-1 fw-bold mt-2" htmlFor="contact">

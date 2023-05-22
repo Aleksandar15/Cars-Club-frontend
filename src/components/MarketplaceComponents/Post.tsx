@@ -132,7 +132,16 @@ function Post() {
                   />
                 </div>
               </div>
-              <h6 className="mt-3 fw-bold">Description:</h6>
+              <p className="mt-3">
+                <span className="fw-bold">Posted by:</span>{" "}
+                {post.post_created_by_user_name}
+              </p>
+              <h6
+                // className="mt-3 fw-bold"
+                className=" fw-bold"
+              >
+                Description:
+              </h6>
               <p
                 style={{
                   wordBreak: "break-word", // Avoids breaking UI/UX
@@ -153,10 +162,6 @@ function Post() {
               <p>
                 <span className="fw-bold">Contact number:</span>{" "}
                 {post.post_contact_number}
-              </p>
-              <p>
-                <span className="fw-bold">Posted by:</span>{" "}
-                {post.post_created_by_user_name}
               </p>
               <p>
                 <span className="fw-bold">Date posted:</span>{" "}

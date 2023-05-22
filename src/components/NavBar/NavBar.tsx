@@ -1,6 +1,7 @@
 import { Navbar as NavBarByBS, Container, Nav } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { useSelectorTyped } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
+import { selectorOpenModalDeletePost } from "../../redux/slices/modalDeletePostSlice";
 import { selectorOpenModalPostSuccessText } from "../../redux/slices/modalPostSuccessTextSlice";
 import { selectorOpenModalPost } from "../../redux/slices/openModalPostSlice";
 import { selectorOpenModalText } from "../../redux/slices/openModalTextSlice";
@@ -17,6 +18,9 @@ const NavBar = () => {
   const { isModalPostSuccessTextOpen } = useSelectorTyped(
     selectorOpenModalPostSuccessText
   );
+  const { isModalDeletePostOpen } = useSelectorTyped(
+    selectorOpenModalDeletePost
+  );
 
   // Logic behind `sticky`: must have "top" or UNDEFINED value, so if any of
   // the Modals are open (their state is TRUE) then set 'sticky' to UNDEFINED
@@ -29,6 +33,8 @@ const NavBar = () => {
           : isModalPostOpen
           ? undefined
           : isModalPostSuccessTextOpen
+          ? undefined
+          : isModalDeletePostOpen
           ? undefined
           : "top"
       }

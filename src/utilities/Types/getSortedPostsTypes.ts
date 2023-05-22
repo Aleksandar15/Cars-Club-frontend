@@ -28,5 +28,5 @@ export interface GetSortedPostsState {
 export interface GetSortedPostsPayload {
   limit: number;
   offset: number;
-  carTitleName: string;
+  carNameTitle: string;
 }

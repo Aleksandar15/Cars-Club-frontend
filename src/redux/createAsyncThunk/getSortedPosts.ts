@@ -15,7 +15,7 @@ export const getSortedPosts = createAsyncThunk<
 >(
   "posts/getSortedPosts",
   async function (
-    { limit, offset, carTitleName },
+    { limit, offset, carNameTitle },
     // Part below 'getState' is optional: to get current state
     // Use cases:
     // example: to conditionally dispatch actions
@@ -35,7 +35,7 @@ export const getSortedPosts = createAsyncThunk<
       const { data } = await axiosCredentials.get<{
         gotSortedPosts: PostSorted[];
       }>(
-        `/api/v1/getsortedposts?limit=${limit}&offset=${offset}&cartTitleName=${carTitleName}`
+        `/api/v1/getsortedposts?limit=${limit}&offset=${offset}&carNameTitle=${carNameTitle}`
       );
       return data?.gotSortedPosts;
     } catch (error) {

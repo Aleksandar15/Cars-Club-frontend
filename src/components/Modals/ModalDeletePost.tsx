@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import useAxiosInterceptor from "../../hooks/authHooks/useAxiosInterceptor";
@@ -20,10 +20,12 @@ const ModalDeletePost = () => {
   // const { isModalDeletePostOpen } = useSelector(selectorOpenModal);
   const { isModalDeletePostOpen, text, post_post_id, post_user_id } =
     useSelectorTyped(selectorOpenModalDeletePost);
-  console.log("post_post_id,", post_post_id, " post_user_id:", post_user_id);
+  // console.log("post_post_id:", post_post_id,
+  // "post_user_id:", post_user_id);
   const dispatchTyped = useDispatchTyped();
   const dispatchAsyncThunk = useDispatchAsyncThunk();
   const axiosCredentials = useAxiosInterceptor();
+  const [flag, setFlag] = useState<boolean>(false);
 
   useEffect(() => {
     if (isModalDeletePostOpen) {
@@ -59,31 +61,37 @@ const ModalDeletePost = () => {
 
   const deletePostModalFN = async () => {
     try {
-      console.log("deleting");
-      const { data } = await axiosCredentials.delete(
-        `/api/v1/post/deletepost/${post_post_id}/${post_user_id}`
-      );
+      setFlag(true); // Disables 'YES' button.
+      if (flag === false) {
+        // Only try to delete if FLAG = false
+        console.log("deleting");
+        const { data } = await axiosCredentials.delete(
+          `/api/v1/post/deletepost/${post_post_id}/${post_user_id}`
+        );
 
-      console.log("Delete DATA:", data);
+        console.log("Delete DATA:", data);
 
-      if (data?.isSuccessful) {
+        if (data?.isSuccessful) {
+          setFlag(false);
+        }
+
+        // LOGIC3: I think I will inded dispatch an sorting-action
+        // which is soon to be built, and thus if I show 2 posts/1 page
+        // and there will be only 2 posts left instead of Loading the
+        // screen & showing a new fresh 2 posts, however in a case
+        // where I may show more Posts elements -> I'd rather prefer
+        // to have a .filter method on `Posts` state in Post.tsx.
+        // // LOGIC2:
+        // // On success either a getAllPosts() or .filter the POSTS?
+        // // which may introduce complications with SORT method (?) hm.
+        // // /marketplace on Successful CREATION:
+        dispatchAsyncThunk(getAllPosts()); // WIll have to modify since
+        // // ^ the logic would be to show 2 posts per page
+        // // so instead I'll just run the LIMIT 2 SQL command, because
+        // // whenever User creates a post -> show him latest posts.
       }
-
-      // LOGIC3: I think I will inded dispatch an sorting-action
-      // which is soon to be built, and thus if I show 2 posts/1 page
-      // and there will be only 2 posts left instead of Loading the
-      // screen & showing a new fresh 2 posts, however in a case
-      // where I may show more Posts elements -> I'd rather prefer
-      // to have a .filter method on `Posts` state in Post.tsx.
-      // // LOGIC2:
-      // // On success either a getAllPosts() or .filter the POSTS?
-      // // which may introduce complications with SORT method (?) hm.
-      // // /marketplace on Successful CREATION:
-      dispatchAsyncThunk(getAllPosts()); // WIll have to modify since
-      // // ^ the logic would be to show 2 posts per page
-      // // so instead I'll just run the LIMIT 2 SQL command, because
-      // // whenever User creates a post -> show him latest posts.
     } catch (err) {
+      setFlag(false);
       if (axios.isAxiosError(err)) {
         // console.log("editPost err:", err);
         // console.log("editPost err?.response:", err?.response);
@@ -177,6 +185,7 @@ const ModalDeletePost = () => {
                 // I have is MARGIN & width which would be made
                 // inline as well.
                 style={{ margin: "auto", width: "150px" }}
+                disabled={flag}
               >
                 YES
               </Button>

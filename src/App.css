@@ -133,7 +133,7 @@ background: blue;
 }
 .spanModalClickOutside{
   font-size: 10.1px;
-  position: relative;
+  /* position: relative; */
   /* left: 39%; */
   top: 0px;
   font-weight: bold;
@@ -150,6 +150,8 @@ background: blue;
   It makes more logical sense to "NEED"
   to use padding:auto-> but padding is
   useless===does nothing in my case. */
+  /* Update2: for my .spanModalClickOutside
+  I no longer even need position: relative */
 }
 /* ModalText Button */
 .clickOKbutton{
@@ -160,8 +162,20 @@ background: blue;
   color: aqua;
   /* Above has the button wider, 
   below is to make the button smaller: */
-  max-width: 150px;
-  left: 63.5%;
+  /* max-width: 150px; */
+  /* left: 63.5%; */
+  /* NEW: */
+  margin: auto;
+  width: 150px;
+  /* Padding has NO effect. */
+  /* padding:10000px; */
+  /* font-size: 150.5px; */
+  /* UPDATE2: I'll no longer use this class
+  for some of my Modals, and will slowly
+  remove it from all since styling has no effect
+  because inline-styles wins && the ONLY effects
+  I have is MARGIN & width which would be made
+  inline as well. */
 }
 /* ModalPostSuccessText Button */
 .clickOKbuttonModalPostSuccess{
@@ -192,6 +206,8 @@ background: blue;
   width: 150px;
   /* max-width does nothing in mobile size */
   /* max-width: fit-content; */
+  /* Padding has NO effect. */
+  /* padding:10000px; */
 }
 
 /* NavBar */
@@ -254,8 +270,10 @@ background: blue;
 
 
 /* NEW: */
-    @media (max-width:555px) and (max-height:1000px) {
-      .spanModalClickOutside{
+/* UPDATE: NO LONGER IN USE */
+@media (max-width:555px) and (max-height:1000px) {
+  .spanModalClickOutside{
+        /* UPDATE: NO LONGER IN USE */
         /* left: 11%; */
         /* display: grid; */
         /* padding: 0px; */
@@ -265,7 +283,8 @@ background: blue;
         /* With max-width->I don't even need display:flex */
       }
       /* ModalPostSuccessText Button */
-    .clickOKbuttonModalPostSuccess{
+      .clickOKbuttonModalPostSuccess{
+      /* UPDATE: NO LONGER IN USE */
       position: relative;
       /* left: 39%; */
       color: aqua;

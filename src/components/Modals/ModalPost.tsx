@@ -52,7 +52,9 @@ const ModalPost = () => {
   // to use 'flag' somewhere, this will be one more guard.
 
   // const { isModalPostOpen, text } = useSelectorTyped(selectorOpenModalPost);
-  const modalPostState = useSelectorTyped(selectorOpenModalPost);
+  const modalPostState = useSelectorTyped<InitialStateModalPost>(
+    selectorOpenModalPost
+  );
   // I avoided direct destructure so I can pass spread syntax when updating.
   const {
     isModalPostOpen,

@@ -5,6 +5,7 @@ import {
 } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
 import { setModalPostButtonValueAction } from "../../redux/slices/modalPostButtonValueSlice";
 import {
+  InitialStateModalPost,
   openModalPostAction,
   selectorOpenModalPost,
 } from "../../redux/slices/openModalPostSlice";
@@ -14,7 +15,9 @@ const CreatePostButton = () => {
   const dispatchTyped = useDispatchTyped();
   // Update for reusability I must pass the rest of non-empty values
   // / InitiialState's values where TypeScript helped me.
-  const modalPostState = useSelectorTyped(selectorOpenModalPost);
+  const modalPostState = useSelectorTyped<InitialStateModalPost>(
+    selectorOpenModalPost
+  );
 
   return (
     <div>

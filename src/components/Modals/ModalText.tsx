@@ -99,9 +99,10 @@ const ModalText = () => {
             <div
               style={{
                 display: "grid",
-                maxWidth: "300px", //a must to avoid horizontal ScrollBar
-                textAlign: "center",
-                // position: "relative",
+                // // maxWidth: "300px", //a must to use to
+                // ^ avoid horizontal ScrollBar // no longer applies
+                // textAlign: "center",
+                // // // position: "relative",
               }}
             >
               <Button
@@ -109,7 +110,8 @@ const ModalText = () => {
                  text-info mb-2 fw-bold`}
                 type="button"
                 onClick={setShowModalFN}
-                className={"clickOKbutton"}
+                // className={"clickOKbutton"}
+                style={{ margin: "auto", width: "150px" }}
               >
                 OKAY
               </Button>

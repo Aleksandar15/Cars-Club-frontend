@@ -133,14 +133,27 @@ background: blue;
 }
 .spanModalClickOutside{
   font-size: 10.1px;
-  position: relative;
-  left: 39%;
+  /* position: relative; */
+  /* left: 39%; */
   top: 0px;
   font-weight: bold;
   /* color: aqua; */
   color: whitesmoke;
   /* bottom:0; */
+  /* NEW: */
+  /* max-width: fit-content; */
+  /* left: 34%; */
+  /* padding: auto; */
+  margin: auto;
+  /* ^ With margin:auto, now I don't
+  even need the max-width:fit-content;
+  It makes more logical sense to "NEED"
+  to use padding:auto-> but padding is
+  useless===does nothing in my case. */
+  /* Update2: for my .spanModalClickOutside
+  I no longer even need position: relative */
 }
+/* ModalText Button */
 .clickOKbutton{
   font-size: 10.5px;
   position: relative;
@@ -149,8 +162,52 @@ background: blue;
   color: aqua;
   /* Above has the button wider, 
   below is to make the button smaller: */
-  max-width: 150px;
-  left: 63.5%;
+  /* max-width: 150px; */
+  /* left: 63.5%; */
+  /* NEW: */
+  margin: auto;
+  width: 150px;
+  /* Padding has NO effect. */
+  /* padding:10000px; */
+  /* font-size: 150.5px; */
+  /* UPDATE2: I'll no longer use this class
+  for some of my Modals, and will slowly
+  remove it from all since styling has no effect
+  because inline-styles wins && the ONLY effects
+  I have is MARGIN & width which would be made
+  inline as well. */
+}
+/* ModalPostSuccessText Button */
+.clickOKbuttonModalPostSuccess{
+  /* Have NO EFFECT ANYTHING besides
+  max-width, because inline styles overrides. */
+  font-size: 10.5px;
+  position: relative;
+  /* left: 39%; */
+  font-weight: bold;
+  color: aqua;
+  /* Above has the button wider, 
+  below is to make the button smaller: */
+  /* max-width: 150px; */
+  /* left: 63.5%; */
+  /* left: 33.5%; */
+  /* align-items: center; */
+  /* left: 23ex; */
+  /* left: 42vh; */
+  /* display: block; */
+  /* NEW: */
+  /* padding: auto; */
+  /* This below works for screen wider
+  than mobile size, but then the button is too
+  much on the right in mobile size ; UPDATE:
+  I figured that was caused by my @media setup
+  now that I've removed it everything's perfect */
+  margin: auto;
+  width: 150px;
+  /* max-width does nothing in mobile size */
+  /* max-width: fit-content; */
+  /* Padding has NO effect. */
+  /* padding:10000px; */
 }
 
 /* NavBar */
@@ -210,3 +267,47 @@ background: blue;
 
   /* Others */
 }
+
+
+/* NEW: */
+/* UPDATE: NO LONGER IN USE */
+@media (max-width:555px) and (max-height:1000px) {
+  .spanModalClickOutside{
+        /* UPDATE: NO LONGER IN USE */
+        /* left: 11%; */
+        /* display: grid; */
+        /* padding: 0px; */
+        /* margin: 0px; */
+        /* display: flex; */
+        max-width: fit-content;
+        /* With max-width->I don't even need display:flex */
+      }
+      /* ModalPostSuccessText Button */
+      .clickOKbuttonModalPostSuccess{
+      /* UPDATE: NO LONGER IN USE */
+      position: relative;
+      /* left: 39%; */
+      color: aqua;
+      /* Above has the button wider, 
+      below is to make the button smaller: */
+      /* min-width: 150px;
+      left: 33.5%; */
+      /* Fit-Content doesn't do anything
+      since I'm modifying the Bootstrap Button */
+      /* max-width: fit-content; */
+    }
+    .buttonAndSpanModalWrapper{
+      /* Doesn't override my Inline styles
+      so I had to move them all in this App.css
+      from ModalPostSuccessText component */
+      /* UPDATE^ I don't need any of those
+      once I've figured to remove the max-width
+      AT ALL & removed `left:39%` from button
+      & span. BUT I did added margin:auto on both! */
+      max-width: 200px;
+      /* Use either max-width or justify-content, 
+      because my modals have a DIV wrappers so
+      there must be a lot of workarounds */
+      /* justify-content: center; */
+    }
+    }

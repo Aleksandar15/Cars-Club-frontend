@@ -100,6 +100,7 @@ const ModalPostSuccessText = () => {
               maxHeight: "500px",
               // overflow: "hidden", // scroll bar never appears
               overflow: "auto",
+              // display: "inline-block", // Does nothing
             }}
             onClick={(e) => e.stopPropagation()}
             className="mymodal-wrapper"
@@ -126,17 +127,27 @@ const ModalPostSuccessText = () => {
             <div
               style={{
                 display: "grid",
-                maxWidth: "300px", //a must to avoid horizontal ScrollBar
-                textAlign: "center",
-                // position: "relative",
+                // maxWidth: "300px", //a must-use to avoid
+                // // ^-> to avoid horizontal ScrollBar
+                // textAlign: "center",
+                // // // position: "relative",
+                // // // For ModalPostSuccessText Component:
+                // justifyContent: "center", // Doesn't do anything
+                // // ^ if I maxWidth:"300px" then it does centralizes
               }}
+              // Inlin styles overrides my CSS, so I must move
+              // it all inside CSS:
+              // className="buttonAndSpanModalWrapper"
             >
               <Button
                 variant={`btn bg-light btn-outline-info
-                 text-info mb-2 fw-bold`}
+                 text-info mb-2 fw-bold secondary`}
                 type="button"
                 onClick={setShowModalFN}
-                className={"clickOKbutton"}
+                className={"clickOKbuttonModalPostSuccess"}
+                // size="sm" // too shrunk
+                // size="lg" // too wide
+                // Main issue remains: it's spread wide!
               >
                 OKAY
               </Button>

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button } from "react-bootstrap";
 import useAxiosInterceptor from "../../hooks/authHooks/useAxiosInterceptor";
 import { useDispatchTyped } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
+import { openModalDeletePostAction } from "../../redux/slices/modalDeletePostSlice";
 import { setModalPostButtonValueAction } from "../../redux/slices/modalPostButtonValueSlice";
 import { setModalPostEditPostAction } from "../../redux/slices/modalPostEditPostSlice";
 import { setModalPostLoadingAction } from "../../redux/slices/modalPostLoading";
@@ -123,6 +124,23 @@ const Post_Action_Buttons = ({
       }
     }
   };
+
+  const handleDelete = async (post_id: string, user_id: string) => {
+    try {
+      dispatchTyped(
+        openModalDeletePostAction({
+          isModalDeletePostOpen: true,
+          text: `Are you sure you want to delete this post? 
+          (this action is irreversible)`,
+          post_post_id: post_id,
+          post_user_id: user_id,
+        })
+      );
+      console.count("handleDelete clicked");
+      // handleDelete triggers modal to open, CATCH won't do much.
+    } catch (err) {}
+  };
+
   return (
     <>
       <Button
@@ -145,6 +163,7 @@ const Post_Action_Buttons = ({
         className="bg-danger btn-outline-danger text-light"
         style={{ maxWidth: "70px", width: "70px" }}
         disabled={flag}
+        onClick={() => handleDelete(post_post_id, post_user_id)}
       >
         Delete
       </Button>

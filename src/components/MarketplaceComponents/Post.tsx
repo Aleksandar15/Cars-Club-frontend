@@ -70,9 +70,24 @@ function Post() {
             // console.log("post.post_id:", post.post_id);
           }
           return (
-            <div className="post" key={post.post_id}>
+            <div
+              className="post"
+              key={post.post_id}
+              style={
+                {
+                  // wordBreak: "break-word", // Can't call it in here
+                  // because my Button's get on a new=line unwantedly.
+                }
+              }
+            >
               <div className="post-header">
-                <h2 style={{ textTransform: "capitalize" }}>
+                <h2
+                  style={{
+                    textTransform: "capitalize",
+                    wordBreak: "break-word", // Avoids breaking UI/UX
+                    // // if text gets too long like 'Aaaaa..' x50
+                  }}
+                >
                   {post.post_title}
                 </h2>
                 <div className="post-actions">
@@ -118,7 +133,14 @@ function Post() {
                 </div>
               </div>
               <h6 className="mt-3 fw-bold">Description:</h6>
-              <p>{post.post_description}</p>
+              <p
+                style={{
+                  wordBreak: "break-word", // Avoids breaking UI/UX
+                  // // if text gets too long like 'Aaaaa..' x1000
+                }}
+              >
+                {post.post_description}
+              </p>
               <p>
                 <span className="fw-bold">Asking price:</span>{" "}
                 {post.post_asking_price_currency === "USD" ? "$" : null}

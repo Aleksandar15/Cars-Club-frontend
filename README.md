@@ -93,6 +93,12 @@
       with its field input states values UNCHANGED
       VS a successful response will trigger Async Thunk to trigger
       a re-render of my `MarketPlace.tsx` & **_also_** resets `ModalPost`\`s input fields state values after that successful response.
+9.  IMPORTANT styling reminder: read comments at `ModalDeletePost` but mostly in `ModalPostSuccessText` and `App.css` (CTRL+F): "margin: auto" is where my fix for mobile sizes UI/UX perfection came in! Additionally on the buttons I've added "width: 150px" instead of the, now useless, "maxWidth: 150px" because a combo of `margin:auto` and `width:150px` works better -> but I do **can** exchange `width` for `minWidth:150px` which works the same & logic-wise it feels as same as `width:150px`.
+    - And also read CTRL+F ".clickOKbutton" in `App.css` my testing and clarification that the above statement is the real working best solution.
+    - As for my ".spanModalClickOutside" I no longer even need `position: relative` since this best of the best fixes: `margin: auto` did centralize it as well.
+      - And **all** I'm doing for the wrappers of `<span>` and a button or multiple buttons like in my `ModalDeletePost.tsx` is I'm using a `<div>` wrapper with a styling of `display: grid` and all works perfectly. -> On top of it all I can have the buttons in an `display: flex` div and that very same div inside a parent div and the span tag inside, with the parent div's style of `dispaly: grid` if I wanted the Buttons to be on a same line (horizontal line) while the span to be below them centralized (haven't tested yet such a case, but that seems to be a working scenario).
+10. More styling reminders: `whiteSpace: "pre-line"` makes my string litterals new lines be displayed as new lines unlike `whiteSpace: "pre-wrap"` takes things too litteral and displays the same exact number of empty space in between texts (mostly used inside of my Modal's texts).
+    - I also fixed the kind of bug that ChatGPT themselves have it: if text is inputted inside of Post's title or Description without the User breaking lines: then it'll ruin the UI/UX and a horizontal scroll at the bottom appears where the text would go as far to the right as the text there is, instead a CSS / styling fix is: `wordBreak: "break-word"` as inside my `Post.tsx`.
 
 ##### Further plans (_reminders for me_)
 

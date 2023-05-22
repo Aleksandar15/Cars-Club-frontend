@@ -71,8 +71,6 @@ export const getAllPosts: AsyncThunk<PostType[], void, {}> = createAsyncThunk(
 
       // return data?.gotThreePostsROWS; // perfect, however "LIMIT 3" was my backend test
 
-      console.log("data:", data);
-
       return data?.gotAllPostsROWS; //updated
     } catch (error) {
       // throw new Error("Error fetching posts");
@@ -84,7 +82,6 @@ export const getAllPosts: AsyncThunk<PostType[], void, {}> = createAsyncThunk(
       // the useAxiosInterceptor call inside ModalPost (where I use this Async Thunk)
       // so instead I manually fix the error:
       // "Uncaught TypeError: Cannot read properties of undefined (reading 'length')"
-      console.log("error:", error);
       return [];
     }
   }
@@ -102,7 +99,7 @@ const initialState: InitialState = {
   error: null,
 };
 const postsSlice = createSlice({
-  name: "posts",
+  name: "postsPostedZXC",
   initialState,
   reducers: {
     postsReceived: {
@@ -113,6 +110,14 @@ const postsSlice = createSlice({
       prepare: (payload: PostType[]) => {
         return { payload };
       },
+    },
+    // Reducer for DELETE Button in 'ModalDeletePost'
+    filterPostsByIdAction(state: InitialState, action: PayloadAction<string>) {
+      const postId = action.payload;
+      const filteredPosts = state.posts.filter(
+        (post) => post.post_id !== postId
+      );
+      state.posts = filteredPosts;
     },
   },
   extraReducers: (builder) => {
@@ -146,3 +151,6 @@ export const selectorPostsStatus = (state: RootState) =>
   state?.getAllPosts?.status;
 export const selectorPostsError = (state: RootState) =>
   state?.getAllPosts?.error;
+
+// For my ModalDeletePost
+export const { filterPostsByIdAction } = postsSlice.actions;

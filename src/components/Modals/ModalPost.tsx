@@ -122,7 +122,7 @@ const ModalPost = () => {
   // BODY STATES UPDATES
   const handlePostChanges = async (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name, files } = e.target;
-    console.log("value handlePostChanges:", value);
+    // console.log("value handlePostChanges:", value);
     if (e.target?.files !== null) {
       console.log("event.target.files[0]:", e.target.files[0]);
     }
@@ -156,19 +156,6 @@ const ModalPost = () => {
         })
       );
     }
-    console.log("modalPostState.title.length", modalPostState.title.length);
-    console.log(
-      "modalPostState.title.length <= 50",
-      modalPostState.title.length <= 50
-    );
-    console.log(
-      `name === "title" &&
-    typeof capitalizedValue === "string" &&
-    modalPostState.title.length <= 50`,
-      name === "title" &&
-        typeof capitalizedValue === "string" &&
-        modalPostState.title.length <= 50
-    );
     if (name === "title" && typeof capitalizedValue === "string") {
       dispatchTyped(
         openModalPostAction({

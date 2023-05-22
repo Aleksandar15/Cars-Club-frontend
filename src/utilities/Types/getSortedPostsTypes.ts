@@ -20,8 +20,11 @@ export interface PostSorted {
 export interface GetSortedPostsState {
   posts: PostSorted[];
   // loading: boolean;
-  loading: "idle" | "loading" | "succeeded" | "failed";
+  // loading: "idle" | "loading" | "succeeded" | "failed";
+  status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
+  // UPDATE:
+  total_posts: string | number;
 }
 
 // Define the payload type for getSortedPosts async thunk

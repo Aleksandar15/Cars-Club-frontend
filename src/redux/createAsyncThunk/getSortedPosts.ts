@@ -65,8 +65,11 @@ export const getSortedPosts = createAsyncThunk<
 const initialState: GetSortedPostsState = {
   posts: [],
   // loading:false
-  loading: "idle",
+  // loading: "idle",
+  status: "idle",
   error: null,
+  // update:
+  total_posts: 0,
 };
 
 // Create the slice
@@ -78,23 +81,35 @@ const getSortedPostsSlice = createSlice({
     builder
       .addCase(getSortedPosts.pending, (state) => {
         // state.loading = true;
-        state.loading = "loading";
+        // state.loading = "loading";
+        state.status = "loading";
         state.error = null;
       })
       .addCase(getSortedPosts.fulfilled, (state, action) => {
         // state.loading = false;
-        state.loading = "succeeded";
+        // state.loading = "succeeded";
+        state.status = "succeeded";
         // state.posts = action.payload;
 
         state.posts = action.payload.posts;
       })
       .addCase(getSortedPosts.rejected, (state, action) => {
         // state.loading = false;
-        state.loading = "failed";
+        // state.loading = "failed";
+        state.status = "failed";
         state.error = action.error.message || "Failed to fetch posts";
       });
   },
 });
 
-// Export the slice and actions
+// Export the slice, states and actions
 export default getSortedPostsSlice.reducer;
+
+export const selectorSortedPostsData = (state: RootState) =>
+  state?.getSortedPostsSlice?.posts;
+export const selectorSortedPostsStatus = (state: RootState) =>
+  state?.getSortedPostsSlice?.status;
+export const selectorSortedPostsError = (state: RootState) =>
+  state?.getSortedPostsSlice?.error;
+export const selectorSortedTotalPosts = (state: RootState) =>
+  state?.getSortedPostsSlice?.total_posts;

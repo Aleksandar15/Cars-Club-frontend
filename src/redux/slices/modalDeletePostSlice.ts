@@ -4,6 +4,8 @@ interface InitialState {
   isModalDeletePostOpen: boolean;
   text: string;
   typeOfResponse?: string;
+  post_post_id?: string;
+  post_user_id?: string;
 }
 
 const initialState: InitialState = {

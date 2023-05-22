@@ -16,7 +16,7 @@ export interface PostSorted {
   post_created_by_user_role: string;
 }
 
-// Define the state type for your slice
+// Define the state type for getSortedPosts slice
 export interface GetSortedPostsState {
   posts: PostSorted[];
   // loading: boolean;
@@ -24,9 +24,16 @@ export interface GetSortedPostsState {
   error: string | null;
 }
 
-// Define the payload type for your async thunk
+// Define the payload type for getSortedPosts async thunk
 export interface GetSortedPostsPayload {
   limit: number;
   offset: number;
   carNameTitle: string;
+}
+
+export type Total_posts = string | number;
+
+export interface ReceivedDataSortedPosts {
+  posts: PostSorted[];
+  total_posts: Total_posts;
 }

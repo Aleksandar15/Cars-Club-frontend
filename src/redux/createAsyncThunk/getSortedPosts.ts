@@ -4,12 +4,14 @@ import {
   GetSortedPostsPayload,
   GetSortedPostsState,
   PostSorted,
+  ReceivedDataSortedPosts,
 } from "../../utilities/Types/getSortedPostsTypes";
 import { RootState } from "../store";
 
-// Define the async thunk
+// Define the getSortedPosts async thunk
 export const getSortedPosts = createAsyncThunk<
-  PostSorted[],
+  // PostSorted[], // Returned Type; Updated:
+  ReceivedDataSortedPosts,
   GetSortedPostsPayload,
   { state: RootState }
 >(
@@ -32,18 +34,30 @@ export const getSortedPosts = createAsyncThunk<
       // code with condtiional checkings against req.params &
       // to .query against Database accordingly.
       // NOTE that the PARAM can come from Arguments as well.
-      const { data } = await axiosCredentials.get<{
-        gotSortedPosts: PostSorted[];
-      }>(
-        `/api/v1/getsortedposts?limit=${limit}&offset=${offset}&carNameTitle=${carNameTitle}`
-      );
-      return data?.gotSortedPosts;
+
+      // const { data } = await axiosCredentials.get<{
+      //   gotSortedPosts: PostSorted[];
+      // }>(
+      // return data?.gotSortedPosts;
+      // ...
+      // UPDATED LOGIC:
+      const { data }: { data: ReceivedDataSortedPosts } =
+        await axiosCredentials.get<ReceivedDataSortedPosts>(
+          `/api/v1/getsortedposts?limit=${limit}&offset=${offset}&carNameTitle=${carNameTitle}`
+        );
+      return data;
     } catch (error) {
       // // Handle any errors here
       // throw new Error("Failed to fetch posts");
 
       // Maybe ^ this or that below:
-      return [];
+      // return [];
+
+      // Updated logic
+      return {
+        total_posts: 0,
+        posts: [],
+      };
     }
   }
 );
@@ -70,7 +84,9 @@ const getSortedPostsSlice = createSlice({
       .addCase(getSortedPosts.fulfilled, (state, action) => {
         // state.loading = false;
         state.loading = "succeeded";
-        state.posts = action.payload;
+        // state.posts = action.payload;
+
+        state.posts = action.payload.posts;
       })
       .addCase(getSortedPosts.rejected, (state, action) => {
         // state.loading = false;

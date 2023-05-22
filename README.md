@@ -103,6 +103,31 @@
     - I see some workarounds on selectors state (**_by slice Redux files_**) I had in `modalDeletePostSlice.ts` and `openModalTextSlice.tsx` (should be `.ts` as well).
     - Also works for `formSearchCarsSlice.ts`.
       - However as a side-note I must always make sure to exprot the Types in cases where I tried to import the from Slices directly but I've forgotten to `export` them first.
+12. Very important decisions about my `FormSearchCars.tsx` Component:
+    New logic: I must have to send a different state of the
+    finalized searchCarsFieldsState.carNameInputField STATE
+    to the Post.tsx for sending GET Sort methods
+    as to avoid useEffect's dependency WARNINGS by the fact
+    that I'll be sending it as PARAMS to the soon to be made
+    SORT GETallPosts Controller
+    ^-> AGAIN:
+    That'd be a workaround:
+    a '`triggerSearchBarReFetch`' REDUX STATE can be the
+    "`searchCarsFieldsState.carNameInputField`" REDUX STATE
+    so that if it never changed: it won't re-trigger a Fetch
+    call.
+    \*A FLAG would have been triggerring re-fetch because my plan was to
+    switch `!flag` the opposite boolean on `handleSearchFN` clicks.
+    I feel like I've wasted a Redux Slice in here unless I
+    plan to split my `FormSearchCars.tsx` even more into multiple children Components.
+    INSTEAD THE NEW PLAN ACTION:
+    `handleSearchFN` will dispatch a Redux Action to change
+    fields by name from "" (empty strings) to let's say
+    MERCEDES -> thus I wouldn't need a flag -> because a
+    flag is even worse solution: it will re-fetch EVEN IF
+    the same input is written WHILE a Redux State change
+    if it's the same then the `handleSearchFN` clicks won't
+    re-call the `useEffect` inside `Post.tsx` & Thus no re-fetch would be ever called if input hasn't changed (or any other value in the future updates that won't change===no re-fetch===by no re-calling of the `useEffect` inside `Post.tsx`). I consider that to be a very smart move or at least a much smarter move than my initial plan.
 
 ##### Further plans (_reminders for me_)
 

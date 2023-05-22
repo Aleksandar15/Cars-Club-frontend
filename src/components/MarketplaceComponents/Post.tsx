@@ -12,8 +12,13 @@ import {
 } from "../../redux/createAsyncThunk/getAllPosts";
 import {
   useDispatchAsyncThunk,
+  useDispatchTyped,
   useSelectorTyped,
 } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
+import {
+  FormSearchCarsFields,
+  selectorFormSearchCarsFields,
+} from "../../redux/slices/formSearchCarsSlice";
 import { selectVerifyUser } from "../../redux/slices/verifySlice";
 import { Currency, PostType } from "../../utilities/Types/postsTypes";
 import Loading from "../Loading/Loading";
@@ -39,9 +44,15 @@ function Post() {
   };
 
   const dispatchAsyncThunk = useDispatchAsyncThunk();
+  const dispatchTyped = useDispatchTyped();
   const posts = useSelectorTyped(selectorPostsData);
   const postsStatus = useSelectorTyped(selectorPostsStatus);
   const postsError = useSelectorTyped(selectorPostsError);
+
+  const searchCarsFieldsState = useSelectorTyped<FormSearchCarsFields>(
+    selectorFormSearchCarsFields
+  );
+  console.log("Post.tsx searchCarsFieldsState:", searchCarsFieldsState);
   useEffect(() => {
     // dispatchAsyncThunk(getAllPosts());
 
@@ -56,6 +67,9 @@ function Post() {
       );
       console.log("getTotalPostsFN DATA:", data);
 
+      // dispatchTyped()
+
+      // Set it in here as well as in PaginationMarketplace
       sessionStorage.setItem("total_posts", data.total_posts);
     };
 

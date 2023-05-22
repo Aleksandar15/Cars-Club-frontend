@@ -7,46 +7,95 @@ import {
   Form,
   InputGroup,
 } from "react-bootstrap";
+import {
+  useDispatchTyped,
+  useSelectorTyped,
+} from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
+import {
+  FormSearchCarsFields,
+  onChangeFormSearchCarsAction,
+  selectorFormSearchCarsFields,
+} from "../../redux/slices/formSearchCarsSlice";
 import ClearSVGicon from "../../utilities/icons-setup/clear-SVG-icon";
 // import CreatePostSVG from "../../utilities/icons-setup/createPost-SVG";
 import SearchSVGicon from "../../utilities/icons-setup/search-SVG-icon";
 import CreatePostButton from "./CreatePostButton";
 
 const FormSearchCars = () => {
-  const handleSearch = (e: FormEvent<HTMLFormElement>): void => {
+  const dispatchTyped = useDispatchTyped();
+  const searchCarsFieldsState = useSelectorTyped<FormSearchCarsFields>(
+    selectorFormSearchCarsFields
+  );
+
+  const handleSearchFN = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    console.count("handleSearch click");
+    console.count("handleSearchFN click");
+
+    // New logic: I must have to send a different state of the
+    // finalized searchCarsFieldsState.carNameInputField STATE
+    // to the Post.tsx for sending GET Sort methods
+    // as to avoid useEffect's dependency WARNINGS by the fact
+    // that I'll be sending it as PARAMS to the soon to be made
+    // SORT GETallPosts Controller
+    // ^-> AGAIN:
+    // That'd be a workaround:
+    // a 'triggerSearchBarReFetch' REDUX STATE can be the
+    // "searchCarsFieldsState.carNameInputField" REDUX STATE
+    // so that if it never changed: it won't re-trigger a Fetch
+    // call.
+    // *A flag would trigger re-fetch because my plan was to
+    // switch !flag the opposite boolean on handleSearchFN clicks.
+    // I feel like I've wasted a Redux Slice in here unless I
+    // plan to split my FormSearchCars even more
+    // The NEW PLAN ACTION:
+    // handleSearchFN will dispatch a Redux Action to change
+    // fields by name from "" (empty strings) to let's say
+    // MERCEDES -> thus I wouldn't need a flag -> because a
+    // flag is even worse solution: it will re-fetch EVEN IF
+    // the same input is written WHILE a REDUX STATE CHANGE
+    // if it's the same then the handleSearchFN clicks won't
+    // re-call the useEffect inside Post.tsx & Thus no re-fetch
   };
 
-  interface searchFields {
-    carNameField: string;
-  }
-
-  // const [searchInput, setSearchInput] = useState("");
-  const [searchInput, setSearchInput] = useState<searchFields>({
-    carNameField: "",
-  });
-  const { carNameField } = searchInput;
+  // // const [searchInput, setSearchInput] = useState("");
+  // const [searchInput, setSearchInput] = useState<searchFields>({
+  //   carNameField: "",
+  // });
+  // const { carNameField } = searchInput;
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
 
     console.log("name:", name, "value:", value);
 
-    setSearchInput((prevState) => {
-      return { ...prevState, [name]: value };
-    });
+    // setSearchInput((prevState) => {
+    //   return { ...prevState, [name]: value };
+    // });
+
+    dispatchTyped(
+      onChangeFormSearchCarsAction({
+        ...searchCarsFieldsState,
+        carNameInputField: value,
+      })
+    );
   };
 
   const clearInputField = () => {
-    setSearchInput((prevState) => {
-      return { ...prevState, carNameField: "" };
-    });
+    // setSearchInput((prevState) => {
+    //   return { ...prevState, carNameField: "" };
+    // });
+
+    dispatchTyped(
+      onChangeFormSearchCarsAction({
+        ...searchCarsFieldsState,
+        carNameInputField: "",
+      })
+    );
   };
 
   return (
     <>
-      <Form onSubmit={handleSearch} className="pb-4 mb-4 ">
+      <Form onSubmit={handleSearchFN} className="pb-4 mb-4 ">
         <Row
           md="2"
           lg="2"
@@ -66,7 +115,7 @@ const FormSearchCars = () => {
                   id="carNameField"
                   aria-describedby="carNameField"
                   onChange={handleInput}
-                  value={searchInput.carNameField}
+                  value={searchCarsFieldsState.carNameInputField}
                 />
               </FloatingLabel>
               <Button

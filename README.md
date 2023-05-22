@@ -101,6 +101,8 @@
     - I also fixed the kind of bug that ChatGPT themselves have it: if text is inputted inside of Post's title or Description without the User breaking lines: then it'll ruin the UI/UX and a horizontal scroll at the bottom appears where the text would go as far to the right as the text there is, instead a CSS / styling fix is: `wordBreak: "break-word"` as inside my `Post.tsx`.
 11. A bunch of TypeScript issues & TypeScript fixes notes at Components: `ModalPost_Create_or_Edit_Button.tsx`, `openModalPostSlice.ts`, `verifySlice.tsx` ( I haven't yet modified it's fiel extension to .ts from .tsx because it's one of my very first slices and used across my whole App so I don't want a breaking changes for now).
     - I see some workarounds on selectors state (**_by slice Redux files_**) I had in `modalDeletePostSlice.ts` and `openModalTextSlice.tsx` (should be `.ts` as well).
+    - Also works for `formSearchCarsSlice.ts`.
+      - However as a side-note I must always make sure to exprot the Types in cases where I tried to import the from Slices directly but I've forgotten to `export` them first.
 
 ##### Further plans (_reminders for me_)
 

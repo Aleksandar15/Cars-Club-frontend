@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IsUserAuthorized } from "../../utilities/Types/verifyUserTypes";
 import { RootState } from "../store";
 
-interface VerifyStateProp {
+export interface VerifyStateProp {
   userStatus: {
     isUserAuthorized: IsUserAuthorized;
     codeStatus?: number;
@@ -46,3 +46,16 @@ export const { authorize, unauthorized } = verifySlice.actions;
 
 export const selectVerifyUser = (state: RootState) =>
   state.verifySlice.userStatus;
+// I must use destructuring in my useSelectors
+// Fix:
+export const selectVerifyUserUserStatus = (state: RootState) =>
+  state.verifySlice;
+// // Tried alternatives:
+// export const selectVerifyUser: VerifyStateProp = (state: RootState) =>
+//   state.verifySlice.userStatus; // This doesn't work, TSC Errors.
+//   // TypeScript errors: "Type '(state: RootState) =>
+// // { isUserAuthorized: IsUserAuthorized;
+//   //  codeStatus?: number | undefined; user_id?: string | undefined;
+//   //  user_name?: string | undefined; user_email?: string | undefined;
+//   //  user_role?: string | undefined; }' is not assignable to type
+// // 'VerifyStateProp'.TS."

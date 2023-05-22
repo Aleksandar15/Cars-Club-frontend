@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { Button, ButtonGroup, ButtonToolbar } from "react-bootstrap";
+import useAxiosInterceptor from "../../hooks/authHooks/useAxiosInterceptor";
 // import useAxiosInterceptor from "../../hooks/authHooks/useAxiosInterceptor";
 import useModalPost_formatNum from "../../hooks/ModalPostHooks/useModalPost_formatNum";
 import {
@@ -19,7 +20,7 @@ import Loading from "../Loading/Loading";
 import Post_Action_Buttons from "./Post_Action_Buttons";
 
 function Post() {
-  // const axiosCredentials = useAxiosInterceptor();
+  const axiosCredentials = useAxiosInterceptor();
 
   // const handleDelete = () => {
   //   onDelete();
@@ -42,7 +43,28 @@ function Post() {
   const postsStatus = useSelectorTyped(selectorPostsStatus);
   const postsError = useSelectorTyped(selectorPostsError);
   useEffect(() => {
-    dispatchAsyncThunk(getAllPosts());
+    // dispatchAsyncThunk(getAllPosts());
+
+    // NOTE: IF i have 2 subsequental calls
+    // User will get logged out because of my backend rule
+    // 1 refreshToken/1 request -> 2nd Request logs out the User.
+    // UPDATE:
+    let flag = true;
+    const getTotalPostsFN = async () => {
+      const { data } = await axiosCredentials.get(
+        `/api/v1/post/getsortedposts/${5}/${3}`
+      );
+      console.log("getTotalPostsFN DATA:", data);
+
+      sessionStorage.setItem("total_posts", data.total_posts);
+    };
+
+    if (flag) {
+      getTotalPostsFN();
+    }
+    return () => {
+      flag = false;
+    };
   }, []);
   // console.log("posts:", posts);
   // console.log("postsStatus:", postsStatus);
@@ -60,6 +82,8 @@ function Post() {
   if (postsStatus === "failed") {
     return <h1>Error: {postsError}. Please refresh or try again later.</h1>;
   }
+
+  // Implement a DIV/H1 that will show if there's 0 posts (# in array)
 
   return (
     <>

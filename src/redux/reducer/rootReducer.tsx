@@ -14,6 +14,7 @@ import modalPostSuccessTextSlice from "../slices/modalPostSuccessTextSlice";
 import modalDeletePostSlice from "../slices/modalDeletePostSlice";
 import formSearchCarsSlice from "../slices/formSearchCarsSlice";
 import getSortedPostsSlice from "../createAsyncThunk/getSortedPosts";
+import formSearchSubmitSlice from "../slices/formSearchSubmitSlice";
 
 const rootReducer = combineReducers({
   // searchBar,
@@ -33,6 +34,7 @@ const rootReducer = combineReducers({
   modalDeletePostSlice,
   formSearchCarsSlice,
   getSortedPostsSlice,
+  formSearchSubmitSlice,
 });
 
 // While this RootState works,

@@ -7,7 +7,9 @@ import {
   Form,
   InputGroup,
 } from "react-bootstrap";
+import { getSortedPosts } from "../../redux/createAsyncThunk/getSortedPosts";
 import {
+  useDispatchAsyncThunk,
   useDispatchTyped,
   useSelectorTyped,
 } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
@@ -16,6 +18,7 @@ import {
   onChangeFormSearchCarsAction,
   selectorFormSearchCarsFields,
 } from "../../redux/slices/formSearchCarsSlice";
+import { triggerFormSearchSubmitAction } from "../../redux/slices/formSearchSubmitSlice";
 import ClearSVGicon from "../../utilities/icons-setup/clear-SVG-icon";
 // import CreatePostSVG from "../../utilities/icons-setup/createPost-SVG";
 import SearchSVGicon from "../../utilities/icons-setup/search-SVG-icon";
@@ -26,6 +29,7 @@ const FormSearchCars = () => {
   const searchCarsFieldsState = useSelectorTyped<FormSearchCarsFields>(
     selectorFormSearchCarsFields
   );
+  const dispatchAsyncThunk = useDispatchAsyncThunk();
 
   const handleSearchFN = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -55,6 +59,28 @@ const FormSearchCars = () => {
     // the same input is written WHILE a REDUX STATE CHANGE
     // if it's the same then the handleSearchFN clicks won't
     // re-call the useEffect inside Post.tsx & Thus no re-fetch
+
+    dispatchAsyncThunk(
+      getSortedPosts({
+        // Those doesn't need Redux State
+        // because I'm starting from
+        // 1 Page Per 5 Posts Standard
+        // Offset 0 because I start at index 0 in PG.
+        limit: 5, // as per the standard `postPerPage`.
+        offset: 0,
+        carNameTitle: searchCarsFieldsState.carNameInputField,
+      })
+    );
+
+    // Also trigger a Redux State change ONLY on
+    // 'handleSearchFN' (this) button clicks
+    // which will show up the state update inside
+    // 'PaginationMarketplace.tsx'
+    // dispatchTyped(
+    //   triggerFormSearchSubmitAction({
+    //     carNameTitle: searchCarsFieldsState.carNameInputField,
+    //   })
+    // );
   };
 
   // // const [searchInput, setSearchInput] = useState("");

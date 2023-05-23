@@ -12,11 +12,14 @@ import {
   // useDispatchGetSortedPost,
   useSelectorTyped,
 } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
+import { selectorSearchSubmitForm } from "../../redux/slices/formSearchSubmitSlice";
 // import catalogArray from "./catalogArray";
 
 const PaginationMarketplace = () => {
   const dispatchAsyncThunk = useDispatchAsyncThunk();
   // const dispatchGetSortedPost = useDispatchGetSortedPost();
+  const searchSubmitForm = useSelectorTyped(selectorSearchSubmitForm);
+  console.log("searchSubmitForm PaginationMarketplace:", searchSubmitForm);
 
   // const [posts, setPosts] = useState([])
   // const [currentPage, setCurrentPage] = useState<number>(

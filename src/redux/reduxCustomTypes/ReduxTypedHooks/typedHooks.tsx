@@ -4,6 +4,10 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
+import {
+  GetSortedPostsPayload,
+  ReceivedDataSortedPosts,
+} from "../../../utilities/Types/getSortedPostsTypes";
 import { AppDispatch, RootState } from "../../store";
 
 // AppDispatch = typeof store.dispatch
@@ -23,3 +27,13 @@ export const useDispatchAsyncThunk: AppThunkDispatch = useDispatch;
 // 1. useDispatchAsyncThunk was created to fix the error:
 // "Argument of type 'AsyncThunkAction<any, void, AsyncThunkConfig>'
 // is not assignable to parameter of type 'AnyAction'."
+
+// UPDATE#2:
+type GetSortedPostDispatch = () => ThunkDispatch<
+  ReceivedDataSortedPosts,
+  GetSortedPostsPayload,
+  { state: RootState; type: "posts/getSortedPosts" }
+>;
+export const useDispatchGetSortedPost: GetSortedPostDispatch = useDispatch;
+// RESULTS: Failing inside PaginationMarketplace
+// I can NOT dispatch my `getSortedPosts`

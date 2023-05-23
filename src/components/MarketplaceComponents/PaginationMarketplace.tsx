@@ -3,33 +3,59 @@
 
 import { useEffect, useState } from "react";
 import { Pagination } from "react-bootstrap";
+import {
+  getSortedPosts,
+  selectorSortedTotalPosts,
+} from "../../redux/createAsyncThunk/getSortedPosts";
+import {
+  useDispatchAsyncThunk,
+  // useDispatchGetSortedPost,
+  useSelectorTyped,
+} from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
 // import catalogArray from "./catalogArray";
 
 const PaginationMarketplace = () => {
+  const dispatchAsyncThunk = useDispatchAsyncThunk();
+  // const dispatchGetSortedPost = useDispatchGetSortedPost();
+
   // const [posts, setPosts] = useState([])
   const [currentPage, setCurrentPage] = useState<number>(
     parseInt(sessionStorage.getItem("currentPage") || "1")
   );
   // const postPerPage = 2;
-  const postPerPage = 1; // Just to make it easier for showcase
-
-  // Catalog the indexes of the current page
-  const numberOfLastPost = currentPage * postPerPage;
-  const numberOfFirstPost = numberOfLastPost - postPerPage;
+  // const postPerPage = 1; // Just to make it easier for showcase
+  const postPerPage = 5;
 
   // // Updates
-  let totalPostsLengthSession = parseInt(
-    sessionStorage.getItem("total_posts") || "0"
+  // let totalPostsLengthSession = parseInt(
+  //   sessionStorage.getItem("total_posts") || "0"
+  // );
+  // // // console.log("totalPostsLength SESSION::", totalPostsLengthSession);
+  const total_postsString: string | number = useSelectorTyped<string | number>(
+    selectorSortedTotalPosts
+  ) as string; // if it's `as string | number` then parseInt TSC errors.
+  const total_postsToNumber = parseInt(total_postsString, 10);
+  console.log(
+    "total_postsToNumber ModalPost:",
+    total_postsToNumber,
+    "& typeof total_postsToNumber:",
+    typeof total_postsToNumber
   );
-  console.log("totalPostsLength SESSION::", totalPostsLengthSession);
-  const totalPages = Math.ceil(totalPostsLengthSession / postPerPage);
+
+  // const totalPages = Math.ceil(totalPostsLengthSession / postPerPage);
+  const totalPages = Math.ceil(total_postsToNumber / postPerPage);
   console.log("totalPages PaginationMarketplace:", totalPages);
-  const [totalPostsLengthSTATE, setTotalPostsLengthSTATE] = useState<number>(0);
-  console.log("totalPostsLengthSTATE:", totalPostsLengthSTATE);
-  useEffect(() => {
-    setTotalPostsLengthSTATE(totalPostsLengthSession);
-  }, [totalPostsLengthSession]);
-  // const totalPages = 20; // for Tests
+
+  // const [totalPostsLengthSTATE, setTotalPostsLengthSTATE] = useState<number>(0);
+  // // console.log("totalPostsLengthSTATE:", totalPostsLengthSTATE);
+
+  // // //
+  // // useEffect(() => {
+  // //   setTotalPostsLengthSTATE(totalPostsLengthSession);
+  // // }, [totalPostsLengthSession]);
+  // // //
+
+  // const totalPages = 20; // fake for Tests
   const disableNextButton = currentPage === totalPages;
   const disablePreviousButton = currentPage === 1;
   const disableFirstButton = currentPage === 1;
@@ -37,11 +63,33 @@ const PaginationMarketplace = () => {
   const handleNextPage = () => {
     setCurrentPage((prevPage) => prevPage + 1);
     window.scrollTo(0, 0); // Scroll to top
+    // dispatchGetSortedPost(
+    //   getSortedPosts({
+    //     limit: postPerPage,
+    //     offset: currentPage * postPerPage,
+    //     carNameTitle: "",
+    //   })
+    // ); // Still errors so I have to use my previous typed Hook
+
+    dispatchAsyncThunk(
+      getSortedPosts({
+        limit: postPerPage,
+        offset: currentPage * postPerPage,
+        carNameTitle: "",
+      })
+    );
   };
   const handlePreviousPage = () => {
     setCurrentPage((prevPage) => prevPage - 1);
     window.scrollTo(0, 0); // Scroll to top
   };
+  dispatchAsyncThunk(
+    getSortedPosts({
+      limit: postPerPage,
+      offset: (currentPage - 2) * postPerPage,
+      carNameTitle: "",
+    })
+  );
 
   const pageItems = [];
   if (totalPages <= 3) {

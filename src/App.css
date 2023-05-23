@@ -252,13 +252,26 @@ background: blue;
     /* left: 3%; */
     /* left: 9px; */
     /* or to centralize: */
-    left: 11ex;
+    /* left: 11ex; */
     /* Above '11ex' is PERFECT! */
     /* These below are relative & NOT what I want */
     /* left: 7.5rem; */
     /* left: 5.7em; */
     /* left: 14vh; */
     /* left: 30vw; */
+    
+    /* NEW FIX: */
+    /* max-width: fit-content; */
+    /* Once I've removed left: 11ex;
+    this max-width seems unnecessary */
+    /* I also can't use margin:auto 
+    because it becomes too large
+    and thus my NavBar gets too big in Mobile screen */
+    /* margin: auto; */
+    
+    /* NO EFFECTS: */
+    /* justify-content: center; */
+    /* align-items: center; */
   }
   .navCustomClass{
     margin-left: 18%;

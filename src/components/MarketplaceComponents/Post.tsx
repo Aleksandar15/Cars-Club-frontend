@@ -27,6 +27,7 @@ import {
   selectorFormSearchCarsFields,
 } from "../../redux/slices/formSearchCarsSlice";
 import { selectVerifyUser } from "../../redux/slices/verifySlice";
+import { PostSorted } from "../../utilities/Types/getSortedPostsTypes";
 import { Currency, PostType } from "../../utilities/Types/postsTypes";
 import Loading from "../Loading/Loading";
 import Post_Action_Buttons from "./Post_Action_Buttons";
@@ -57,7 +58,9 @@ function Post() {
   const dispatchAsyncThunk = useDispatchAsyncThunk();
   const dispatchTyped = useDispatchTyped();
   // const posts = useSelectorTyped(selectorPostsData);
-  const posts = useSelectorTyped(selectorSortedPostsData);
+  const posts: PostSorted[] = useSelectorTyped<PostSorted[]>(
+    selectorSortedPostsData
+  );
   // const postsStatus = useSelectorTyped(selectorPostsStatus);
   const postsStatus = useSelectorTyped(selectorSortedPostsStatus);
   // const postsError = useSelectorTyped(selectorPostsError);
@@ -78,7 +81,7 @@ function Post() {
     // ^->if user has refreshed=session isn't lost;
     // However if it doesn't exist then provide the initial numbers.
     dispatchAsyncThunk(
-      getSortedPosts({ limit: 5, offset: 1, carNameTitle: "" })
+      getSortedPosts({ limit: 5, offset: 0, carNameTitle: "" })
     );
 
     // const getTotalPostsFN = async () => {
@@ -102,6 +105,8 @@ function Post() {
   const { formatNumber } = useModalPost_formatNum();
 
   const { user_id } = useSelectorTyped(selectVerifyUser);
+  console.log("postsStatus:", postsStatus);
+  console.log("posts:", posts);
 
   if (postsStatus === "idle" || postsStatus === "loading") {
     // Might need to move these inside parent: MarketPlace.tsx

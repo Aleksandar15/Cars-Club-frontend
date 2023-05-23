@@ -80,8 +80,11 @@ const NavBar = () => {
         {/* NAV OUTSIDE */}
         {/* TITLE */}
         <NavBarByBS.Brand
-          // className={`text-info fs-4 fw-bold navBarBrandTitle`}
-          className={`text-info fs-4 fw-bold `}
+          className={`text-info fs-4 fw-bold navBarBrandTitle`}
+          // className={`text-info fs-4 fw-bold `}
+
+          // Below even mt-1 & mb-1 are too much for Mobile screens
+          // className={`text-info fs-4 fw-bold navBarBrandTitle mt-1 mb-1`}
         >
           CARS CLUB
         </NavBarByBS.Brand>

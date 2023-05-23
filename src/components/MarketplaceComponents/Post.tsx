@@ -27,6 +27,7 @@ import {
   selectorFormSearchCarsFields,
 } from "../../redux/slices/formSearchCarsSlice";
 import { selectVerifyUser } from "../../redux/slices/verifySlice";
+import { PostSorted } from "../../utilities/Types/getSortedPostsTypes";
 import { Currency, PostType } from "../../utilities/Types/postsTypes";
 import Loading from "../Loading/Loading";
 import Post_Action_Buttons from "./Post_Action_Buttons";
@@ -57,7 +58,9 @@ function Post() {
   const dispatchAsyncThunk = useDispatchAsyncThunk();
   const dispatchTyped = useDispatchTyped();
   // const posts = useSelectorTyped(selectorPostsData);
-  const posts = useSelectorTyped(selectorSortedPostsData);
+  const posts: PostSorted[] = useSelectorTyped<PostSorted[]>(
+    selectorSortedPostsData
+  );
   // const postsStatus = useSelectorTyped(selectorPostsStatus);
   const postsStatus = useSelectorTyped(selectorSortedPostsStatus);
   // const postsError = useSelectorTyped(selectorPostsError);

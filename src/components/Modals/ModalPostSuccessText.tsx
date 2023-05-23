@@ -1,21 +1,25 @@
 import { useEffect } from "react";
 import { Button } from "react-bootstrap";
 // import { getAllPosts } from "../../redux/createAsyncThunk/getAllPosts";
-// import { getSortedPosts } from "../../redux/createAsyncThunk/getSortedPosts";
 import {
-  // useDispatchAsyncThunk,
+  // getSortedPosts
+  getSortedPostsAsyncThunk,
+} from "../../redux/createAsyncThunk/getSortedPosts";
+import {
+  useDispatchAsyncThunk,
   useDispatchTyped,
   useSelectorTyped,
 } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
-// import {
-//   InitialStateModalPostButtonValue,
-//   selectorOpenModalPostButtonValue,
-// } from "../../redux/slices/modalPostButtonValueSlice";
+import {
+  InitialStateModalPostButtonValue,
+  selectorOpenModalPostButtonValue,
+} from "../../redux/slices/modalPostButtonValueSlice";
 
 import {
   openModalPostSuccessTextAction,
   selectorOpenModalPostSuccessText,
 } from "../../redux/slices/modalPostSuccessTextSlice";
+import { selectorPostPerPage } from "../../redux/slices/postPerPageSlice";
 // import {
 //   InitialStateModalPost,
 //   selectorOpenModalPost,
@@ -28,11 +32,11 @@ const ModalPostSuccessText = () => {
     selectorOpenModalPostSuccessText
   );
   const dispatchTyped = useDispatchTyped();
-  // const dispatchAsyncThunk = useDispatchAsyncThunk();
-  // const { modalPostButtonValue } =
-  //   useSelectorTyped<InitialStateModalPostButtonValue>(
-  //     selectorOpenModalPostButtonValue
-  //   );
+  const dispatchAsyncThunk = useDispatchAsyncThunk();
+  const { modalPostButtonValue } =
+    useSelectorTyped<InitialStateModalPostButtonValue>(
+      selectorOpenModalPostButtonValue
+    );
   // console.log(
   //   "modalPostButtonValue in ModalPostSuccessText:",
   //   modalPostButtonValue
@@ -41,6 +45,7 @@ const ModalPostSuccessText = () => {
   //   selectorOpenModalPost
   // );
   // console.log("modalPostSTate in ModalPostSuccessText:", modalPostState);
+  const postPerPage = useSelectorTyped(selectorPostPerPage);
 
   useEffect(() => {
     if (isModalPostSuccessTextOpen) {
@@ -72,6 +77,26 @@ const ModalPostSuccessText = () => {
         text: "",
       })
     );
+    // UPDATE 3:
+    // I am using this `setSHowModalFN` to close
+    // this very same ModalPostSuccessText as
+    // the `OKAY` button's onClick as well as
+    // the 'click outside' & 'X' button
+    // so I must not forget that on 'CREATE A POST'
+    // I must still call the `getSortedPostsAsyncThunk.
+    if (modalPostButtonValue === "CREATE A POST") {
+      dispatchAsyncThunk(
+        getSortedPostsAsyncThunk({
+          limit: postPerPage,
+          offset: 0, // show from the very first pages
+          carNameTitle: "", // don't pass the current
+          // searchBar's input field because the User might
+          // have forgotten to remove it and will think that
+          // the Creation of a Post was not Successful.
+        })
+      );
+    }
+
     // UPDATE 2:
     // ONLY Close the Modal.
     // Don't call any kind of Asnyc Thunk

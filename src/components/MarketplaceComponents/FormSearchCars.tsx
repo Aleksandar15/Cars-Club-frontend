@@ -7,7 +7,7 @@ import {
   Form,
   InputGroup,
 } from "react-bootstrap";
-import { getSortedPosts } from "../../redux/createAsyncThunk/getSortedPosts";
+import { getSortedPostsAsyncThunk } from "../../redux/createAsyncThunk/getSortedPosts";
 import {
   useDispatchAsyncThunk,
   useDispatchTyped,
@@ -19,6 +19,7 @@ import {
   selectorFormSearchCarsFields,
 } from "../../redux/slices/formSearchCarsSlice";
 import { triggerFormSearchSubmitAction } from "../../redux/slices/formSearchSubmitSlice";
+import { selectorPostPerPage } from "../../redux/slices/postPerPageSlice";
 import ClearSVGicon from "../../utilities/icons-setup/clear-SVG-icon";
 // import CreatePostSVG from "../../utilities/icons-setup/createPost-SVG";
 import SearchSVGicon from "../../utilities/icons-setup/search-SVG-icon";
@@ -30,6 +31,9 @@ const FormSearchCars = () => {
     selectorFormSearchCarsFields
   );
   const dispatchAsyncThunk = useDispatchAsyncThunk();
+  // postPerPage state for future plans & usages to
+  // let user decide amount of posts per page to be shown.
+  const postPerPage = useSelectorTyped(selectorPostPerPage);
 
   const handleSearchFN = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -61,7 +65,7 @@ const FormSearchCars = () => {
     // re-call the useEffect inside Post.tsx & Thus no re-fetch
 
     dispatchAsyncThunk(
-      getSortedPosts({
+      getSortedPostsAsyncThunk({
         // Those doesn't need Redux State
         // because I'm starting from
         // 1 Page Per 5 Posts Standard
@@ -97,7 +101,7 @@ const FormSearchCars = () => {
     // my Edit & Delete & even CREATE Post functions
     // must all reset `PaginationMarketplace` `currentPage` state
     // back to `1`
-    // once they'll call the `getSortedPosts` with `limit:5`
+    // once they'll call the `getSortedPostsAsyncThunk` with `limit:5`
     // and `offset:0` -> re-thinking: except for Delete button
     // which will ONLY filter the removed data upon 200 Response
   };

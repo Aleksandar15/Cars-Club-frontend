@@ -7,6 +7,7 @@ import {
   filterPostsByIdAction,
   getAllPosts,
 } from "../../redux/createAsyncThunk/getAllPosts";
+import { deletePostsByIdAction } from "../../redux/createAsyncThunk/getSortedPosts";
 import {
   useDispatchAsyncThunk,
   useDispatchTyped,
@@ -17,6 +18,7 @@ import {
   openModalDeletePostAction,
   selectorOpenModalDeletePost,
 } from "../../redux/slices/modalDeletePostSlice";
+import Loading from "../Loading/Loading";
 
 const ModalDeletePost = () => {
   // const ModalDeletePost = ({ children }) => {
@@ -64,7 +66,7 @@ const ModalDeletePost = () => {
 
   const deletePostModalFN = async () => {
     try {
-      setFlag(true); // Disables 'YES' button.
+      setFlag(true); // Disables 'YES' button's subsequent requests.
       if (flag === false) {
         // Only try to delete if FLAG = false
         console.log("deleting");
@@ -75,10 +77,14 @@ const ModalDeletePost = () => {
         console.log("Delete DATA:", data);
 
         if (data?.isSuccessful) {
-          setFlag(false); // Allow for subsequent requests
+          setFlag(false); // Allow for future requests
 
           // Filted the Deleted Post out of Posts state in Post.tsx
-          dispatchTyped(filterPostsByIdAction(post_post_id as string));
+          // dispatchTyped(filterPostsByIdAction(post_post_id as string));
+          // UPDATE:
+          if (typeof post_post_id === "string") {
+            dispatchTyped(deletePostsByIdAction(post_post_id as string));
+          }
 
           dispatchTyped(
             // Close ModalDeletePost
@@ -157,79 +163,87 @@ const ModalDeletePost = () => {
             onClick={(e) => e.stopPropagation()}
             className="mymodal-wrapper"
           >
-            {/* MODAL BODY */}
-            {/* <h3 className="h3ModalProjectTitle">
+            {flag === true ? (
+              // NOTE I'm using `flag` state as if `loading`
+              // to shorten the amount of states needed.
+              <Loading />
+            ) : (
+              <>
+                {/* MODAL BODY */}
+                {/* <h3 className="h3ModalProjectTitle">
               Title: <span className="spanModalProjectTitle"></span>
             </h3>
             <p className="pTagModalTechnologies">Technologies: </p>
             <p className="pTagModalDescription">Description: </p> */}
 
-            {/* Text-only body for this case: */}
-            <h3
-              className="text-light pb-5 mb-5 mt-4"
-              style={{
-                // textDecoration: "underline overline",
-                textAlign: "center",
-                whiteSpace: "pre-line", // preferred over pre-wrap
-              }}
-            >
-              {text}
-            </h3>
+                {/* Text-only body for this case: */}
+                <h3
+                  className="text-light pb-5 mb-5 mt-4"
+                  style={{
+                    // textDecoration: "underline overline",
+                    textAlign: "center",
+                    whiteSpace: "pre-line", // preferred over pre-wrap
+                  }}
+                >
+                  {text}
+                </h3>
 
-            <div
-              style={{
-                display: "grid",
-                // maxWidth: "300px", //a must to
-                // // ^avoid horizontal ScrollBar // No longer applies
-                // textAlign: "center",
-                // position: "relative",
-              }}
-            >
-              <Button
-                variant={`btn bg-danger btn-outline-info
+                <div
+                  style={{
+                    display: "grid",
+                    // maxWidth: "300px", //a must to
+                    // // ^avoid horizontal ScrollBar // No longer applies
+                    // textAlign: "center",
+                    // position: "relative",
+                  }}
+                >
+                  <Button
+                    variant={`btn bg-danger btn-outline-info
                  text-info mb-2 fw-bold`}
-                type="button"
-                // onClick={setShowModalFN}
-                onClick={deletePostModalFN}
-                // className={"clickOKbutton"}
-                //       ^ UPDATE2: I'll no longer use this class
-                // for some of my Modals, and will slowly
-                // remove it from all since styling has no effect
-                // because inline-styles wins && the ONLY effects
-                // I have is MARGIN & width which would be made
-                // inline as well.
-                style={{ margin: "auto", width: "150px" }}
-                disabled={flag}
-              >
-                YES
-              </Button>
-              <Button
-                variant={`btn bg-success btn-outline-info
+                    type="button"
+                    // onClick={setShowModalFN}
+                    onClick={deletePostModalFN}
+                    // className={"clickOKbutton"}
+                    //       ^ UPDATE2: I'll no longer use this class
+                    // for some of my Modals, and will slowly
+                    // remove it from all since styling has no effect
+                    // because inline-styles wins && the ONLY effects
+                    // I have is MARGIN & width which would be made
+                    // inline as well.
+                    style={{ margin: "auto", width: "150px" }}
+                    disabled={flag}
+                  >
+                    YES
+                  </Button>
+                  <Button
+                    variant={`btn bg-success btn-outline-info
                 text-info mb-2 fw-bold`}
-                type="button"
-                onClick={setShowModalFN}
-                // className={"clickOKbutton"}
-                style={{ margin: "auto", minWidth: "150px" }}
-              >
-                NO
-              </Button>
-              <span className="spanModalClickOutside">
-                (click outside to close)
-              </span>
-            </div>
+                    type="button"
+                    onClick={setShowModalFN}
+                    // className={"clickOKbutton"}
+                    style={{ margin: "auto", minWidth: "150px" }}
+                  >
+                    NO
+                  </Button>
+                  <span className="spanModalClickOutside">
+                    (click outside to close)
+                  </span>
+                </div>
 
-            {/* CLOSE BUTTON */}
-            <button
-              className="close-button"
-              onClick={setShowModalFN}
-              style={{
-                color: "red",
-                fontSize: "77px",
-                marginRight: "20px",
-              }}
-            >
-              &times;
-            </button>
+                {/* CLOSE BUTTON */}
+                <button
+                  className="close-button"
+                  onClick={setShowModalFN}
+                  style={{
+                    color: "red",
+                    fontSize: "77px",
+                    marginRight: "20px",
+                  }}
+                >
+                  &times;
+                </button>
+              </>
+            )}
           </div>
         </div>
       )}

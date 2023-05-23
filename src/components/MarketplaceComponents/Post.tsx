@@ -11,7 +11,7 @@ import {
   selectorPostsStatus,
 } from "../../redux/createAsyncThunk/getAllPosts";
 import {
-  getSortedPosts,
+  getSortedPostsAsyncThunk,
   selectorSortedPostsData,
   selectorSortedPostsError,
   selectorSortedPostsStatus,
@@ -72,6 +72,10 @@ function Post() {
   // );
   // console.log("Post.tsx searchCarsFieldsState:", searchCarsFieldsState);
 
+  // Here I don't need to import `postPerPage` Redux State
+  // because the Post.tsx logic is: on component mount:
+  // 'everything will be reset back to default'
+
   useEffect(() => {
     // dispatchAsyncThunk(getAllPosts());
 
@@ -81,7 +85,7 @@ function Post() {
     // ^->if user has refreshed=session isn't lost;
     // However if it doesn't exist then provide the initial numbers.
     dispatchAsyncThunk(
-      getSortedPosts({ limit: 5, offset: 0, carNameTitle: "" })
+      getSortedPostsAsyncThunk({ limit: 5, offset: 0, carNameTitle: "" })
     );
 
     // const getTotalPostsFN = async () => {

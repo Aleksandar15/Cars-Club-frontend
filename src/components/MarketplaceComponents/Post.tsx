@@ -121,7 +121,8 @@ function Post() {
 
   return (
     <>
-      {posts.length === 0 ? (
+      {/* Don't trust the backend and also check for undefined: */}
+      {posts?.length === 0 || posts === undefined ? (
         <div className="text-center text-primary">
           <h1>There's no posts found</h1>
           <p>(Start by creating one.)</p>

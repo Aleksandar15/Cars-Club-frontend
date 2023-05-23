@@ -105,8 +105,8 @@ function Post() {
   const { formatNumber } = useModalPost_formatNum();
 
   const { user_id } = useSelectorTyped(selectVerifyUser);
-  console.log("postsStatus:", postsStatus);
-  console.log("posts:", posts);
+  // console.log("postsStatus:", postsStatus);
+  // console.log("posts:", posts);
 
   if (postsStatus === "idle" || postsStatus === "loading") {
     // Might need to move these inside parent: MarketPlace.tsx
@@ -121,7 +121,8 @@ function Post() {
 
   return (
     <>
-      {posts.length === 0 ? (
+      {/* Don't trust the backend and also check for undefined: */}
+      {posts?.length === 0 || posts === undefined ? (
         <div className="text-center text-primary">
           <h1>There's no posts found</h1>
           <p>(Start by creating one.)</p>

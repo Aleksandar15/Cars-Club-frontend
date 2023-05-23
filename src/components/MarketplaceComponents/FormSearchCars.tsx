@@ -7,7 +7,9 @@ import {
   Form,
   InputGroup,
 } from "react-bootstrap";
+import { getSortedPosts } from "../../redux/createAsyncThunk/getSortedPosts";
 import {
+  useDispatchAsyncThunk,
   useDispatchTyped,
   useSelectorTyped,
 } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
@@ -16,6 +18,7 @@ import {
   onChangeFormSearchCarsAction,
   selectorFormSearchCarsFields,
 } from "../../redux/slices/formSearchCarsSlice";
+import { triggerFormSearchSubmitAction } from "../../redux/slices/formSearchSubmitSlice";
 import ClearSVGicon from "../../utilities/icons-setup/clear-SVG-icon";
 // import CreatePostSVG from "../../utilities/icons-setup/createPost-SVG";
 import SearchSVGicon from "../../utilities/icons-setup/search-SVG-icon";
@@ -26,6 +29,7 @@ const FormSearchCars = () => {
   const searchCarsFieldsState = useSelectorTyped<FormSearchCarsFields>(
     selectorFormSearchCarsFields
   );
+  const dispatchAsyncThunk = useDispatchAsyncThunk();
 
   const handleSearchFN = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -55,6 +59,47 @@ const FormSearchCars = () => {
     // the same input is written WHILE a REDUX STATE CHANGE
     // if it's the same then the handleSearchFN clicks won't
     // re-call the useEffect inside Post.tsx & Thus no re-fetch
+
+    dispatchAsyncThunk(
+      getSortedPosts({
+        // Those doesn't need Redux State
+        // because I'm starting from
+        // 1 Page Per 5 Posts Standard
+        // Offset 0 because I start at index 0 in PG.
+        limit: 5, // as per the standard `postPerPage`.
+        offset: 0,
+        carNameTitle: searchCarsFieldsState.carNameInputField.trim(),
+      })
+    );
+
+    // Also trigger a Redux State change ONLY on
+    // 'handleSearchFN' (this) button clicks
+    // which will show up the state update inside
+    // 'PaginationMarketplace.tsx'
+    dispatchTyped(
+      triggerFormSearchSubmitAction({
+        // carNameTitle: searchCarsFieldsState.carNameInputField,
+        // Trim it from here so that I don't have to care about
+        // forgetting to trim inside my `PaginationMarketplace`
+        // where this `carNameTitle` state is received & used.
+        carNameTitle: searchCarsFieldsState.carNameInputField.trim(),
+      })
+    );
+
+    // Visual BUG inside `PaginationMarketplace`:
+    // Turns out I MUST also call a setCurrentPage
+    // of inside `PaginationMarketplace` state should go inside
+    // a Redux Toolkit state instead of local state.
+    // because bug happens: correct data but
+    // number is stuck at '2' or whoever number it was at the time
+    // of clicking 'search' AKA this 'handleSearchFN'.
+    // And thinking about it This Visual BUG WILL persist inside
+    // my Edit & Delete & even CREATE Post functions
+    // must all reset `PaginationMarketplace` `currentPage` state
+    // back to `1`
+    // once they'll call the `getSortedPosts` with `limit:5`
+    // and `offset:0` -> re-thinking: except for Delete button
+    // which will ONLY filter the removed data upon 200 Response
   };
 
   // // const [searchInput, setSearchInput] = useState("");

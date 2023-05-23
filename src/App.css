@@ -219,6 +219,11 @@ background: blue;
   margin-left: 38.38%;
 }
 
+/* HomePage DIV Buttons Wrappers */
+.homePageBtnWrapper {
+  display: flex;
+}
+
 
 
 /* Styles for mobile screens */
@@ -277,6 +282,14 @@ background: blue;
     margin-left: 18%;
     margin-top: -18px;
   }
+
+  /* HomePage DIV Buttons Wrappers */
+.homePageBtnWrapper {
+  display: flex;
+  /* display: inline-flexbox; */
+  /* ^ Above puts it on the LEFT */
+  display: grid;
+}
 
   /* Others */
 }

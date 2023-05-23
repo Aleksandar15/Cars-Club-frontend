@@ -1,5 +1,5 @@
 import { Button } from "react-bootstrap";
-import Loading from "../../components/Loading/Loading";
+// import Loading from "../../components/Loading/Loading";
 import LoadingHomePageForRenderServer from "../../components/Loading/LoadingHomePageForRender";
 import useVerifyRefreshTK from "../../hooks/authHooks/useVerifyRefreshTK";
 import useMyNavigate from "../../hooks/useMyNavigate/useMyNavigate";
@@ -29,7 +29,11 @@ const HomePage = () => {
           <h2 className="text-center text-danger text-uppercase pt-3 mb-4 pb-3">
             Visit the club
           </h2>
-          <div className="d-flex justify-content-center align-items-center">
+          <div
+            // className="d-flex justify-content-center align-items-center"
+            // d-flex kind of overlaps small phone screen display size
+            className="homePageBtnWrapper justify-content-center align-items-center"
+          >
             <Button
               className="m-3 px-5 "
               variant="success"
@@ -54,7 +58,10 @@ const HomePage = () => {
           <h2 className="text-center text-danger text-uppercase pt-3 mb-4 pb-3">
             Join the club
           </h2>
-          <div className="d-flex justify-content-center align-items-center">
+          <div
+            //  className="d-flex justify-content-center align-items-center"
+            className="homePageBtnWrapper justify-content-center align-items-center"
+          >
             <Button
               className="m-3 px-5 "
               variant="success"

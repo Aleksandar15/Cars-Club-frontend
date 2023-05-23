@@ -137,6 +137,19 @@
     - However I'm thinking I might have to include a button of 'RESET FIELDS' just like I did in my Password Manager App.
 14. I have not added IMAGE Size limits just for easier testing. In a real App I would at least limit the size and even possibly provide a link to my Users of a free service to resize their images or add my own functionality that will resize theirs images either on the Frontend Notice or without their Notice I'd resize them on the backend and store them on the server or database & then frontend will retrieve the resized pictures.
 15. Inside `Post.tsx` on the Frontend I've added a check against `posts` state of expected array to check against `undefined`: because of don't-trust-the-backend/server AND don't-trust-the-frontend/client RELATIONSHIP in programming.
+16. Visual BUG inside `PaginationMarketplace`:
+    Turns out I MUST also call a setCurrentPage
+    of inside `PaginationMarketplace` state should go inside
+    a Redux Toolkit state instead of local state.
+    because bug happens: correct data but
+    number is stuck at '2' or what number it was at the time of
+    clicking 'search' AKA this '`handleSearchFN`'.
+    - And thinking about it This Visual BUG WILL persist inside
+      my `Edit` & `Delete` & even `CREATE Post` functions buttons
+      must all reset `PaginationMarketplace`\`s state `currentPage` back to `1`
+      once they'll call the `getSortedPosts` with `limit:5`
+      and `offset:0` -> re-thinking: except for `Delete` button
+      which will ONLY filter the removed data upon 200 Response Successful Response: don't re-fetch but instead filter out the removed Post from the `Posts` state for smoother UX/UI.
 
 ##### Further plans (_reminders for me_)
 

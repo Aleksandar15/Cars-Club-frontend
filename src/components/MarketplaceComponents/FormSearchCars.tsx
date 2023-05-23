@@ -85,6 +85,21 @@ const FormSearchCars = () => {
         carNameTitle: searchCarsFieldsState.carNameInputField.trim(),
       })
     );
+
+    // Visual BUG inside `PaginationMarketplace`:
+    // Turns out I MUST also call a setCurrentPage
+    // of inside `PaginationMarketplace` state should go inside
+    // a Redux Toolkit state instead of local state.
+    // because bug happens: correct data but
+    // number is stuck at '2' or whoever number it was at the time
+    // of clicking 'search' AKA this 'handleSearchFN'.
+    // And thinking about it This Visual BUG WILL persist inside
+    // my Edit & Delete & even CREATE Post functions
+    // must all reset `PaginationMarketplace` `currentPage` state
+    // back to `1`
+    // once they'll call the `getSortedPosts` with `limit:5`
+    // and `offset:0` -> re-thinking: except for Delete button
+    // which will ONLY filter the removed data upon 200 Response
   };
 
   // // const [searchInput, setSearchInput] = useState("");

@@ -54,6 +54,7 @@ const PaginationMarketplace = () => {
 
   // const totalPages = Math.ceil(totalPostsLengthSession / postPerPage);
   const totalPages = Math.ceil(total_postsToNumber / postPerPage);
+  // const totalPages = 1; //tests
   // console.log("totalPages PaginationMarketplace:", totalPages);
 
   // const [totalPostsLengthSTATE, setTotalPostsLengthSTATE] = useState<number>(0);
@@ -124,7 +125,10 @@ const PaginationMarketplace = () => {
       <Pagination.Item
         key={1}
         active={1 === currentPage}
-        onClick={() => setCurrentPage(1)}
+        onClick={() => {
+          setCurrentPage(1);
+          window.scrollTo(0, 0); // Scroll to top
+        }}
       >
         1
       </Pagination.Item>
@@ -140,7 +144,7 @@ const PaginationMarketplace = () => {
           active={1 === currentPage}
           onClick={() => {
             setCurrentPage(1);
-            // Add your dispatch function call here
+            // Add more dispatch function call here
             dispatchAsyncThunk(
               getSortedPostsAsyncThunk({
                 limit: postPerPage,
@@ -160,7 +164,7 @@ const PaginationMarketplace = () => {
           disabled={true}
           onClick={() => {
             setCurrentPage(firstPage - 1);
-            // Add your dispatch function call here
+            // Add more dispatch function call here
             dispatchAsyncThunk(
               getSortedPostsAsyncThunk({
                 limit: postPerPage,
@@ -181,7 +185,7 @@ const PaginationMarketplace = () => {
           active={index === currentPage}
           onClick={() => {
             setCurrentPage(index);
-            // Add your dispatch function call here
+            // Add more dispatch function call here
             dispatchAsyncThunk(
               getSortedPostsAsyncThunk({
                 limit: postPerPage,
@@ -204,7 +208,7 @@ const PaginationMarketplace = () => {
           disabled={true}
           onClick={() => {
             setCurrentPage(lastPage + 1);
-            // Add your dispatch function call here
+            // Add more dispatch function call here
             dispatchAsyncThunk(
               getSortedPostsAsyncThunk({
                 limit: postPerPage,
@@ -222,7 +226,7 @@ const PaginationMarketplace = () => {
           active={totalPages === currentPage}
           onClick={() => {
             setCurrentPage(totalPages);
-            // Add your dispatch function call here
+            // Add more dispatch function call here
             dispatchAsyncThunk(
               getSortedPostsAsyncThunk({
                 limit: postPerPage,

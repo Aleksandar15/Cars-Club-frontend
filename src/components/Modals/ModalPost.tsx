@@ -7,6 +7,10 @@ import {
   useSelectorTyped,
 } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
 import {
+  InitialStateModalPostButtonValue,
+  selectorOpenModalPostButtonValue,
+} from "../../redux/slices/modalPostButtonValueSlice";
+import {
   selectorOpenModalPostEmptyFieldValue,
   setModalPostEmptyFieldValueAction,
 } from "../../redux/slices/modalPostEmptyFieldValue";
@@ -32,6 +36,11 @@ const ModalPost = () => {
   // So I'm calling it here but I might as well move it inside my App.tsx
   // so that issues future won't happen in the future,
   // but I must test Performance first before callinng it inside App.tsx.
+
+  const { modalPostButtonValue } =
+    useSelectorTyped<InitialStateModalPostButtonValue>(
+      selectorOpenModalPostButtonValue
+    );
 
   // const [loading, setLoading] = useState<boolean>(false);
   const loading = useSelectorTyped<boolean>(selectorOpenModalPostLoading);
@@ -107,18 +116,35 @@ const ModalPost = () => {
   }, [isModalPostOpen]);
 
   const setShowModalFN = () => {
-    dispatchTyped(
-      openModalPostAction({
-        // isModalPostOpen: !isModalPostOpen,
-        // // text:"",
-        // // In here I can close it with setting state back to
-        // // initial state of EMPTY VALUES, however I prefer not to.
-        // // NEW:
-        // // TypeScript error (props are no longer optional) a fix:
-        ...modalPostState,
-        isModalPostOpen: !isModalPostOpen,
-      })
-    );
+    // NEW UPDATE3: when state is 'EDIT A POST': Reset fields
+    // Otherwise on 'CREATE A POST': Retain the fields.
+    if (modalPostButtonValue === "CREATE A POST") {
+      dispatchTyped(
+        openModalPostAction({
+          // isModalPostOpen: !isModalPostOpen,
+          // // text:"",
+          // // In here I can close it with setting state back to
+          // // initial state of EMPTY VALUES, however I prefer not to.
+          // // NEW UPDATE2:
+          // // TypeScript error (props are no longer optional) a fix:
+          ...modalPostState,
+          isModalPostOpen: !isModalPostOpen,
+        })
+      );
+    }
+    if (modalPostButtonValue === "EDIT A POST") {
+      dispatchTyped(
+        openModalPostAction({
+          isModalPostOpen: !isModalPostOpen,
+          title: "",
+          image: "",
+          description: "",
+          contactNumber: "",
+          askingPrice: "",
+          currency: "USD",
+        })
+      );
+    }
   };
 
   // BODY STATES UPDATES

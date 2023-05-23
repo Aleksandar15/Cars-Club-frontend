@@ -1,17 +1,25 @@
 import { useEffect } from "react";
 import { Button } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { getAllPosts } from "../../redux/createAsyncThunk/getAllPosts";
+// import { getAllPosts } from "../../redux/createAsyncThunk/getAllPosts";
+// import { getSortedPosts } from "../../redux/createAsyncThunk/getSortedPosts";
 import {
-  useDispatchAsyncThunk,
+  // useDispatchAsyncThunk,
   useDispatchTyped,
   useSelectorTyped,
 } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
+// import {
+//   InitialStateModalPostButtonValue,
+//   selectorOpenModalPostButtonValue,
+// } from "../../redux/slices/modalPostButtonValueSlice";
 
 import {
   openModalPostSuccessTextAction,
   selectorOpenModalPostSuccessText,
 } from "../../redux/slices/modalPostSuccessTextSlice";
+// import {
+//   InitialStateModalPost,
+//   selectorOpenModalPost,
+// } from "../../redux/slices/openModalPostSlice";
 
 const ModalPostSuccessText = () => {
   // const ModalPostSuccessText = ({ children }) => {
@@ -20,7 +28,19 @@ const ModalPostSuccessText = () => {
     selectorOpenModalPostSuccessText
   );
   const dispatchTyped = useDispatchTyped();
-  const dispatchAsyncThunk = useDispatchAsyncThunk();
+  // const dispatchAsyncThunk = useDispatchAsyncThunk();
+  // const { modalPostButtonValue } =
+  //   useSelectorTyped<InitialStateModalPostButtonValue>(
+  //     selectorOpenModalPostButtonValue
+  //   );
+  // console.log(
+  //   "modalPostButtonValue in ModalPostSuccessText:",
+  //   modalPostButtonValue
+  // );
+  // const modalPostState = useSelectorTyped<InitialStateModalPost>(
+  //   selectorOpenModalPost
+  // );
+  // console.log("modalPostSTate in ModalPostSuccessText:", modalPostState);
 
   useEffect(() => {
     if (isModalPostSuccessTextOpen) {
@@ -52,11 +72,49 @@ const ModalPostSuccessText = () => {
         text: "",
       })
     );
+    // UPDATE 2:
+    // ONLY Close the Modal.
+    // Don't call any kind of Asnyc Thunk
+    // since the Update happens by directly mutating
+    // the EdittedPost  for a Smoother UX.
+
+    // (old) UPDATE:
+    // only 'create' button will re-fetch;
+    // 'edit' button will not trigger re-fetch:
+    // if (modalPostButtonValue === "CREATE A POST") {
     // /marketplace on Successful CREATION:
-    dispatchAsyncThunk(getAllPosts()); // WIll have to modify since
+    // dispatchAsyncThunk(getAllPosts()); // WIll have to modify since
     // // ^ the logic would be to show 2 posts per page
     // // so instead I'll just run the LIMIT 2 SQL command, because
     // // whenever User creates a post -> show him latest posts.
+    //   // UPDATE:
+    //   dispatchAsyncThunk(
+    //     getSortedPosts({ limit: 5, offset: 0, carNameTitle: "" })
+    //   );
+    // }
+
+    // if (modalPostButtonValue === "EDIT A POST") {
+    //   console.count("EDIT A POST TRIGGERED");
+    //   console.log("EDIT A POST is with a Current Data:", modalPostState);
+    // Just to test if after the Loading the screen will be kept at
+    // same point; else if not: I have to use sessionStorage
+    // and on top of it I'd have to move OFFSET inside a Redux State
+    // since its state comes from PaginationMarketplace.tsx
+    // Result:
+    // it scrolls on TOP after 'Loading'
+    // so I have use some kind of useEffect inside of
+    // my main App.tsx that will count the User's destination
+    // of inside my website & preserve it in sessionStorage.
+    // dispatchAsyncThunk(
+    //   getSortedPosts({ limit: 5, offset: 0, carNameTitle: "" })
+    // );
+    // INSTEAD What I can do is
+    // make my `/editpost/:post_id/:user_id` `editPostController`
+    // to return
+    // the data including the POST_IMAGE_BUFFER
+    // and then inside `MOdalPost_Create_or_Edit_Button.tsx`
+    // call the `getSortedPost`'s 'editSortedPostAction' reducer.
+    // }
   };
   // VERY IMPORTANT NOTES about my setShowModalFN LOGIC:
   // ModalPostSuccessText logic for now is that

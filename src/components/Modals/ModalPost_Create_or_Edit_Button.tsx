@@ -33,6 +33,7 @@ import { editSortedPostAction } from "../../redux/createAsyncThunk/getSortedPost
 import { PostSorted } from "../../utilities/Types/getSortedPostsTypes";
 import {
   EdittedPost,
+  isEdittedPostTypeCheckerFN,
   ReceivedDataEditedPosts,
 } from "../../utilities/Types/modalPost_Create_or_Edit_Button_Types";
 const ModalPost_Create_or_Edit_Button = () => {
@@ -274,13 +275,9 @@ const ModalPost_Create_or_Edit_Button = () => {
         // the data including the POST_IMAGE_BUFFER
         // and then inside `MOdalPost_Create_or_Edit_Button.tsx`
         // call the `getSortedPost`'s 'editSortedPostAction' reducer.
-        console.log("data:", data);
-        if (
-          data?.edittedPost instanceof EdittedPost &&
-          typeof data?.edittedPost === "object" &&
-          data?.edittedPost !== undefined
-        ) {
-          dispatchTyped(editSortedPostAction(data.edittedPost));
+        // console.log("data:", data);
+        if (isEdittedPostTypeCheckerFN(data?.edittedPost)) {
+          dispatchTyped(editSortedPostAction(data.edittedPost as EdittedPost));
         }
 
         // setShowModalFN(); // Close modal I don't need anymore BECAUSE

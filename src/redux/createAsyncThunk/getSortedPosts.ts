@@ -93,6 +93,7 @@ const getSortedPostsSlice = createSlice({
         // state.posts = action.payload;
 
         state.posts = action.payload.posts;
+        state.total_posts = action.payload.total_posts;
       })
       .addCase(getSortedPosts.rejected, (state, action) => {
         // state.loading = false;

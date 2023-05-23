@@ -20,27 +20,19 @@ const PaginationMarketplace = () => {
   const dispatchAsyncThunk = useDispatchAsyncThunk();
   // const dispatchGetSortedPost = useDispatchGetSortedPost();
   const searchSubmitForm = useSelectorTyped(selectorSearchSubmitForm);
-  console.log("searchSubmitForm PaginationMarketplace:", searchSubmitForm);
+  // console.log("searchSubmitForm PaginationMarketplace:", searchSubmitForm);
 
-  // const [posts, setPosts] = useState([])
   // const [currentPage, setCurrentPage] = useState<number>(
   //   parseInt(sessionStorage.getItem("currentPage") || "1")
-  // ); // React error BAD SetState
-  // -> To Track trace of bad setState: GitHub bugs fixes:
-  // https://reactjs.org/link/setstate-in-render
-  //  .. I found it already it's my only useState xD
-  // UPDATE2: NOPE, I'm tracing the error in DevTools
-  // and it seems to be coming from my useDispatchAsyncThunk!
-  // that's called in here at the TOP. iDK WHY?
+  // ); // Not using anymore
 
   // Issues & Bug fixes
   // currentPage MUST be moved inside Redux State
   // so that 'CREATE A BUTTON' action will update
   // the set back up to 1 -> the 1st page.
   const [currentPage, setCurrentPage] = useState<number>(1);
-  // const postPerPage = 2;
-  // const postPerPage = 1; // Just to make it easier for showcase
   // const postPerPage = 5;
+  // const postPerPage = 1; // Just to make it easier for showcase
   const postPerPage = useSelectorTyped(selectorPostPerPage);
 
   // // Updates
@@ -48,20 +40,21 @@ const PaginationMarketplace = () => {
   //   sessionStorage.getItem("total_posts") || "0"
   // );
   // // // console.log("totalPostsLength SESSION::", totalPostsLengthSession);
+
   const total_postsString: string | number = useSelectorTyped<string | number>(
     selectorSortedTotalPosts
   ) as string; // if it's `as string | number` then parseInt TSC errors.
   const total_postsToNumber = parseInt(total_postsString, 10);
-  console.log(
-    "total_postsToNumber ModalPost:",
-    total_postsToNumber,
-    "& typeof total_postsToNumber:",
-    typeof total_postsToNumber
-  );
+  // console.log(
+  //   "total_postsToNumber ModalPost:",
+  //   total_postsToNumber,
+  //   "& typeof total_postsToNumber:",
+  //   typeof total_postsToNumber
+  // );
 
   // const totalPages = Math.ceil(totalPostsLengthSession / postPerPage);
   const totalPages = Math.ceil(total_postsToNumber / postPerPage);
-  console.log("totalPages PaginationMarketplace:", totalPages);
+  // console.log("totalPages PaginationMarketplace:", totalPages);
 
   // const [totalPostsLengthSTATE, setTotalPostsLengthSTATE] = useState<number>(0);
   // // console.log("totalPostsLengthSTATE:", totalPostsLengthSTATE);
@@ -85,9 +78,9 @@ const PaginationMarketplace = () => {
   const disableLastButton =
     currentPage === totalPages || total_postsToNumber === 0;
 
-  // const handleNextPage = () => {
-  // // Can be both ASYNC or Sync function
-  const handleNextPage = async () => {
+  const handleNextPage = () => {
+    // // Can be both ASYNC or Sync function
+    // const handleNextPage = async () => {
     setCurrentPage((prevPage) => prevPage + 1);
     window.scrollTo(0, 0); // Scroll to top
     // dispatchGetSortedPost(
@@ -109,8 +102,8 @@ const PaginationMarketplace = () => {
       })
     );
   };
-  // const handlePreviousPage = () => {
-  const handlePreviousPage = async () => {
+  const handlePreviousPage = () => {
+    // const handlePreviousPage = async () => {
     setCurrentPage((prevPage) => prevPage - 1);
     window.scrollTo(0, 0); // Scroll to top
     dispatchAsyncThunk(
@@ -247,8 +240,8 @@ const PaginationMarketplace = () => {
   }
   // UPDATE 5: Fixing Ellipsis UX^ENDS
 
-  // const handleFirstPage = () => {
-  const handleFirstPage = async () => {
+  const handleFirstPage = () => {
+    // const handleFirstPage = async () => {
     setCurrentPage(1);
     window.scrollTo(0, 0); // Scroll to top
     dispatchAsyncThunk(
@@ -260,8 +253,8 @@ const PaginationMarketplace = () => {
       })
     );
   };
-  // const handleLastPage = () => {
-  const handleLastPage = async () => {
+  const handleLastPage = () => {
+    // const handleLastPage = async () => {
     setCurrentPage(totalPages);
     window.scrollTo(0, 0); // Scroll to top
     dispatchAsyncThunk(

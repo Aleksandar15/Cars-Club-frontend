@@ -11,19 +11,12 @@ import Login from "./pages/PublicPages/Login";
 import Register from "./pages/PublicPages/Register";
 import ProtectedRoutes from "./components/ProtectedRoutes/ProtectedRoutes";
 import PublicRoutes from "./components/PublicRoutes/PublicRoutes";
-import ScrollToTop from "react-scroll-to-top";
+import ScrollToTopCustomized from "./components/App/ScrollToTopCustomized";
 
 function App() {
   return (
     <div>
-      <ScrollToTop
-        // topPosition={800}
-        color="cyan"
-        // size="2rem"
-        smooth
-        className="scrollToTopComponent"
-        style={{ borderRadius: "15px 8px", backgroundColor: "blue" }}
-      />
+      <ScrollToTopCustomized />
       <NavBar />
       <Container className="mb-4">
         <Routes>

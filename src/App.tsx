@@ -11,10 +11,12 @@ import Login from "./pages/PublicPages/Login";
 import Register from "./pages/PublicPages/Register";
 import ProtectedRoutes from "./components/ProtectedRoutes/ProtectedRoutes";
 import PublicRoutes from "./components/PublicRoutes/PublicRoutes";
+import ScrollToTopCustomized from "./components/App/ScrollToTopCustomized";
 
 function App() {
   return (
     <div>
+      <ScrollToTopCustomized />
       <NavBar />
       <Container className="mb-4">
         <Routes>

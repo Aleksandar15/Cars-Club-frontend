@@ -7,6 +7,7 @@ import {
   filterPostsByIdAction,
   getAllPosts,
 } from "../../redux/createAsyncThunk/getAllPosts";
+import { deletePostsByIdAction } from "../../redux/createAsyncThunk/getSortedPosts";
 import {
   useDispatchAsyncThunk,
   useDispatchTyped,
@@ -78,7 +79,11 @@ const ModalDeletePost = () => {
           setFlag(false); // Allow for subsequent requests
 
           // Filted the Deleted Post out of Posts state in Post.tsx
-          dispatchTyped(filterPostsByIdAction(post_post_id as string));
+          // dispatchTyped(filterPostsByIdAction(post_post_id as string));
+          // UPDATE:
+          if (typeof post_post_id === "string") {
+            dispatchTyped(deletePostsByIdAction(post_post_id as string));
+          }
 
           dispatchTyped(
             // Close ModalDeletePost

@@ -139,4 +139,5 @@ export const selectorSortedPostsError = (state: RootState) =>
 export const selectorSortedTotalPosts = (state: RootState) =>
   state?.getSortedPostsSlice?.total_posts;
 
-export const { editSortedPostAction } = getSortedPostsSlice.actions;
+export const { editSortedPostAction, deletePostsByIdAction } =
+  getSortedPostsSlice.actions;

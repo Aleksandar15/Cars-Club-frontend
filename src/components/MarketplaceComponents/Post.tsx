@@ -26,6 +26,7 @@ import {
   FormSearchCarsFields,
   selectorFormSearchCarsFields,
 } from "../../redux/slices/formSearchCarsSlice";
+import { selectorPostPerPage } from "../../redux/slices/postPerPageSlice";
 import { selectVerifyUser } from "../../redux/slices/verifySlice";
 import { PostSorted } from "../../utilities/Types/getSortedPostsTypes";
 import { Currency, PostType } from "../../utilities/Types/postsTypes";
@@ -75,6 +76,15 @@ function Post() {
   // Here I don't need to import `postPerPage` Redux State
   // because the Post.tsx logic is: on component mount:
   // 'everything will be reset back to default'
+  // UPDATE: well that's not how it works when I changed postPerPage
+  // initial State from 5 to 2 ahs no Effects because
+  // in here that's stuck at '5'
+  // instead if I need on refresh to reset back to default
+  // when in the future I'll have OPTIONS tag of 'Select Post Per Page'
+  // I'll reset that Redux state to '5' and this postPerpage will
+  // get affected based on the Redux State as well as the
+  // 'Select Posts Per Page'-future-plans OPTIONS tag's initial value.
+  const postPerPage = useSelectorTyped(selectorPostPerPage);
 
   useEffect(() => {
     // dispatchAsyncThunk(getAllPosts());
@@ -85,7 +95,12 @@ function Post() {
     // ^->if user has refreshed=session isn't lost;
     // However if it doesn't exist then provide the initial numbers.
     dispatchAsyncThunk(
-      getSortedPostsAsyncThunk({ limit: 5, offset: 0, carNameTitle: "" })
+      // getSortedPostsAsyncThunk({ limit: 5, offset: 0, carNameTitle: "" })
+      getSortedPostsAsyncThunk({
+        limit: postPerPage,
+        offset: 0,
+        carNameTitle: "",
+      })
     );
 
     // const getTotalPostsFN = async () => {

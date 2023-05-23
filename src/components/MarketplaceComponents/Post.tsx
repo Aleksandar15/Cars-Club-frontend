@@ -13,6 +13,8 @@ import {
 import {
   getSortedPosts,
   selectorSortedPostsData,
+  selectorSortedPostsError,
+  selectorSortedPostsStatus,
 } from "../../redux/createAsyncThunk/getSortedPosts";
 import {
   useDispatchAsyncThunk,
@@ -52,13 +54,16 @@ function Post() {
   // const posts = useSelectorTyped(selectorPostsData);
   const posts = useSelectorTyped(selectorSortedPostsData);
   console.log("IMPORTANT posts Post.tsx:", posts);
-  const postsStatus = useSelectorTyped(selectorPostsStatus);
-  const postsError = useSelectorTyped(selectorPostsError);
+  // const postsStatus = useSelectorTyped(selectorPostsStatus);
+  const postsStatus = useSelectorTyped(selectorSortedPostsStatus);
+  // const postsError = useSelectorTyped(selectorPostsError);
+  const postsError = useSelectorTyped(selectorSortedPostsError);
 
-  const searchCarsFieldsState = useSelectorTyped<FormSearchCarsFields>(
-    selectorFormSearchCarsFields
-  );
-  console.log("Post.tsx searchCarsFieldsState:", searchCarsFieldsState);
+  // const searchCarsFieldsState = useSelectorTyped<FormSearchCarsFields>(
+  //   selectorFormSearchCarsFields
+  // );
+  // console.log("Post.tsx searchCarsFieldsState:", searchCarsFieldsState);
+
   useEffect(() => {
     // dispatchAsyncThunk(getAllPosts());
 

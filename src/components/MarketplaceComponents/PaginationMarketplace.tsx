@@ -4,7 +4,7 @@
 import { useEffect, useState } from "react";
 import { Pagination } from "react-bootstrap";
 import {
-  getSortedPosts,
+  getSortedPostsAsyncThunk,
   selectorSortedTotalPosts,
 } from "../../redux/createAsyncThunk/getSortedPosts";
 import {
@@ -77,7 +77,7 @@ const PaginationMarketplace = () => {
     setCurrentPage((prevPage) => prevPage + 1);
     window.scrollTo(0, 0); // Scroll to top
     // dispatchGetSortedPost(
-    //   getSortedPosts({
+    //   getSortedPostsAsyncThunk({
     //     limit: postPerPage,
     //     offset: currentPage * postPerPage,
     //     carNameTitle: "",
@@ -87,7 +87,7 @@ const PaginationMarketplace = () => {
     // Still errors so I have to use my previous typed Hook
 
     dispatchAsyncThunk(
-      getSortedPosts({
+      getSortedPostsAsyncThunk({
         limit: postPerPage,
         offset: currentPage * postPerPage,
         // carNameTitle: "",
@@ -100,7 +100,7 @@ const PaginationMarketplace = () => {
     setCurrentPage((prevPage) => prevPage - 1);
     window.scrollTo(0, 0); // Scroll to top
     dispatchAsyncThunk(
-      getSortedPosts({
+      getSortedPostsAsyncThunk({
         limit: postPerPage,
         offset: (currentPage - 2) * postPerPage,
         // carNameTitle: "",
@@ -201,8 +201,8 @@ const PaginationMarketplace = () => {
           }
 
           dispatchAsyncThunk(
-            // getSortedPosts({ limit, offset, carNameTitle: "" })
-            getSortedPosts({
+            // getSortedPostsAsyncThunk({ limit, offset, carNameTitle: "" })
+            getSortedPostsAsyncThunk({
               limit,
               offset,
               carNameTitle: searchSubmitForm.carNameTitle,
@@ -223,8 +223,8 @@ const PaginationMarketplace = () => {
     setCurrentPage(1);
     window.scrollTo(0, 0); // Scroll to top
     dispatchAsyncThunk(
-      // getSortedPosts({ limit: postPerPage, offset: 0, carNameTitle: "" })
-      getSortedPosts({
+      // getSortedPostsAsyncThunk({ limit: postPerPage, offset: 0, carNameTitle: "" })
+      getSortedPostsAsyncThunk({
         limit: postPerPage,
         offset: 0,
         carNameTitle: searchSubmitForm.carNameTitle,
@@ -236,7 +236,7 @@ const PaginationMarketplace = () => {
     setCurrentPage(totalPages);
     window.scrollTo(0, 0); // Scroll to top
     dispatchAsyncThunk(
-      getSortedPosts({
+      getSortedPostsAsyncThunk({
         limit: postPerPage,
         offset: (totalPages - 1) * postPerPage,
         // carNameTitle: "",

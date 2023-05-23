@@ -9,14 +9,14 @@ import {
 } from "../../utilities/Types/getSortedPostsTypes";
 import { RootState } from "../store";
 
-// Define the getSortedPosts async thunk
-export const getSortedPosts = createAsyncThunk<
+// Define the getSortedPostsAsyncThunk async thunk
+export const getSortedPostsAsyncThunk = createAsyncThunk<
   // PostSorted[], // Returned Type. Updated:
   ReceivedDataSortedPosts,
   GetSortedPostsPayload,
   { state: RootState }
 >(
-  "sortedPosts/getSortedPosts",
+  "sortedPosts/getSortedPostsAsyncThunk",
   async function (
     { limit, offset, carNameTitle },
     // Part below 'getState' is optional: to get current state
@@ -103,13 +103,13 @@ const getSortedPostsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getSortedPosts.pending, (state) => {
+      .addCase(getSortedPostsAsyncThunk.pending, (state) => {
         // state.loading = true;
         // state.loading = "loading";
         state.status = "loading";
         state.error = null;
       })
-      .addCase(getSortedPosts.fulfilled, (state, action) => {
+      .addCase(getSortedPostsAsyncThunk.fulfilled, (state, action) => {
         // state.loading = false;
         // state.loading = "succeeded";
         state.status = "succeeded";
@@ -118,7 +118,7 @@ const getSortedPostsSlice = createSlice({
         state.posts = action.payload.posts;
         state.total_posts = action.payload.total_posts;
       })
-      .addCase(getSortedPosts.rejected, (state, action) => {
+      .addCase(getSortedPostsAsyncThunk.rejected, (state, action) => {
         // state.loading = false;
         // state.loading = "failed";
         state.status = "failed";

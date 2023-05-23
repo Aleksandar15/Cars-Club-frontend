@@ -68,7 +68,7 @@ const FormSearchCars = () => {
         // Offset 0 because I start at index 0 in PG.
         limit: 5, // as per the standard `postPerPage`.
         offset: 0,
-        carNameTitle: searchCarsFieldsState.carNameInputField,
+        carNameTitle: searchCarsFieldsState.carNameInputField.trim(),
       })
     );
 

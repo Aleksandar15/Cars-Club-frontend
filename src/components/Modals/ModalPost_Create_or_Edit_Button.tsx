@@ -83,13 +83,17 @@ const ModalPost_Create_or_Edit_Button = () => {
         // Alternatively for alternative:
         Object.entries(modalPostState).forEach(([key, value]) => {
           if (key === "askingPrice") {
-            // Remove dots/commas for the 'price' number
-            formData.append(key, deformatNumber(value));
+            if (typeof value === "string") {
+              // Remove dots/commas for the 'price' number
+              formData.append(key, deformatNumber(value));
+            }
           }
           //  else {
           // UPDATE: for reusability to NOT include isModalPostOpen
           else if (key !== "isModalPostOpen") {
-            formData.append(key, value);
+            if (typeof value === "string" || value instanceof File) {
+              formData.append(key, value);
+            }
           }
         });
         formData.append("user_name", user_name as string);
@@ -202,15 +206,19 @@ const ModalPost_Create_or_Edit_Button = () => {
         // Alternatively for alternative:
         Object.entries(modalPostState).forEach(([key, value]) => {
           if (key === "askingPrice") {
-            // Remove dots/commas for the 'price' number
-            formData.append(key, deformatNumber(value));
+            if (typeof value === "string") {
+              // Remove dots/commas for the 'price' number
+              formData.append(key, deformatNumber(value));
+            }
           }
           //  else {
           // UPDATE: for reusability to NOT include isModalPostOpen
           // UPDATE2: for 'edit-post' 'image' might be empty string
           // so `editPostController` MUST NOT reject if it's empty.
           else if (key !== "isModalPostOpen") {
-            formData.append(key, value);
+            if (typeof value === "string" || value instanceof File) {
+              formData.append(key, value);
+            }
           }
         });
         formData.append("user_name", user_name as string);

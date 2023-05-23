@@ -48,7 +48,6 @@ const PaginationMarketplace = () => {
   //   sessionStorage.getItem("total_posts") || "0"
   // );
   // // // console.log("totalPostsLength SESSION::", totalPostsLengthSession);
-
   const total_postsString: string | number = useSelectorTyped<string | number>(
     selectorSortedTotalPosts
   ) as string; // if it's `as string | number` then parseInt TSC errors.
@@ -76,9 +75,18 @@ const PaginationMarketplace = () => {
   // const totalPages = 20; // fake for Tests
   const disableFirstButton = currentPage === 1;
   const disablePreviousButton = currentPage === 1;
-  const disableNextButton = currentPage === totalPages;
-  const disableLastButton = currentPage === totalPages;
+  // const disableNextButton = currentPage === totalPages;
+  // const disableLastButton = currentPage === totalPages;
+  // UPDATE: for when refreshing: initial total_posts is 0
+  // but my Next & Last buttons aren't disabled: meaning I
+  // need to disable them when initial state total_posts=0
+  const disableNextButton =
+    currentPage === totalPages || total_postsToNumber === 0;
+  const disableLastButton =
+    currentPage === totalPages || total_postsToNumber === 0;
+
   // const handleNextPage = () => {
+  // // Can be both ASYNC or Sync function
   const handleNextPage = async () => {
     setCurrentPage((prevPage) => prevPage + 1);
     window.scrollTo(0, 0); // Scroll to top
@@ -116,306 +124,7 @@ const PaginationMarketplace = () => {
   };
 
   const pageItems = [];
-  // if (totalPages <= 3) {
-  //   // Show all page numbers
-  //   for (let index = 1; index <= totalPages; index++) {
-  //     pageItems.push(
-  //       <Pagination.Item
-  //         key={index}
-  //         active={index === currentPage}
-  //         onClick={() => {
-  //           setCurrentPage(index);
-  //           window.scrollTo(0, 0); // Scroll to top
-  //         }}
-  //       >
-  //         {index}
-  //       </Pagination.Item>
-  //     );
-  //   }
-  // } else {
-  //   // Show limited page numbers with ellipsis
-  //   const firstPage = Math.max(currentPage - 1, 1);
-  //   const lastPage = Math.min(currentPage + 1, totalPages);
-
-  //   for (let index = firstPage; index <= lastPage; index++) {
-  //     pageItems.push(
-  //       <Pagination.Item
-  //         key={index}
-  //         active={index === currentPage}
-  //         onClick={() => {
-  //           setCurrentPage(index);
-  //           window.scrollTo(0, 0); // Scroll to top
-  //         }}
-  //       >
-  //         {index}
-  //       </Pagination.Item>
-  //     );
-  //   }
-  //   // UI/UX add those '3 dots' from Bootstrap Pagination styling
-  //   if (firstPage > 1) {
-  //     // Add ellipsis before first page
-  //     pageItems.unshift(
-  //       <Pagination.Ellipsis key="ellipsis-start" disabled={true} />
-  //     );
-  //     pageItems.unshift(
-  //       <Pagination.Item
-  //         key={1}
-  //         active={1 === currentPage}
-  //         onClick={() => {
-  //           setCurrentPage(1); // "firstPage"-Number clicks
-  //           window.scrollTo(0, 0); // Scroll to top
-  //         }}
-  //       >
-  //         1
-  //       </Pagination.Item>
-  //     );
-  //   }
-  //   if (lastPage < totalPages) {
-  //     // Add ellipsis after last page
-  //     pageItems.push(
-  //       <Pagination.Ellipsis key="ellipsis-end" disabled={true} />
-  //     );
-  //     pageItems.push(
-  //       <Pagination.Item
-  //         key={totalPages}
-  //         active={totalPages === currentPage}
-  //         onClick={() => {
-  //           setCurrentPage(totalPages); // "lastPage"-Number clicks
-  //           window.scrollTo(0, 0); // Scroll to top
-  //         }}
-  //       >
-  //         {totalPages}
-  //       </Pagination.Item>
-  //     );
-  //   }
-  // }
-
-  // // // UPDATE 2nd SHORTCUTS for pageItems:
-  // // Show all page numbers
-  // for (let index = 1; index <= totalPages; index++) {
-  //   pageItems.push(
-  //     <Pagination.Item
-  //       key={index}
-  //       active={index === currentPage}
-  //       onClick={() => {
-  //         // Set the limit to the desired value (e.g., postPerPage)
-  //         const limit = postPerPage;
-  //         let offset = 0; // Initialize the offset to 0
-
-  //         if (index > 1) {
-  //           // Calculate the offset based on the current page
-  //           offset = (index - 1) * postPerPage;
-  //         }
-
-  //         dispatchAsyncThunk(
-  //           // getSortedPostsAsyncThunk({ limit, offset, carNameTitle: "" })
-  //           getSortedPostsAsyncThunk({
-  //             limit,
-  //             offset,
-  //             carNameTitle: searchSubmitForm.carNameTitle,
-  //           })
-  //         );
-  //         setCurrentPage(index);
-  //         window.scrollTo(0, 0); // Scroll to top
-  //       }}
-  //     >
-  //       {index}
-  //     </Pagination.Item>
-  //   );
-  // }
-  // // UPDATE 2nd SHORTCUTS for pageItems^ENDS.
-
-  // // UPDATE 3rd ^ Shortcuts BUGS: numbers go to infinitive
-  // // I mean limitless: if I have postPerPage: for as long as
-  // // there's Posts: the Vertical Scroll Bar appears for bad UX.
-  // if (totalPages <= 1) {
-  //   // Show single page without pagination
-  //   pageItems.push(
-  //     <Pagination.Item
-  //       key={1}
-  //       active={1 === currentPage}
-  //       onClick={() => setCurrentPage(1)}
-  //     >
-  //       1
-  //     </Pagination.Item>
-  //   );
-  // } else {
-  //   const firstPage = Math.max(currentPage - 1, 1);
-  //   const lastPage = Math.min(currentPage + 1, totalPages);
-
-  //   if (firstPage > 1) {
-  //     // Add ellipsis before first page
-  //     pageItems.push(
-  //       <Pagination.Ellipsis
-  //         key="ellipsis-start"
-  //         disabled={true}
-  //         onClick={() => setCurrentPage(1)}
-  //       />
-  //     );
-  //   }
-
-  //   for (let index = firstPage; index <= lastPage; index++) {
-  //     pageItems.push(
-  //       <Pagination.Item
-  //         key={index}
-  //         active={index === currentPage}
-  //         onClick={() => {
-  //           setCurrentPage(index);
-  //           // Add your dispatch function call here
-  //           dispatchAsyncThunk(
-  //             getSortedPostsAsyncThunk({
-  //               limit: postPerPage,
-  //               offset: (index - 1) * postPerPage,
-  //               carNameTitle: searchSubmitForm.carNameTitle,
-  //             })
-  //           );
-  //           window.scrollTo(0, 0); // Scroll to top
-  //         }}
-  //       >
-  //         {index}
-  //       </Pagination.Item>
-  //     );
-  //   }
-
-  //   if (lastPage < totalPages) {
-  //     // Add ellipsis after last page
-  //     pageItems.push(
-  //       <Pagination.Ellipsis
-  //         key="ellipsis-end"
-  //         disabled={true}
-  //         onClick={() => {
-  //           setCurrentPage(totalPages);
-  //           // Add your dispatch function call here
-  //           dispatchAsyncThunk(
-  //             getSortedPostsAsyncThunk({
-  //               limit: postPerPage,
-  //               offset: (totalPages - 1) * postPerPage,
-  //               carNameTitle: searchSubmitForm.carNameTitle,
-  //             })
-  //           );
-  //           window.scrollTo(0, 0); // Scroll to top
-  //         }}
-  //       />
-  //     );
-  //   }
-  // }
-  // // UPDATE 3rd ENDS^
-
-  // // UPDATE 4: INCLUDE the 1st and LAST Numbers as well:
-  // if (totalPages <= 1) {
-  //   // Show single page without pagination
-  //   pageItems.push(
-  //     <Pagination.Item
-  //       key={1}
-  //       active={1 === currentPage}
-  //       onClick={() => setCurrentPage(1)}
-  //     >
-  //       1
-  //     </Pagination.Item>
-  //   );
-  // } else {
-  //   const firstPage = Math.max(currentPage - 1, 1);
-  //   const lastPage = Math.min(currentPage + 1, totalPages);
-
-  //   if (firstPage > 1) {
-  //     // Add ellipsis before first page
-  //     pageItems.push(
-  //       <Pagination.Ellipsis
-  //         key="ellipsis-start"
-  //         disabled={true}
-  //         onClick={() => setCurrentPage(1)}
-  //       />
-  //     );
-  //     pageItems.push(
-  //       <Pagination.Item
-  //         key={1}
-  //         active={1 === currentPage}
-  //         onClick={() => {
-  //           setCurrentPage(1);
-  //           // Add your dispatch function call here
-  //           dispatchAsyncThunk(
-  //             getSortedPostsAsyncThunk({
-  //               limit: postPerPage,
-  //               offset: 0,
-  //               carNameTitle: searchSubmitForm.carNameTitle,
-  //             })
-  //           );
-  //           window.scrollTo(0, 0); // Scroll to top
-  //         }}
-  //       >
-  //         1
-  //       </Pagination.Item>
-  //     );
-  //   }
-
-  //   for (let index = firstPage; index <= lastPage; index++) {
-  //     pageItems.push(
-  //       <Pagination.Item
-  //         key={index}
-  //         active={index === currentPage}
-  //         onClick={() => {
-  //           setCurrentPage(index);
-  //           // Add your dispatch function call here
-  //           dispatchAsyncThunk(
-  //             getSortedPostsAsyncThunk({
-  //               limit: postPerPage,
-  //               offset: (index - 1) * postPerPage,
-  //               carNameTitle: searchSubmitForm.carNameTitle,
-  //             })
-  //           );
-  //           window.scrollTo(0, 0); // Scroll to top
-  //         }}
-  //       >
-  //         {index}
-  //       </Pagination.Item>
-  //     );
-  //   }
-
-  //   if (lastPage < totalPages) {
-  //     pageItems.push(
-  //       <Pagination.Item
-  //         key={totalPages}
-  //         active={totalPages === currentPage}
-  //         onClick={() => {
-  //           setCurrentPage(totalPages);
-  //           // Add your dispatch function call here
-  //           dispatchAsyncThunk(
-  //             getSortedPostsAsyncThunk({
-  //               limit: postPerPage,
-  //               offset: (totalPages - 1) * postPerPage,
-  //               carNameTitle: searchSubmitForm.carNameTitle,
-  //             })
-  //           );
-  //           window.scrollTo(0, 0); // Scroll to top
-  //         }}
-  //       >
-  //         {totalPages}
-  //       </Pagination.Item>
-  //     );
-  //     // Add ellipsis after last page
-  //     pageItems.push(
-  //       <Pagination.Ellipsis
-  //         key="ellipsis-end"
-  //         disabled={true}
-  //         onClick={() => {
-  //           setCurrentPage(totalPages);
-  //           // Add your dispatch function call here
-  //           dispatchAsyncThunk(
-  //             getSortedPostsAsyncThunk({
-  //               limit: postPerPage,
-  //               offset: (totalPages - 1) * postPerPage,
-  //               carNameTitle: searchSubmitForm.carNameTitle,
-  //             })
-  //           );
-  //           window.scrollTo(0, 0); // Scroll to top
-  //         }}
-  //       />
-  //     );
-  //   }
-  // }
-  // // UPDATE 4: INCLUDE the 1st and LAST Numbers as well^ENDS
-
-  // UPDATE 5: Fixing Elipsis UX:
+  // UPDATE 5: Fixing Ellipsis UX:
   if (totalPages <= 1) {
     // Show single page without pagination
     pageItems.push(
@@ -536,7 +245,7 @@ const PaginationMarketplace = () => {
       );
     }
   }
-  // UPDATE 5: Fixing Elipsis UX^ENDS
+  // UPDATE 5: Fixing Ellipsis UX^ENDS
 
   // const handleFirstPage = () => {
   const handleFirstPage = async () => {

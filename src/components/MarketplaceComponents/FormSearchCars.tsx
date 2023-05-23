@@ -19,6 +19,7 @@ import {
   selectorFormSearchCarsFields,
 } from "../../redux/slices/formSearchCarsSlice";
 import { triggerFormSearchSubmitAction } from "../../redux/slices/formSearchSubmitSlice";
+import { selectorPostPerPage } from "../../redux/slices/postPerPageSlice";
 import ClearSVGicon from "../../utilities/icons-setup/clear-SVG-icon";
 // import CreatePostSVG from "../../utilities/icons-setup/createPost-SVG";
 import SearchSVGicon from "../../utilities/icons-setup/search-SVG-icon";
@@ -30,6 +31,9 @@ const FormSearchCars = () => {
     selectorFormSearchCarsFields
   );
   const dispatchAsyncThunk = useDispatchAsyncThunk();
+  // postPerPage state for future plans & usages to
+  // let user decide amount of posts per page to be shown.
+  const postPerPage = useSelectorTyped(selectorPostPerPage);
 
   const handleSearchFN = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();

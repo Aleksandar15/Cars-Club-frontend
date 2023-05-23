@@ -72,6 +72,10 @@ function Post() {
   // );
   // console.log("Post.tsx searchCarsFieldsState:", searchCarsFieldsState);
 
+  // Here I don't need to import `postPerPage` Redux State
+  // because the Post.tsx logic is: on component mount:
+  // 'everything will be reset back to default'
+
   useEffect(() => {
     // dispatchAsyncThunk(getAllPosts());
 

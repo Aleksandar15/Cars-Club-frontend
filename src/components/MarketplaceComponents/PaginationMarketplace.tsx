@@ -13,6 +13,7 @@ import {
   useSelectorTyped,
 } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
 import { selectorSearchSubmitForm } from "../../redux/slices/formSearchSubmitSlice";
+import { selectorPostPerPage } from "../../redux/slices/postPerPageSlice";
 // import catalogArray from "./catalogArray";
 
 const PaginationMarketplace = () => {
@@ -34,7 +35,8 @@ const PaginationMarketplace = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   // const postPerPage = 2;
   // const postPerPage = 1; // Just to make it easier for showcase
-  const postPerPage = 5;
+  // const postPerPage = 5;
+  const postPerPage = useSelectorTyped(selectorPostPerPage);
 
   // // Updates
   // let totalPostsLengthSession = parseInt(

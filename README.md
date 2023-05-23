@@ -150,6 +150,8 @@
       once they'll call the `getSortedPosts` with `limit:5`
       and `offset:0` -> re-thinking: except for `Delete` button
       which will ONLY filter the removed data upon 200 Response Successful Response: don't re-fetch but instead filter out the removed Post from the `Posts` state for smoother UX/UI.
+17. Reusability issues I figured `offset` and `limit` inside of my `PaginationMarketplace` are used multiple times and if I decide to change the `limit` I must change it across multiple codes -> instead a solution for DRY Principle would be to put this limit in a Redux State: so whatever's initial state I put inside that slice it's however many Posts Per Pages would be shown inside of mine `Post.tsx` Component.
+    -> BUT for `offset` there's no need to do it as they're a functionality in and off itself by some math calculations that I can't memorize and I have to remind myself if I ever want to implement something so good and advanced pagination as my current one is.
 
 ##### Further plans (_reminders for me_)
 

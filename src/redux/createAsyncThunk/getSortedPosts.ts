@@ -78,6 +78,18 @@ const getSortedPostsSlice = createSlice({
   name: "sortedPosts",
   initialState,
   reducers: {
+    // Reducer for DELETE Button in 'ModalDeletePost'
+    //  upon response 200 of deletion: filter out the deleted Post.
+    deletePostsByIdAction(
+      state: GetSortedPostsState,
+      action: PayloadAction<string>
+    ) {
+      const postId = action.payload;
+      const filteredPosts = state.posts.filter(
+        (post) => post.post_id !== postId
+      );
+      state.posts = filteredPosts;
+    },
     editSortedPostAction: (
       state: GetSortedPostsState,
       action: PayloadAction<PostSorted>
@@ -126,3 +138,5 @@ export const selectorSortedPostsError = (state: RootState) =>
   state?.getSortedPostsSlice?.error;
 export const selectorSortedTotalPosts = (state: RootState) =>
   state?.getSortedPostsSlice?.total_posts;
+
+export const { editSortedPostAction } = getSortedPostsSlice.actions;

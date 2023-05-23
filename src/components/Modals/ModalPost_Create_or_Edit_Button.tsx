@@ -29,6 +29,12 @@ import { setModalPostEmptyFieldValueAction } from "../../redux/slices/modalPostE
 import { selectorOpenModalPostEditPost } from "../../redux/slices/modalPostEditPostSlice";
 // import { openModalTextAction } from "../../redux/slices/openModalTextSlice";
 import { openModalPostSuccessTextAction } from "../../redux/slices/modalPostSuccessTextSlice";
+import { editSortedPostAction } from "../../redux/createAsyncThunk/getSortedPosts";
+import { PostSorted } from "../../utilities/Types/getSortedPostsTypes";
+import {
+  EdittedPost,
+  ReceivedDataEditedPosts,
+} from "../../utilities/Types/modalPost_Create_or_Edit_Button_Types";
 const ModalPost_Create_or_Edit_Button = () => {
   const dispatchTyped = useDispatchTyped();
   const dispatchAsyncThunk = useDispatchAsyncThunk();
@@ -216,17 +222,18 @@ const ModalPost_Create_or_Edit_Button = () => {
             modalPostLoading: true, // STart Loading ModalPost
           })
         );
-        const { data } = await axiosCredentials.put(
-          // URL can't be on a new lines with string literals because it either fails
-          // or if I have ${post_post_id} on a new line the ID gets "   " at the end.
-          `/api/v1/post/editpost/${post_post_id}/${post_user_id}`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
+        const { data }: { data: ReceivedDataEditedPosts } =
+          await axiosCredentials.put(
+            // URL can't be on a new lines with string literals because it either fails
+            // or if I have ${post_post_id} on a new line the ID gets "   " at the end.
+            `/api/v1/post/editpost/${post_post_id}/${post_user_id}`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
         // console.log("editPost DATA:", data);
         if (data?.isSuccessful) {
           // setLoading(false); // Stop Loading
@@ -248,6 +255,34 @@ const ModalPost_Create_or_Edit_Button = () => {
             })
           );
         } // Resets fields back to initial values
+        //   // UPDATE:
+        //   // don't reset them to initial values so that
+        //   // my 'MOdalPostSuccessText' can see those values
+        //   // and use them for the more complex Logic of not re-fetching
+        //   // but rather passing the editted Post inside the main Posts.
+        //   dispatchTyped(
+        //     openModalPostAction({
+        //       ...modalPostState,
+        //       isModalPostOpen: false,
+        //     })
+        //   );
+        // } // Retain the values so that ModalPostSUccessText can use.
+        // UPDATE2:
+        // INSTEAD What I can do is
+        // make my `/editpost/:post_id/:user_id` `editPostController`
+        // to return
+        // the data including the POST_IMAGE_BUFFER
+        // and then inside `MOdalPost_Create_or_Edit_Button.tsx`
+        // call the `getSortedPost`'s 'editSortedPostAction' reducer.
+        console.log("data:", data);
+        if (
+          data?.edittedPost instanceof EdittedPost &&
+          typeof data?.edittedPost === "object" &&
+          data?.edittedPost !== undefined
+        ) {
+          dispatchTyped(editSortedPostAction(data.edittedPost));
+        }
+
         // setShowModalFN(); // Close modal I don't need anymore BECAUSE
         // "isModalPostOpen: false" above Closes the Modal.
 

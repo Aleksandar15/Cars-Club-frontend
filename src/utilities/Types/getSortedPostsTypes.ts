@@ -28,6 +28,7 @@ export interface GetSortedPostsState {
 }
 
 // Define the payload type for getSortedPosts async thunk
+// arguments
 export interface GetSortedPostsPayload {
   limit: number;
   offset: number;
@@ -39,4 +40,15 @@ export type Total_posts = string | number;
 export interface ReceivedDataSortedPosts {
   posts: PostSorted[];
   total_posts: Total_posts;
+}
+
+export interface EditSortedPost {
+  isModalPostOpen: boolean;
+  // text?: string;
+  title: string;
+  image: string | File;
+  description: string;
+  contactNumber: string;
+  askingPrice: string;
+  currency: Currency;
 }

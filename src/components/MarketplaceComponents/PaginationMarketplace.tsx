@@ -80,13 +80,16 @@ const PaginationMarketplace = () => {
     //     offset: currentPage * postPerPage,
     //     carNameTitle: "",
     //   })
-    // ); // Still errors so I have to use my previous typed Hook
+    // );
+    // ^^ NOTE USING ABOVE because `dispatchGetSortedPost`:
+    // Still errors so I have to use my previous typed Hook
 
     dispatchAsyncThunk(
       getSortedPosts({
         limit: postPerPage,
         offset: currentPage * postPerPage,
-        carNameTitle: "",
+        // carNameTitle: "",
+        carNameTitle: searchSubmitForm.carNameTitle,
       })
     );
   };
@@ -98,7 +101,8 @@ const PaginationMarketplace = () => {
       getSortedPosts({
         limit: postPerPage,
         offset: (currentPage - 2) * postPerPage,
-        carNameTitle: "",
+        // carNameTitle: "",
+        carNameTitle: searchSubmitForm.carNameTitle,
       })
     );
   };
@@ -195,7 +199,12 @@ const PaginationMarketplace = () => {
           }
 
           dispatchAsyncThunk(
-            getSortedPosts({ limit, offset, carNameTitle: "" })
+            // getSortedPosts({ limit, offset, carNameTitle: "" })
+            getSortedPosts({
+              limit,
+              offset,
+              carNameTitle: searchSubmitForm.carNameTitle,
+            })
           );
           setCurrentPage(index);
           window.scrollTo(0, 0); // Scroll to top
@@ -212,7 +221,12 @@ const PaginationMarketplace = () => {
     setCurrentPage(1);
     window.scrollTo(0, 0); // Scroll to top
     dispatchAsyncThunk(
-      getSortedPosts({ limit: postPerPage, offset: 0, carNameTitle: "" })
+      // getSortedPosts({ limit: postPerPage, offset: 0, carNameTitle: "" })
+      getSortedPosts({
+        limit: postPerPage,
+        offset: 0,
+        carNameTitle: searchSubmitForm.carNameTitle,
+      })
     );
   };
   // const handleLastPage = () => {
@@ -223,7 +237,8 @@ const PaginationMarketplace = () => {
       getSortedPosts({
         limit: postPerPage,
         offset: (totalPages - 1) * postPerPage,
-        carNameTitle: "",
+        // carNameTitle: "",
+        carNameTitle: searchSubmitForm.carNameTitle,
       })
     );
   };

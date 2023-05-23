@@ -105,8 +105,8 @@ function Post() {
   const { formatNumber } = useModalPost_formatNum();
 
   const { user_id } = useSelectorTyped(selectVerifyUser);
-  console.log("postsStatus:", postsStatus);
-  console.log("posts:", posts);
+  // console.log("postsStatus:", postsStatus);
+  // console.log("posts:", posts);
 
   if (postsStatus === "idle" || postsStatus === "loading") {
     // Might need to move these inside parent: MarketPlace.tsx

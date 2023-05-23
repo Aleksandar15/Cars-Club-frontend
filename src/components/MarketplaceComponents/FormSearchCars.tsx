@@ -76,11 +76,15 @@ const FormSearchCars = () => {
     // 'handleSearchFN' (this) button clicks
     // which will show up the state update inside
     // 'PaginationMarketplace.tsx'
-    // dispatchTyped(
-    //   triggerFormSearchSubmitAction({
-    //     carNameTitle: searchCarsFieldsState.carNameInputField,
-    //   })
-    // );
+    dispatchTyped(
+      triggerFormSearchSubmitAction({
+        // carNameTitle: searchCarsFieldsState.carNameInputField,
+        // Trim it from here so that I don't have to care about
+        // forgetting to trim inside my `PaginationMarketplace`
+        // where this `carNameTitle` state is received & used.
+        carNameTitle: searchCarsFieldsState.carNameInputField.trim(),
+      })
+    );
   };
 
   // // const [searchInput, setSearchInput] = useState("");

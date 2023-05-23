@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { axiosCredentials } from "../../utilities/API/axios";
 import {
+  EditSortedPost,
   GetSortedPostsPayload,
   GetSortedPostsState,
   PostSorted,
@@ -10,12 +11,12 @@ import { RootState } from "../store";
 
 // Define the getSortedPosts async thunk
 export const getSortedPosts = createAsyncThunk<
-  // PostSorted[], // Returned Type; Updated:
+  // PostSorted[], // Returned Type. Updated:
   ReceivedDataSortedPosts,
   GetSortedPostsPayload,
   { state: RootState }
 >(
-  "posts/getSortedPosts",
+  "sortedPosts/getSortedPosts",
   async function (
     { limit, offset, carNameTitle },
     // Part below 'getState' is optional: to get current state
@@ -74,9 +75,20 @@ const initialState: GetSortedPostsState = {
 
 // Create the slice
 const getSortedPostsSlice = createSlice({
-  name: "posts",
+  name: "sortedPosts",
   initialState,
-  reducers: {},
+  reducers: {
+    editSortedPostAction: (
+      state: GetSortedPostsState,
+      action: PayloadAction<PostSorted>
+    ) => {
+      const editedPost = action.payload;
+      const editedPostID = action.payload.post_id;
+      state.posts = state.posts.map((currentPost) => {
+        return currentPost.post_id === editedPostID ? editedPost : currentPost;
+      });
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getSortedPosts.pending, (state) => {

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { Button, ButtonGroup, ButtonToolbar } from "react-bootstrap";
+import useAxiosInterceptor from "../../hooks/authHooks/useAxiosInterceptor";
 // import useAxiosInterceptor from "../../hooks/authHooks/useAxiosInterceptor";
 import useModalPost_formatNum from "../../hooks/ModalPostHooks/useModalPost_formatNum";
 import {
@@ -10,16 +11,32 @@ import {
   selectorPostsStatus,
 } from "../../redux/createAsyncThunk/getAllPosts";
 import {
+  getSortedPosts,
+  selectorSortedPostsData,
+  selectorSortedPostsError,
+  selectorSortedPostsStatus,
+  // selectorSortedTotalPosts,
+} from "../../redux/createAsyncThunk/getSortedPosts";
+import {
   useDispatchAsyncThunk,
+  useDispatchTyped,
   useSelectorTyped,
 } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
+import {
+  FormSearchCarsFields,
+  selectorFormSearchCarsFields,
+} from "../../redux/slices/formSearchCarsSlice";
 import { selectVerifyUser } from "../../redux/slices/verifySlice";
 import { Currency, PostType } from "../../utilities/Types/postsTypes";
 import Loading from "../Loading/Loading";
 import Post_Action_Buttons from "./Post_Action_Buttons";
 
 function Post() {
-  // const axiosCredentials = useAxiosInterceptor();
+  const axiosCredentials = useAxiosInterceptor();
+  // DO NOT REMOVE useAxiosInterceptor()
+  // or AsyncThunk's being used in Post & it's children
+  // will start failing (I'm working on testing performance
+  // to instead call useAxiosIntercpetor inside App.tsx).
 
   // const handleDelete = () => {
   //   onDelete();
@@ -38,11 +55,45 @@ function Post() {
   };
 
   const dispatchAsyncThunk = useDispatchAsyncThunk();
-  const posts = useSelectorTyped(selectorPostsData);
-  const postsStatus = useSelectorTyped(selectorPostsStatus);
-  const postsError = useSelectorTyped(selectorPostsError);
+  const dispatchTyped = useDispatchTyped();
+  // const posts = useSelectorTyped(selectorPostsData);
+  const posts = useSelectorTyped(selectorSortedPostsData);
+  // const postsStatus = useSelectorTyped(selectorPostsStatus);
+  const postsStatus = useSelectorTyped(selectorSortedPostsStatus);
+  // const postsError = useSelectorTyped(selectorPostsError);
+  const postsError = useSelectorTyped(selectorSortedPostsError);
+  // const total_posts = useSelectorTyped(selectorSortedTotalPosts);
+
+  // const searchCarsFieldsState = useSelectorTyped<FormSearchCarsFields>(
+  //   selectorFormSearchCarsFields
+  // );
+  // console.log("Post.tsx searchCarsFieldsState:", searchCarsFieldsState);
+
   useEffect(() => {
-    dispatchAsyncThunk(getAllPosts());
+    // dispatchAsyncThunk(getAllPosts());
+
+    // In the next logic I'd have to check if
+    // sessionStorage
+    // has 'limit' and 'offset'
+    // ^->if user has refreshed=session isn't lost;
+    // However if it doesn't exist then provide the initial numbers.
+    dispatchAsyncThunk(
+      getSortedPosts({ limit: 5, offset: 1, carNameTitle: "" })
+    );
+
+    // const getTotalPostsFN = async () => {
+    //   const { data } = await axiosCredentials.get(
+    //     `/api/v1/post/getsortedposts/${5}/${3}`
+    //   );
+    //   console.log("getTotalPostsFN DATA:", data);
+
+    //   // dispatchTyped()
+
+    //   // Set it in here as well as in PaginationMarketplace
+    //   sessionStorage.setItem("total_posts", data.total_posts);
+    // };
+
+    // No need for flags since I only will call it ONCE on Render
   }, []);
   // console.log("posts:", posts);
   // console.log("postsStatus:", postsStatus);
@@ -61,9 +112,16 @@ function Post() {
     return <h1>Error: {postsError}. Please refresh or try again later.</h1>;
   }
 
+  // Implement a DIV/H1 that will show if there's 0 posts (# in array)
+
   return (
     <>
-      {posts.length > 0 &&
+      {posts.length === 0 ? (
+        <div className="text-center text-primary">
+          <h1>There's no posts found</h1>
+          <p>(Start by creating one.)</p>
+        </div>
+      ) : (
         posts.map((post) => {
           {
             // console.log("post:", post);
@@ -132,7 +190,16 @@ function Post() {
                   />
                 </div>
               </div>
-              <h6 className="mt-3 fw-bold">Description:</h6>
+              <p className="mt-3">
+                <span className="fw-bold">Posted by:</span>{" "}
+                {post.post_created_by_user_name}
+              </p>
+              <h6
+                // className="mt-3 fw-bold"
+                className=" fw-bold"
+              >
+                Description:
+              </h6>
               <p
                 style={{
                   wordBreak: "break-word", // Avoids breaking UI/UX
@@ -155,10 +222,6 @@ function Post() {
                 {post.post_contact_number}
               </p>
               <p>
-                <span className="fw-bold">Posted by:</span>{" "}
-                {post.post_created_by_user_name}
-              </p>
-              <p>
                 <span className="fw-bold">Date posted:</span>{" "}
                 {post.post_created_at.slice(0, 10)}
                 {/* {console.log("new Date():", new Date(post.post_created_at))} */}
@@ -176,7 +239,8 @@ function Post() {
               </div> */}
             </div>
           );
-        })}
+        })
+      )}
     </>
   );
 }

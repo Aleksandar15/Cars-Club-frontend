@@ -43,7 +43,9 @@ const NavBar = () => {
       {/* Cars Club */}
       <Container className={`navBarContainer`}>
         {/* NAV */}
-        <Nav className={`navCustomClass`}>
+        <Nav
+        // className={`navCustomClass`}
+        >
           {/* NAV2 */}
           {isUserAuthorized === true ? (
             <>
@@ -77,7 +79,10 @@ const NavBar = () => {
         </Nav>
         {/* NAV OUTSIDE */}
         {/* TITLE */}
-        <NavBarByBS.Brand className={`text-info fs-4 fw-bold navBarBrandTitle`}>
+        <NavBarByBS.Brand
+          // className={`text-info fs-4 fw-bold navBarBrandTitle`}
+          className={`text-info fs-4 fw-bold `}
+        >
           CARS CLUB
         </NavBarByBS.Brand>
         {isUserAuthorized ? <NavBarDropDownPrivate /> : <NavDropDownPublic />}

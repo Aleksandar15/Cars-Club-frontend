@@ -1,5 +1,6 @@
 import FormSearchCars from "../../components/MarketplaceComponents/FormSearchCars";
 import MarketplaceHeader from "../../components/MarketplaceComponents/MarketplaceHeader";
+import PaginationMarketplace from "../../components/MarketplaceComponents/PaginationMarketplace";
 import Post from "../../components/MarketplaceComponents/Post";
 import ModalDeletePost from "../../components/Modals/ModalDeletePost";
 import ModalPost from "../../components/Modals/ModalPost";
@@ -15,6 +16,7 @@ const Marketplace = () => {
       <MarketplaceHeader />
       <FormSearchCars />
       <Post />
+      <PaginationMarketplace />
     </>
   );
 };

@@ -27,5 +27,16 @@ export default modalPostButtonValueSlice.reducer;
 
 export const { setModalPostButtonValueAction } =
   modalPostButtonValueSlice.actions;
+
 export const selectorOpenModalPostButtonValue = (state: RootState) =>
-  state.modalPostButtonValueSlice.modalPostButtonValue;
+  state.modalPostButtonValueSlice;
+// Had to fix TypScript in `ModalPost_Create_or_Edit_Button`
+// I had to destructure the "modalPostButtonValue" state.
+
+// // Alternative like below has TypeScript errors
+// // "Property 'modalPostButtonValueSlice' does not exist
+// // on type 'InitialStateModalPostButtonValue'.
+// //  Did you mean 'modalPostButtonValue'? TS":
+// export const selectorOpenModalPostButtonValueTypeFix = (
+//   state: InitialStateModalPostButtonValue
+// ) => state.modalPostButtonValueSlice.modalPostButtonValue;

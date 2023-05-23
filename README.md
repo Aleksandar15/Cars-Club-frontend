@@ -99,6 +99,39 @@
       - And **all** I'm doing for the wrappers of `<span>` and a button or multiple buttons like in my `ModalDeletePost.tsx` is I'm using a `<div>` wrapper with a styling of `display: grid` and all works perfectly. -> On top of it all I can have the buttons in an `display: flex` div and that very same div inside a parent div and the span tag inside, with the parent div's style of `dispaly: grid` if I wanted the Buttons to be on a same line (horizontal line) while the span to be below them centralized (haven't tested yet such a case, but that seems to be a working scenario).
 10. More styling reminders: `whiteSpace: "pre-line"` makes my string litterals new lines be displayed as new lines unlike `whiteSpace: "pre-wrap"` takes things too litteral and displays the same exact number of empty space in between texts (mostly used inside of my Modal's texts).
     - I also fixed the kind of bug that ChatGPT themselves have it: if text is inputted inside of Post's title or Description without the User breaking lines: then it'll ruin the UI/UX and a horizontal scroll at the bottom appears where the text would go as far to the right as the text there is, instead a CSS / styling fix is: `wordBreak: "break-word"` as inside my `Post.tsx`.
+11. A bunch of TypeScript issues & TypeScript fixes notes at Components: `ModalPost_Create_or_Edit_Button.tsx`, `openModalPostSlice.ts`, `verifySlice.tsx` ( I haven't yet modified it's fiel extension to .ts from .tsx because it's one of my very first slices and used across my whole App so I don't want a breaking changes for now).
+    - I see some workarounds on selectors state (**_by slice Redux files_**) I had in `modalDeletePostSlice.ts` and `openModalTextSlice.tsx` (should be `.ts` as well).
+    - Also works for `formSearchCarsSlice.ts`.
+      - However as a side-note I must always make sure to exprot the Types in cases where I tried to import the from Slices directly but I've forgotten to `export` them first.
+    - Update#3: oh well I had such an _SPECIFIC_-STATE export of Redux State inside of my `getAllPosts` Async Thunk & Slice combinations; & I will also use that such same exporting logic in my new `getSortedPosts.ts`. -> BY THAT I **FIGURED A MISTAKE I WAS DOING** is that I had imported the InitialState TYPES of the slices instead of creating a separate Types for the received States, so my fixed at this same #11 point about 'A bunch of TypeScript issues' was an easyfix: create a separate Types files for each of the components INSTEAD of importing them from the Slice's InitialState's Types.
+12. Very important decisions about my `FormSearchCars.tsx` Component:
+    New logic: I must have to send a different state of the
+    finalized searchCarsFieldsState.carNameInputField STATE
+    to the Post.tsx for sending GET Sort methods
+    as to avoid useEffect's dependency WARNINGS by the fact
+    that I'll be sending it as PARAMS to the soon to be made
+    SORT GETallPosts Controller
+    ^-> AGAIN:
+    That'd be a workaround:
+    a '`triggerSearchBarReFetch`' REDUX STATE can be the
+    "`searchCarsFieldsState.carNameInputField`" REDUX STATE
+    so that if it never changed: it won't re-trigger a Fetch
+    call.
+    \*A FLAG would have been triggerring re-fetch because my plan was to
+    switch `!flag` the opposite boolean on `handleSearchFN` clicks.
+    I feel like I've wasted a Redux Slice in here unless I
+    plan to split my `FormSearchCars.tsx` even more into multiple children Components.
+    INSTEAD THE NEW PLAN ACTION:
+    `handleSearchFN` will dispatch a Redux Action to change
+    fields by name from "" (empty strings) to let's say
+    MERCEDES -> thus I wouldn't need a flag -> because a
+    flag is even worse solution: it will re-fetch EVEN IF
+    the same input is written WHILE a Redux State change
+    if it's the same then the `handleSearchFN` clicks won't
+    re-call the `useEffect` inside `Post.tsx` & Thus no re-fetch would be ever called if input hasn't changed (or any other value in the future updates that won't change===no re-fetch===by no re-calling of the `useEffect` inside `Post.tsx`). I consider that to be a very smart move or at least a much smarter move than my initial plan.
+
+    AGAIN: My final goal is to both have a pagination & button clicks on numbers at the bottom as re-fetching BUT also on Searching a Car to keep the same SORTING & page: ... Thinking about it now I may need to reset the LIMITS and OFFSET on my backend server: because the logic is not gonna go as planned if I keep the same logic for Search Button it would be looking ugly UI/UX wise as if there's no Posts if the user was let's say at the last page at the time of clicking `handleSearchFN`: perhaps & **most likely** the search field "Mercedes": won't mean there's 100% **only** Mercedeses so I must reset the page back to Page 1. That turned out more complex than I thought.
+    UPDATE#3: I better just use a `createAsyncThunk` that will be an Async Thunk of "GET SORTED POSTS" functionality so I can just as easily re-fetch it with `LIMIT` and `OFFSET` params provided by the `handleSearchFN` and on top of it all I may just put a condition inside of there to keep check if the fields has changed & maybe use `useRef` hook for it? -> AND Also don't forget to add `sessionStorage` in here as well (as `localStorage` is bad UX since it will be keeping the same search fields ALWAYS instead of **only** on a single tab opened & perisists **ONLY** on refreshing the page).
 
 ##### Further plans (_reminders for me_)
 

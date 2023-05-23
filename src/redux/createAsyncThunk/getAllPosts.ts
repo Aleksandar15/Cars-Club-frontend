@@ -56,9 +56,12 @@ import { RootState } from "../store";
 // inside my App.tsx but that requires some Performance testing.
 
 // Define the async thunk
-export const getAllPosts: AsyncThunk<PostType[], void, {}> = createAsyncThunk(
-  "posts/getAllPosts",
-  async (_, thunkAPI) => {
+// export const getAllPosts: AsyncThunk<PostType[], void, {}> = createAsyncThunk(
+// UPDATE:
+// I stop using this Async Thunk & Moving into getSortedPosts; however
+// a typescript rules may be to add something like {state:RootState} inside Brackets:
+export const getAllPosts: AsyncThunk<PostType[], void, { state: RootState }> =
+  createAsyncThunk("posts/getAllPosts", async (_, thunkAPI) => {
     // thunkAPI must be 2nd argument
     try {
       const { data } = await axiosCredentials("/api/v1/post/getallposts");
@@ -84,8 +87,7 @@ export const getAllPosts: AsyncThunk<PostType[], void, {}> = createAsyncThunk(
       // "Uncaught TypeError: Cannot read properties of undefined (reading 'length')"
       return [];
     }
-  }
-);
+  });
 
 // Create the posts slice
 interface InitialState {

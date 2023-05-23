@@ -1,14 +1,22 @@
 import { FormEvent, MouseEvent } from "react";
 import { Button } from "react-bootstrap";
-import { selectVerifyUser } from "../../redux/slices/verifySlice";
+import {
+  selectVerifyUser,
+  selectVerifyUserUserStatus,
+  VerifyStateProp,
+} from "../../redux/slices/verifySlice";
 import modalPost_checkEmptyValueFN from "../../utilities/modalPost_FN/modalPost_checkEmptyValueFN";
 import {
+  InitialStateModalPost,
   openModalPostAction,
   selectorOpenModalPost,
 } from "../../redux/slices/openModalPostSlice";
 import { setModalPostLoadingAction } from "../../redux/slices/modalPostLoading";
 import useAxiosInterceptor from "../../hooks/authHooks/useAxiosInterceptor";
-import { selectorOpenModalPostButtonValue } from "../../redux/slices/modalPostButtonValueSlice";
+import {
+  InitialStateModalPostButtonValue,
+  selectorOpenModalPostButtonValue,
+} from "../../redux/slices/modalPostButtonValueSlice";
 import {
   useDispatchAsyncThunk,
   useDispatchTyped,
@@ -24,11 +32,23 @@ import { openModalPostSuccessTextAction } from "../../redux/slices/modalPostSucc
 const ModalPost_Create_or_Edit_Button = () => {
   const dispatchTyped = useDispatchTyped();
   const dispatchAsyncThunk = useDispatchAsyncThunk();
-  const modalPostState = useSelectorTyped(selectorOpenModalPost);
-  const { user_name, user_email } = useSelectorTyped(selectVerifyUser);
-  const modalPostButtonValue = useSelectorTyped(
-    selectorOpenModalPostButtonValue
+  const modalPostState = useSelectorTyped<InitialStateModalPost>(
+    selectorOpenModalPost
   );
+
+  // const { user_name, user_email } =
+  //   useSelectorTyped<VerifyStateProp>(selectVerifyUser); // TSC Errors
+  // FIX:
+  const {
+    userStatus: { user_name, user_email },
+  } = useSelectorTyped<VerifyStateProp>(selectVerifyUserUserStatus);
+
+  const { modalPostButtonValue } =
+    useSelectorTyped<InitialStateModalPostButtonValue>(
+      selectorOpenModalPostButtonValue
+    );
+
+  console.log("modalPostButtonValue:", modalPostButtonValue);
   const axiosCredentials = useAxiosInterceptor();
   const {
     // formatNumber, // not using

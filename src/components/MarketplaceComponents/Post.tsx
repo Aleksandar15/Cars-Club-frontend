@@ -15,6 +15,7 @@ import {
   selectorSortedPostsData,
   selectorSortedPostsError,
   selectorSortedPostsStatus,
+  // selectorSortedTotalPosts,
 } from "../../redux/createAsyncThunk/getSortedPosts";
 import {
   useDispatchAsyncThunk,
@@ -32,6 +33,10 @@ import Post_Action_Buttons from "./Post_Action_Buttons";
 
 function Post() {
   const axiosCredentials = useAxiosInterceptor();
+  // DO NOT REMOVE useAxiosInterceptor()
+  // or AsyncThunk's being used in Post & it's children
+  // will start failing (I'm working on testing performance
+  // to instead call useAxiosIntercpetor inside App.tsx).
 
   // const handleDelete = () => {
   //   onDelete();
@@ -53,11 +58,11 @@ function Post() {
   const dispatchTyped = useDispatchTyped();
   // const posts = useSelectorTyped(selectorPostsData);
   const posts = useSelectorTyped(selectorSortedPostsData);
-  console.log("IMPORTANT posts Post.tsx:", posts);
   // const postsStatus = useSelectorTyped(selectorPostsStatus);
   const postsStatus = useSelectorTyped(selectorSortedPostsStatus);
   // const postsError = useSelectorTyped(selectorPostsError);
   const postsError = useSelectorTyped(selectorSortedPostsError);
+  // const total_posts = useSelectorTyped(selectorSortedTotalPosts);
 
   // const searchCarsFieldsState = useSelectorTyped<FormSearchCarsFields>(
   //   selectorFormSearchCarsFields
@@ -111,7 +116,12 @@ function Post() {
 
   return (
     <>
-      {posts.length > 0 &&
+      {posts.length === 0 ? (
+        <div className="text-center text-primary">
+          <h1>There's no posts found</h1>
+          <p>(Start by creating one.)</p>
+        </div>
+      ) : (
         posts.map((post) => {
           {
             // console.log("post:", post);
@@ -229,7 +239,8 @@ function Post() {
               </div> */}
             </div>
           );
-        })}
+        })
+      )}
     </>
   );
 }

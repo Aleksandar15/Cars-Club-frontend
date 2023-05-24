@@ -117,9 +117,17 @@ const FormSearchCars = () => {
 
   const handlePostPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = parseInt(e.target.value, 10);
-    // setPostPerPage(selectedValue);
-    // onChange(selectedValue);
+    // Calling this so that even PaginationMarketplace is aware
+    // otherwise if User changes Pages: Pagination will be using the
+    // Redux's Default State of 5 & I don't want that
     dispatchTyped(onChangePostPerPage({ postPerPage: selectedValue }));
+    dispatchAsyncThunk(
+      getSortedPostsAsyncThunk({
+        limit: selectedValue,
+        offset: 0,
+        carNameTitle: searchCarsFieldsState.carNameInputField,
+      })
+    );
   };
 
   return (
@@ -145,6 +153,7 @@ const FormSearchCars = () => {
                   display: "grid",
                   // Math Max Calculations based on DevTools .Control
                   maxHeight: "58px",
+                  maxWidth: "58px", // Default. Guards for Mobile
                 }}
               >
                 {/* SORT */}
@@ -207,10 +216,11 @@ const FormSearchCars = () => {
                 >
                   <option
                     disabled
-                    // value="SORT" // unselectable no value needed
+                    // value="SORT" // unselectable no VALUE needed.
                     style={{ fontSize: "13px", fontWeight: "bold" }}
                   >
-                    Sort
+                    {/* Sort */}
+                    Posts
                   </option>
                   <option value={1} className="fw-bold">
                     1

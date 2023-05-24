@@ -138,6 +138,10 @@ const ModalPost_Create_or_Edit_Button = () => {
         // setShowModalFN(); // Close modal I don't need anymore BECAUSE
         // "isModalPostOpen: false" above Closes the Modal.
 
+        // Update3: this Button doesn't call `getSortedPostsAsyncThunk`
+        // instead opens up the `ModalPostSuccessText` component which
+        // has a Button saying `OKAY` `onClick` => dispatch the Thunk.
+
         // Update2: /marketplace update on Successful CREATE will be triggered
         // by ModalPostSuccessText`s Component's Button call to getAllPosts()
         // Async Thunk (or in the future a pagination-SORTing Async Thunk).

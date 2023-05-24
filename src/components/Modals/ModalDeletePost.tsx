@@ -1,12 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
 import useAxiosInterceptor from "../../hooks/authHooks/useAxiosInterceptor";
-import {
-  filterPostsByIdAction,
-  getAllPosts,
-} from "../../redux/createAsyncThunk/getAllPosts";
+// import {
+//   filterPostsByIdAction,
+//   getAllPosts,
+// } from "../../redux/createAsyncThunk/getAllPosts";
 import { deletePostsByIdAction } from "../../redux/createAsyncThunk/getSortedPosts";
 import {
   useDispatchAsyncThunk,

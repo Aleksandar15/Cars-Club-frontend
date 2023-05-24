@@ -7,7 +7,10 @@ import {
   Form,
   InputGroup,
 } from "react-bootstrap";
-import { getSortedPostsAsyncThunk } from "../../redux/createAsyncThunk/getSortedPosts";
+import {
+  getSortedPostsAsyncThunk,
+  selectorSortedPostsStatus,
+} from "../../redux/createAsyncThunk/getSortedPosts";
 import {
   useDispatchAsyncThunk,
   useDispatchTyped,
@@ -36,34 +39,11 @@ const FormSearchCars = () => {
   // let user decide amount of posts per page to be shown.
   const postPerPage = useSelectorTyped(selectorPostPerPage);
 
+  const postsStatus = useSelectorTyped(selectorSortedPostsStatus);
+
   const handleSearchFN = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     console.count("handleSearchFN click");
-
-    // New logic: I must have to send a different state of the
-    // finalized searchCarsFieldsState.carNameInputField STATE
-    // to the Post.tsx for sending GET Sort methods
-    // as to avoid useEffect's dependency WARNINGS by the fact
-    // that I'll be sending it as PARAMS to the soon to be made
-    // SORT GETallPosts Controller
-    // ^-> AGAIN:
-    // That'd be a workaround:
-    // a 'triggerSearchBarReFetch' REDUX STATE can be the
-    // "searchCarsFieldsState.carNameInputField" REDUX STATE
-    // so that if it never changed: it won't re-trigger a Fetch
-    // call.
-    // *A flag would trigger re-fetch because my plan was to
-    // switch !flag the opposite boolean on handleSearchFN clicks.
-    // I feel like I've wasted a Redux Slice in here unless I
-    // plan to split my FormSearchCars even more
-    // The NEW PLAN ACTION:
-    // handleSearchFN will dispatch a Redux Action to change
-    // fields by name from "" (empty strings) to let's say
-    // MERCEDES -> thus I wouldn't need a flag -> because a
-    // flag is even worse solution: it will re-fetch EVEN IF
-    // the same input is written WHILE a REDUX STATE CHANGE
-    // if it's the same then the handleSearchFN clicks won't
-    // re-call the useEffect inside Post.tsx & Thus no re-fetch
 
     dispatchAsyncThunk(
       getSortedPostsAsyncThunk({

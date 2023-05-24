@@ -4,12 +4,12 @@ import { Button, ButtonGroup, ButtonToolbar } from "react-bootstrap";
 import useAxiosInterceptor from "../../hooks/authHooks/useAxiosInterceptor";
 // import useAxiosInterceptor from "../../hooks/authHooks/useAxiosInterceptor";
 import useModalPost_formatNum from "../../hooks/ModalPostHooks/useModalPost_formatNum";
-import {
-  getAllPosts,
-  selectorPostsData,
-  selectorPostsError,
-  selectorPostsStatus,
-} from "../../redux/createAsyncThunk/getAllPosts";
+// import {
+//   getAllPosts,
+//   selectorPostsData,
+//   selectorPostsError,
+//   selectorPostsStatus,
+// } from "../../redux/createAsyncThunk/getAllPosts";
 import {
   getSortedPostsAsyncThunk,
   selectorSortedPostsData,

@@ -23,7 +23,7 @@ import {
   useSelectorTyped,
 } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
 import useModalPost_formatNum from "../../hooks/ModalPostHooks/useModalPost_formatNum";
-import { getAllPosts } from "../../redux/createAsyncThunk/getAllPosts";
+// import { getAllPosts } from "../../redux/createAsyncThunk/getAllPosts";
 import axios from "axios";
 import { setModalPostEmptyFieldValueAction } from "../../redux/slices/modalPostEmptyFieldValue";
 import { selectorOpenModalPostEditPost } from "../../redux/slices/modalPostEditPostSlice";

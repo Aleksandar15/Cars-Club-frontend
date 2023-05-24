@@ -29,13 +29,18 @@ import { setModalPostEmptyFieldValueAction } from "../../redux/slices/modalPostE
 import { selectorOpenModalPostEditPost } from "../../redux/slices/modalPostEditPostSlice";
 // import { openModalTextAction } from "../../redux/slices/openModalTextSlice";
 import { openModalPostSuccessTextAction } from "../../redux/slices/modalPostSuccessTextSlice";
-import { editSortedPostAction } from "../../redux/createAsyncThunk/getSortedPosts";
+import {
+  editSortedPostAction,
+  getSortedPostsAsyncThunk,
+} from "../../redux/createAsyncThunk/getSortedPosts";
 import { PostSorted } from "../../utilities/Types/getSortedPostsTypes";
 import {
   EdittedPost,
   isEdittedPostTypeCheckerFN,
   ReceivedDataEditedPosts,
 } from "../../utilities/Types/modalPost_Create_or_Edit_Button_Types";
+import { setCurrentPageAction } from "../../redux/slices/paginationMarketplaceCurrentPageSlice";
+import { selectorPostPerPage } from "../../redux/slices/postPerPageSlice";
 const ModalPost_Create_or_Edit_Button = () => {
   const dispatchTyped = useDispatchTyped();
   const dispatchAsyncThunk = useDispatchAsyncThunk();
@@ -65,6 +70,8 @@ const ModalPost_Create_or_Edit_Button = () => {
     selectorOpenModalPostEditPost
   );
   // console.log("post_user_id,:", post_user_id, "& post_post_id:", post_post_id);
+
+  const postPerPage = useSelectorTyped(selectorPostPerPage);
 
   // const submitPost = async (e: MouseEvent<HTMLButtonElement>) => {
   const submitPost = async (e: FormEvent<HTMLButtonElement>) => {
@@ -138,6 +145,23 @@ const ModalPost_Create_or_Edit_Button = () => {
         // setShowModalFN(); // Close modal I don't need anymore BECAUSE
         // "isModalPostOpen: false" above Closes the Modal.
 
+        // Update 4:
+        // instead call the `getSortedPostsAsyncThunk` so that
+        // Loading is ongoing in the background, while the
+        // `ModalPostSuccessText` only shows the Response.
+        dispatchAsyncThunk(
+          getSortedPostsAsyncThunk({
+            limit: postPerPage,
+            offset: 0, // show from the very first pages
+            carNameTitle: "", // don't pass the current
+            // searchBar's input field because the User might
+            // have forgotten to remove it and will think that
+            // the Creation of a Post was not Successful.
+          })
+        );
+        // UI/UX issue fix: also set the currentPage back to 1
+        dispatchTyped(setCurrentPageAction({ currentPage: 1 }));
+
         // Update3: this Button doesn't call `getSortedPostsAsyncThunk`
         // instead opens up the `ModalPostSuccessText` component which
         // has a Button saying `OKAY` `onClick` => dispatch the Thunk.
@@ -145,6 +169,7 @@ const ModalPost_Create_or_Edit_Button = () => {
         // Update2: /marketplace update on Successful CREATE will be triggered
         // by ModalPostSuccessText`s Component's Button call to getAllPosts()
         // Async Thunk (or in the future a pagination-SORTing Async Thunk).
+        // (Update4 diminishes this^, but, still open `ModalPostSuccessText.)
         dispatchTyped(
           openModalPostSuccessTextAction({
             isModalPostSuccessTextOpen: true,

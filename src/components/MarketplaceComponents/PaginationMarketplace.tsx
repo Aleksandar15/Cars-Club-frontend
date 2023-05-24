@@ -9,10 +9,15 @@ import {
 } from "../../redux/createAsyncThunk/getSortedPosts";
 import {
   useDispatchAsyncThunk,
+  useDispatchTyped,
   // useDispatchGetSortedPost,
   useSelectorTyped,
 } from "../../redux/reduxCustomTypes/ReduxTypedHooks/typedHooks";
 import { selectorSearchSubmitForm } from "../../redux/slices/formSearchSubmitSlice";
+import {
+  selectorCurrentPage,
+  setCurrentPageAction,
+} from "../../redux/slices/paginationMarketplaceCurrentPageSlice";
 import { selectorPostPerPage } from "../../redux/slices/postPerPageSlice";
 // import catalogArray from "./catalogArray";
 
@@ -30,7 +35,10 @@ const PaginationMarketplace = () => {
   // currentPage MUST be moved inside Redux State
   // so that 'CREATE A BUTTON' action will update
   // the set back up to 1 -> the 1st page.
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  // const [currentPage, setCurrentPage] = useState<number>(1);
+  const currentPage = useSelectorTyped(selectorCurrentPage);
+  const dispatchTyped = useDispatchTyped();
+
   // const postPerPage = 5;
   // const postPerPage = 1; // Just to make it easier for showcase
   const postPerPage = useSelectorTyped(selectorPostPerPage);
@@ -82,7 +90,8 @@ const PaginationMarketplace = () => {
   const handleNextPage = () => {
     // // Can be both ASYNC or Sync function
     // const handleNextPage = async () => {
-    setCurrentPage((prevPage) => prevPage + 1);
+    // setCurrentPage((prevPage) => prevPage + 1);
+    dispatchTyped(setCurrentPageAction({ currentPage: currentPage + 1 }));
     window.scrollTo(0, 0); // Scroll to top
     // dispatchGetSortedPost(
     //   getSortedPostsAsyncThunk({
@@ -105,7 +114,8 @@ const PaginationMarketplace = () => {
   };
   const handlePreviousPage = () => {
     // const handlePreviousPage = async () => {
-    setCurrentPage((prevPage) => prevPage - 1);
+    // setCurrentPage((prevPage) => prevPage - 1);
+    dispatchTyped(setCurrentPageAction({ currentPage: currentPage - 1 }));
     window.scrollTo(0, 0); // Scroll to top
     dispatchAsyncThunk(
       getSortedPostsAsyncThunk({
@@ -126,7 +136,8 @@ const PaginationMarketplace = () => {
         key={1}
         active={1 === currentPage}
         onClick={() => {
-          setCurrentPage(1);
+          // setCurrentPage(1);
+          dispatchTyped(setCurrentPageAction({ currentPage: 1 }));
           window.scrollTo(0, 0); // Scroll to top
         }}
       >
@@ -138,12 +149,18 @@ const PaginationMarketplace = () => {
     const lastPage = Math.min(currentPage + 1, totalPages);
 
     if (firstPage > 1) {
+      // This component is .pushed to show `1` button
+      // once the User is at Page '3' or higher, that
+      // logic to only show 3 numbers in total is at the
+      // 'firstPage' and 'lastPage'
+      // -> How this works is: 1,2,3 OR 2,3,4 OR 9,10,11
       pageItems.push(
         <Pagination.Item
           key={1}
           active={1 === currentPage}
           onClick={() => {
-            setCurrentPage(1);
+            // setCurrentPage(1);
+            dispatchTyped(setCurrentPageAction({ currentPage: 1 }));
             // Add more dispatch function call here
             dispatchAsyncThunk(
               getSortedPostsAsyncThunk({
@@ -158,12 +175,15 @@ const PaginationMarketplace = () => {
           1
         </Pagination.Item>
       );
+
+      // Ellipsis always have `disabled=true` because they're only for UI/UX.
       pageItems.push(
         <Pagination.Ellipsis
           key="ellipsis-start"
           disabled={true}
           onClick={() => {
-            setCurrentPage(firstPage - 1);
+            // setCurrentPage(firstPage - 1);
+            dispatchTyped(setCurrentPageAction({ currentPage: firstPage - 1 }));
             // Add more dispatch function call here
             dispatchAsyncThunk(
               getSortedPostsAsyncThunk({
@@ -179,12 +199,15 @@ const PaginationMarketplace = () => {
     }
 
     for (let index = firstPage; index <= lastPage; index++) {
+      // A loop starting from `firstPage` until `lastPage`
+      // at each iteration add `Pagination.Item` Component
       pageItems.push(
         <Pagination.Item
           key={index}
           active={index === currentPage}
           onClick={() => {
-            setCurrentPage(index);
+            // setCurrentPage(index);
+            dispatchTyped(setCurrentPageAction({ currentPage: index }));
             // Add more dispatch function call here
             dispatchAsyncThunk(
               getSortedPostsAsyncThunk({
@@ -202,12 +225,14 @@ const PaginationMarketplace = () => {
     }
 
     if (lastPage < totalPages) {
+      // Ellipsis always have `disabled=true` because they're only for UI/UX.
       pageItems.push(
         <Pagination.Ellipsis
           key="ellipsis-end"
           disabled={true}
           onClick={() => {
-            setCurrentPage(lastPage + 1);
+            // setCurrentPage(lastPage + 1);
+            dispatchTyped(setCurrentPageAction({ currentPage: lastPage + 1 }));
             // Add more dispatch function call here
             dispatchAsyncThunk(
               getSortedPostsAsyncThunk({
@@ -220,12 +245,15 @@ const PaginationMarketplace = () => {
           }}
         />
       );
+
+      // Push a component that represents the last # of Page available
       pageItems.push(
         <Pagination.Item
           key={totalPages}
           active={totalPages === currentPage}
           onClick={() => {
-            setCurrentPage(totalPages);
+            // setCurrentPage(totalPages);
+            dispatchTyped(setCurrentPageAction({ currentPage: totalPages }));
             // Add more dispatch function call here
             dispatchAsyncThunk(
               getSortedPostsAsyncThunk({
@@ -242,11 +270,12 @@ const PaginationMarketplace = () => {
       );
     }
   }
-  // UPDATE 5: Fixing Ellipsis UX^ENDS
+  // UPDATE 5 ENDS^: Fixing Ellipsis UX^
 
   const handleFirstPage = () => {
     // const handleFirstPage = async () => {
-    setCurrentPage(1);
+    // setCurrentPage(1);
+    dispatchTyped(setCurrentPageAction({ currentPage: 1 }));
     window.scrollTo(0, 0); // Scroll to top
     dispatchAsyncThunk(
       // getSortedPostsAsyncThunk({ limit: postPerPage, offset: 0, carNameTitle: "" })
@@ -259,7 +288,8 @@ const PaginationMarketplace = () => {
   };
   const handleLastPage = () => {
     // const handleLastPage = async () => {
-    setCurrentPage(totalPages);
+    // setCurrentPage(totalPages);
+    dispatchTyped(setCurrentPageAction({ currentPage: totalPages }));
     window.scrollTo(0, 0); // Scroll to top
     dispatchAsyncThunk(
       getSortedPostsAsyncThunk({

@@ -1,7 +1,3 @@
-// NOTE they must be hardcoded because
-// they are "Catalog" posted by the website owners
-
-import { useEffect, useState } from "react";
 import { Pagination } from "react-bootstrap";
 import {
   getSortedPostsAsyncThunk,
@@ -301,13 +297,28 @@ const PaginationMarketplace = () => {
     );
   };
 
+  const isMobile = window.innerWidth <= 767;
+  // console.log("window.innerWidth:", window.innerWidth);
+  // NOTE:
+  // this won't update when manually shrinking the website
+  // but I'm fine with it since Mobile Screen can't widen.
+  // -> The only thing I have to test is on my real iPhone
+  // if I flip the screen and refresh: would the size be
+  // 'lg' or default(undefined)? -> actually that's NOT an
+  // issue -> the flipped screen has enough space for 'lg'.
+
   return (
     <>
       <div style={{ display: "flex", justifyContent: "center" }}>
         <Pagination
-          size="lg"
+          // size="lg"
           // size="sm"
-          // default is Medium
+          // // default or omitting `size` props looks like
+          // // 'Medium' visual-wise BUT `undefined` code-wise
+          // size={isMobile ? "" : "lg"}
+          // // ^ TypeScript issues, suggests:
+          // // "PaginationProps.size?: "lg" | "sm" | undefined"
+          size={isMobile ? undefined : "lg"}
         >
           <Pagination.First
             onClick={handleFirstPage}

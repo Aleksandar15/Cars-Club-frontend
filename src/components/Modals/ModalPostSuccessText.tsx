@@ -33,11 +33,11 @@ const ModalPostSuccessText = () => {
     selectorOpenModalPostSuccessText
   );
   const dispatchTyped = useDispatchTyped();
-  const dispatchAsyncThunk = useDispatchAsyncThunk();
-  const { modalPostButtonValue } =
-    useSelectorTyped<InitialStateModalPostButtonValue>(
-      selectorOpenModalPostButtonValue
-    );
+  // const dispatchAsyncThunk = useDispatchAsyncThunk();
+  // const { modalPostButtonValue } =
+  //   useSelectorTyped<InitialStateModalPostButtonValue>(
+  //     selectorOpenModalPostButtonValue
+  //   );
   // console.log(
   //   "modalPostButtonValue in ModalPostSuccessText:",
   //   modalPostButtonValue
@@ -46,7 +46,8 @@ const ModalPostSuccessText = () => {
   //   selectorOpenModalPost
   // );
   // console.log("modalPostSTate in ModalPostSuccessText:", modalPostState);
-  const postPerPage = useSelectorTyped(selectorPostPerPage);
+
+  // const postPerPage = useSelectorTyped(selectorPostPerPage);
 
   useEffect(() => {
     if (isModalPostSuccessTextOpen) {
@@ -85,20 +86,20 @@ const ModalPostSuccessText = () => {
     // the 'click outside' & 'X' button
     // so I must not forget that on 'CREATE A POST'
     // I must still call the `getSortedPostsAsyncThunk.
-    if (modalPostButtonValue === "CREATE A POST") {
-      dispatchAsyncThunk(
-        getSortedPostsAsyncThunk({
-          limit: postPerPage,
-          offset: 0, // show from the very first pages
-          carNameTitle: "", // don't pass the current
-          // searchBar's input field because the User might
-          // have forgotten to remove it and will think that
-          // the Creation of a Post was not Successful.
-        })
-      );
-      // UI/UX issue fix: also set the currentPage back to 1
-      dispatchTyped(setCurrentPageAction({ currentPage: 1 }));
-    }
+    // if (modalPostButtonValue === "CREATE A POST") {
+    //   dispatchAsyncThunk(
+    //     getSortedPostsAsyncThunk({
+    //       limit: postPerPage,
+    //       offset: 0, // show from the very first pages
+    //       carNameTitle: "", // don't pass the current
+    //       // searchBar's input field because the User might
+    //       // have forgotten to remove it and will think that
+    //       // the Creation of a Post was not Successful.
+    //     })
+    //   );
+    //   // UI/UX issue fix: also set the currentPage back to 1
+    //   dispatchTyped(setCurrentPageAction({ currentPage: 1 }));
+    // }
 
     // NOTE:
     // for `if modalPostButtonValue === "EDIT A POST"` I only
@@ -108,6 +109,12 @@ const ModalPostSuccessText = () => {
     // mutate the Redux State `Posts` by `edittedPost.post_id`.
     // REMINDER: this `ModalPostSuccessText` only serves for
     // UI/UX to alert the User.
+
+    // UPDATE: EXACTLY!^
+    // I don't need to call my `getSortedPostsAsyncThunk` inside
+    // of here -> only allow User to see the response and in
+    // the background a `/getsortedposts` request is ongoing BUT
+    // now triggered by my `ModalPost_Create_or_Edit_Button.tsx`
   };
 
   return (

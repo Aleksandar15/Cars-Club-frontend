@@ -212,6 +212,17 @@ const FormSearchCars = () => {
                     // paddingLeft: "0px", // To the Most-Left
                     // paddingLeft: "5px",
                     paddingLeft: "10px",
+
+                    backgroundColor: "#cfd4f9",
+                    // 1% differences: ^ blueish VS purpleish:
+                    // backgroundColor: "#d2d6f4",
+
+                    border: "none",
+                    // outline: "none", // No effect on border
+                    // Below has effect, but just causes too
+                    // much unnecessary attention to 'SELECT':
+                    // outline: "double", // also works better
+                    // then `border:double`->since it's outline
                   }}
                 >
                   <option
@@ -220,6 +231,7 @@ const FormSearchCars = () => {
                     style={{ fontSize: "13px", fontWeight: "bold" }}
                   >
                     {/* Sort */}
+                    {/* # of Posts */}
                     Posts
                   </option>
                   <option value={1} className="fw-bold">

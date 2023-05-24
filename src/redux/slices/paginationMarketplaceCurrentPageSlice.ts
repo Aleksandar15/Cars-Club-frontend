@@ -31,7 +31,7 @@ const paginationMarketplaceCurrentPageSlice = createSlice({
   name: "storeCurrentPage",
   initialState,
   reducers: {
-    onChangeCurrentPageAction: (
+    setCurrentPageAction: (
       state,
       action: PayloadAction<currentPageSortGetPosts>
     ) => {
@@ -43,11 +43,12 @@ const paginationMarketplaceCurrentPageSlice = createSlice({
   },
 });
 
+// Export .reducer .actions ; states
+
 export default paginationMarketplaceCurrentPageSlice.reducer;
 
-export const { onChangeCurrentPageAction } =
+export const { setCurrentPageAction } =
   paginationMarketplaceCurrentPageSlice.actions;
 
-// Not much reusability below
-export const selectorcurrentPage = (state: RootState) =>
+export const selectorCurrentPage = (state: RootState) =>
   state.paginationMarketplaceCurrentPageSlice?.currentPage;

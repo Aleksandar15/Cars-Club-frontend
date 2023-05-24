@@ -19,6 +19,7 @@ import {
   openModalPostSuccessTextAction,
   selectorOpenModalPostSuccessText,
 } from "../../redux/slices/modalPostSuccessTextSlice";
+import { setCurrentPageAction } from "../../redux/slices/paginationMarketplaceCurrentPageSlice";
 import { selectorPostPerPage } from "../../redux/slices/postPerPageSlice";
 // import {
 //   InitialStateModalPost,
@@ -95,64 +96,19 @@ const ModalPostSuccessText = () => {
           // the Creation of a Post was not Successful.
         })
       );
+      // UI/UX issue fix: also set the currentPage back to 1
+      dispatchTyped(setCurrentPageAction({ currentPage: 1 }));
     }
 
-    // UPDATE 2:
-    // ONLY Close the Modal.
-    // Don't call any kind of Asnyc Thunk
-    // since the Update happens by directly mutating
-    // the EdittedPost  for a Smoother UX.
-
-    // (old) UPDATE:
-    // only 'create' button will re-fetch;
-    // 'edit' button will not trigger re-fetch:
-    // if (modalPostButtonValue === "CREATE A POST") {
-    // /marketplace on Successful CREATION:
-    // dispatchAsyncThunk(getAllPosts()); // WIll have to modify since
-    // // ^ the logic would be to show 2 posts per page
-    // // so instead I'll just run the LIMIT 2 SQL command, because
-    // // whenever User creates a post -> show him latest posts.
-    //   // UPDATE:
-    //   dispatchAsyncThunk(
-    //     getSortedPosts({ limit: 5, offset: 0, carNameTitle: "" })
-    //   );
-    // }
-
-    // if (modalPostButtonValue === "EDIT A POST") {
-    //   console.count("EDIT A POST TRIGGERED");
-    //   console.log("EDIT A POST is with a Current Data:", modalPostState);
-    // Just to test if after the Loading the screen will be kept at
-    // same point; else if not: I have to use sessionStorage
-    // and on top of it I'd have to move OFFSET inside a Redux State
-    // since its state comes from PaginationMarketplace.tsx
-    // Result:
-    // it scrolls on TOP after 'Loading'
-    // so I have use some kind of useEffect inside of
-    // my main App.tsx that will count the User's destination
-    // of inside my website & preserve it in sessionStorage.
-    // dispatchAsyncThunk(
-    //   getSortedPosts({ limit: 5, offset: 0, carNameTitle: "" })
-    // );
-    // INSTEAD What I can do is
-    // make my `/editpost/:post_id/:user_id` `editPostController`
-    // to return
-    // the data including the POST_IMAGE_BUFFER
-    // and then inside `MOdalPost_Create_or_Edit_Button.tsx`
-    // call the `getSortedPost`'s 'editSortedPostAction' reducer.
-    // }
+    // NOTE:
+    // for `if modalPostButtonValue === "EDIT A POST"` I only
+    // close this `ModalPostSuccessText` since the changes are
+    // handleded by `ModalPost_Create_or_Edit_Button` of the
+    // `EDIT BUTTON`'s response of `edittedPost` to directly
+    // mutate the Redux State `Posts` by `edittedPost.post_id`.
+    // REMINDER: this `ModalPostSuccessText` only serves for
+    // UI/UX to alert the User.
   };
-  // VERY IMPORTANT NOTES about my setShowModalFN LOGIC:
-  // ModalPostSuccessText logic for now is that
-  // setShowModalFN ALWAYS calls getAllPosts() Async Thunk,
-  // in the future for reusability I can use my new state in my
-  // updated slice modalPostSuccessTextSlice:'typeOfResponse' state
-  // to conditionally render different BUTTONS & its onClick's.
-  // (As well as pagination future plans will requires new Thunk.)
-  // Example:
-  // failed response will move the User back to ModalPost (re-open)
-  // with its field input states values UNCHANGED
-  // VS a successful response will trigger Async Thunk to trigger
-  // a re-render of my MarketPlace.tsx & reset ModalPost`s fields.
 
   return (
     <>

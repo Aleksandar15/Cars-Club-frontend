@@ -40,6 +40,8 @@ const FormSearchCars = () => {
   const postPerPage = useSelectorTyped(selectorPostPerPage);
 
   const postsStatus = useSelectorTyped(selectorSortedPostsStatus);
+  // `flag` to disable `onClick` subsequent `handleSearchFN` calls
+  const flag = postsStatus !== "succeeded" ? true : false;
 
   const handleSearchFN = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -83,7 +85,7 @@ const FormSearchCars = () => {
   const handleInput = (e: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
 
-    console.log("name:", name, "value:", value);
+    // console.log("name:", name, "value:", value);
 
     // setSearchInput((prevState) => {
     //   return { ...prevState, [name]: value };
@@ -142,7 +144,11 @@ const FormSearchCars = () => {
               >
                 <ClearSVGicon />
               </Button>
-              <Button variant="btn bg-light btn-outline-primary" type="submit">
+              <Button
+                variant="btn bg-light btn-outline-primary"
+                type="submit"
+                disabled={flag}
+              >
                 <SearchSVGicon />
               </Button>
             </div>

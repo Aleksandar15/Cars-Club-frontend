@@ -23,7 +23,10 @@ import {
 } from "../../redux/slices/formSearchCarsSlice";
 import { triggerFormSearchSubmitAction } from "../../redux/slices/formSearchSubmitSlice";
 import { setCurrentPageAction } from "../../redux/slices/paginationMarketplaceCurrentPageSlice";
-import { selectorPostPerPage } from "../../redux/slices/postPerPageSlice";
+import {
+  onChangePostPerPage,
+  selectorPostPerPage,
+} from "../../redux/slices/postPerPageSlice";
 import ClearSVGicon from "../../utilities/icons-setup/clear-SVG-icon";
 // import CreatePostSVG from "../../utilities/icons-setup/createPost-SVG";
 import SearchSVGicon from "../../utilities/icons-setup/search-SVG-icon";
@@ -112,6 +115,12 @@ const FormSearchCars = () => {
     );
   };
 
+  const handlePostPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = parseInt(e.target.value, 10);
+    // setPostPerPage(selectedValue);
+    // onChange(selectedValue);
+  };
+
   return (
     <>
       <Form onSubmit={handleSearchFN} className="pb-4 mb-4 ">
@@ -123,8 +132,23 @@ const FormSearchCars = () => {
         >
           <Col className="mb-2">
             <div className="input-group">
-              <InputGroup.Text id="carNameField" className="text-primary">
+              {/* <InputGroup.Text 
+              id="carNameField" className="text-primary">
                 SEARCH
+              </InputGroup.Text> */}
+              <InputGroup.Text id="carNameField" className="text-primary">
+                SORT
+                <Form.Select
+                  id="postPerPage"
+                  value={postPerPage}
+                  onChange={handlePostPerPageChange}
+                >
+                  <option value={1}>1</option>
+                  <option value={2}>2</option>
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={15}>15</option>
+                </Form.Select>
               </InputGroup.Text>
               <FloatingLabel label="Search by car's name">
                 <Form.Control

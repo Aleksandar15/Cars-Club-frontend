@@ -128,6 +128,10 @@ const FormSearchCars = () => {
         carNameTitle: searchCarsFieldsState.carNameInputField,
       })
     );
+
+    // Visual BUG inside `PaginationMarketplace`:
+    // must reset `PaginationMarketplace` `currentPage` state to `1`
+    dispatchTyped(setCurrentPageAction({ currentPage: 1 }));
   };
 
   return (

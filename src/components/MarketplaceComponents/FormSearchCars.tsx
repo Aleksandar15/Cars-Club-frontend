@@ -23,7 +23,10 @@ import {
 } from "../../redux/slices/formSearchCarsSlice";
 import { triggerFormSearchSubmitAction } from "../../redux/slices/formSearchSubmitSlice";
 import { setCurrentPageAction } from "../../redux/slices/paginationMarketplaceCurrentPageSlice";
-import { selectorPostPerPage } from "../../redux/slices/postPerPageSlice";
+import {
+  onChangePostPerPage,
+  selectorPostPerPage,
+} from "../../redux/slices/postPerPageSlice";
 import ClearSVGicon from "../../utilities/icons-setup/clear-SVG-icon";
 // import CreatePostSVG from "../../utilities/icons-setup/createPost-SVG";
 import SearchSVGicon from "../../utilities/icons-setup/search-SVG-icon";
@@ -112,6 +115,21 @@ const FormSearchCars = () => {
     );
   };
 
+  const handlePostPerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = parseInt(e.target.value, 10);
+    // Calling this so that even PaginationMarketplace is aware
+    // otherwise if User changes Pages: Pagination will be using the
+    // Redux's Default State of 5 & I don't want that
+    dispatchTyped(onChangePostPerPage({ postPerPage: selectedValue }));
+    dispatchAsyncThunk(
+      getSortedPostsAsyncThunk({
+        limit: selectedValue,
+        offset: 0,
+        carNameTitle: searchCarsFieldsState.carNameInputField,
+      })
+    );
+  };
+
   return (
     <>
       <Form onSubmit={handleSearchFN} className="pb-4 mb-4 ">
@@ -123,8 +141,105 @@ const FormSearchCars = () => {
         >
           <Col className="mb-2">
             <div className="input-group">
-              <InputGroup.Text id="carNameField" className="text-primary">
+              {/* <InputGroup.Text 
+              id="carNameField" className="text-primary">
                 SEARCH
+              </InputGroup.Text> */}
+              <InputGroup.Text
+                id="carNameField"
+                // className="text-primary" // Has no Effect anymore;
+                className="ps-1 pe-1" //Works for OPTION
+                style={{
+                  display: "grid",
+                  // Math Max Calculations based on DevTools .Control
+                  maxHeight: "58px",
+                  maxWidth: "58px", // Default. Guards for Mobile
+                }}
+              >
+                {/* SORT */}
+                {/* <div className="custom-select-wrapper"> */}
+                <Form.Label
+                  htmlFor="postPerPage"
+                  style={{
+                    // fontSize: "15px",
+                    fontSize: "12px",
+                    maxHeight: "15px",
+                    marginTop: "-5px",
+                    userSelect: "none", // Just The Text
+                    maxWidth: "48px", // Default. Mobile Guards.
+                  }}
+                  // className="text-primary me-0 ms-0"
+                  // className="text-primary p-0 mb-0 fw-bold"
+                  // now with the marginTop: "-5px": mb-1:
+                  className="text-primary p-0 mb-1 fw-bold"
+                >
+                  {/* SORT */}
+                  SORT BY:
+                </Form.Label>
+                <Form.Select
+                  id="postPerPage"
+                  value={postPerPage}
+                  onChange={handlePostPerPageChange}
+                  // style={{ fontSize: "12px" }}
+                  className={"pe-2 "}
+                  style={{
+                    maxHeight: "33px",
+                    fontSize: "14px",
+                    color: "green",
+                    fontWeight: "bold",
+                    // fontWeight requires maxWidth:
+                    maxWidth: "48px",
+                    paddingTop: "5px",
+
+                    // -> backgroundPosition has only X & Y
+                    // backgroundPosition: "50px 0px", // arrow
+                    // or this:-> both hides the arrow
+                    // backgroundPosition: "0px 30px", // arrow
+                    // because the Arrow gets in the way of
+                    // 2 digits numbers 10/15; however I can
+                    // style it in corner:
+                    // Left Top Corner:
+                    // backgroundPosition: "0px 0px", // Left-Top
+                    // // Bottom-Right
+                    // backgroundPosition: "30px 20px", // Bot-R
+                    // Mid-Right meaning: at-the-level-of-numbers
+                    backgroundPosition: "30px 10px", // Mid-R
+                    // Top-Right Corner -> safety even for `100`
+                    // backgroundPosition: "30px 00px", // Top-R
+
+                    // textIndent: "-5px", // Hides it from UI
+                    // behind Selector; instead:
+                    // paddingLeft: "0px", // To the Most-Left
+                    // paddingLeft: "5px",
+                    paddingLeft: "10px",
+                  }}
+                >
+                  <option
+                    disabled
+                    // value="SORT" // unselectable no VALUE needed.
+                    style={{ fontSize: "13px", fontWeight: "bold" }}
+                  >
+                    {/* Sort */}
+                    Posts
+                  </option>
+                  <option value={1} className="fw-bold">
+                    1
+                  </option>
+                  <option value={2} className="fw-bold">
+                    2
+                  </option>
+                  <option value={5} className="fw-bold">
+                    5
+                  </option>
+                  <option value={10} className="fw-bold">
+                    10
+                  </option>
+                  <option value={15} className="fw-bold">
+                    15
+                  </option>
+                </Form.Select>
+                <Form.Label />
+                {/* </div> */}
               </InputGroup.Text>
               <FloatingLabel label="Search by car's name">
                 <Form.Control

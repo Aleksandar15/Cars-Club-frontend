@@ -40,14 +40,6 @@ function Post() {
   // will start failing (I'm working on testing performance
   // to instead call useAxiosIntercpetor inside App.tsx).
 
-  // const handleDelete = () => {
-  //   onDelete();
-  // };
-
-  // const handleEdit = async (post_id: string, user_id: string) => {
-  //   console.log("Edit clicked");
-  // };
-
   const convertBufferToImgSRC = (bufferData: ArrayBufferLike | undefined) => {
     const buffer = new Uint8Array(bufferData as ArrayBufferLike).buffer;
     const blob = new Blob([buffer], { type: "image/jpeg" });
@@ -73,27 +65,11 @@ function Post() {
   // );
   // console.log("Post.tsx searchCarsFieldsState:", searchCarsFieldsState);
 
-  // Here I don't need to import `postPerPage` Redux State
-  // because the Post.tsx logic is: on component mount:
-  // 'everything will be reset back to default'
-  // UPDATE: well that's not how it works when I changed postPerPage
-  // initial State from 5 to 2 ahs no Effects because
-  // in here that's stuck at '5'
-  // instead if I need on refresh to reset back to default
-  // when in the future I'll have OPTIONS tag of 'Select Post Per Page'
-  // I'll reset that Redux state to '5' and this postPerpage will
-  // get affected based on the Redux State as well as the
-  // 'Select Posts Per Page'-future-plans OPTIONS tag's initial value.
   const postPerPage = useSelectorTyped(selectorPostPerPage);
 
   useEffect(() => {
     // dispatchAsyncThunk(getAllPosts());
 
-    // In the next logic I'd have to check if
-    // sessionStorage
-    // has 'limit' and 'offset'
-    // ^->if user has refreshed=session isn't lost;
-    // However if it doesn't exist then provide the initial numbers.
     dispatchAsyncThunk(
       // getSortedPostsAsyncThunk({ limit: 5, offset: 0, carNameTitle: "" })
       getSortedPostsAsyncThunk({
@@ -103,17 +79,8 @@ function Post() {
       })
     );
 
-    // const getTotalPostsFN = async () => {
-    //   const { data } = await axiosCredentials.get(
-    //     `/api/v1/post/getsortedposts/${5}/${3}`
-    //   );
-    //   console.log("getTotalPostsFN DATA:", data);
-
-    //   // dispatchTyped()
-
-    //   // Set it in here as well as in PaginationMarketplace
-    //   sessionStorage.setItem("total_posts", data.total_posts);
-    // };
+    // I changed my decision and decided not to use sessionStorage
+    // to store postPerPage, instead go with default 5 / 0 / ""
 
     // No need for flags since I only will call it ONCE on Render
   }, []);
@@ -197,7 +164,7 @@ function Post() {
                       >
                         Delete
                       </Button> */}
-                      {/* ^^^^^UPDATED INTO: */}
+                      {/* ^^^^^UPDATES MOVED INTO: */}
                       <Post_Action_Buttons
                         post_post_id={post.post_id as string}
                         post_user_id={post.user_id as string}

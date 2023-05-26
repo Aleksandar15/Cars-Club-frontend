@@ -1,5 +1,25 @@
 # CARS CLUB
 
+##### ~> My <a href="https://github.com/Aleksandar15/Cars-Club-backend">backend code</a>.
+
+#### Visit my live website here: https://cars-club.netlify.app
+
+##### Test login user:
+
+1. Click the `Login as a test user` button
+2. - E-mail: test@test.com
+   - Password: test
+
+#### About my Full-Stack Cars Club APP:
+
+Combining my passion for cars I created this fullstack project with one of the main goal being that to improve my TypeScript skills. I had focused on setting up a reusable and scalable code that can be used for implementing more features. Now that it's all looking & working smoothly, my app is at a state where I can continue implementing my new ideas in the future updates seamlessly.
+
+#### Technologies used:
+
+###### TypeScript + ReactJS with Redux Toolkit + NodeJS with ExpressJS and MulterJS + PostgreSQL Database
+
+<h4 style="text-align: center;">^ UPDATE ^</h4>
+
 ---
 
 #### NOTE: I'm still working on this fullstack project - it's not yet finished & my main goal is to improve my TypeScript skills.
@@ -33,6 +53,10 @@
 ##### Sources
 
 - For most of my SVG icons I've used a PNG version of icons8 and then converted that PNG into SVG using sites like https://www.pngtosvg.com.
+
+<h4 style="text-align: center;">NO NEED TO READ BELOW ARE MY REMINDERS 😊</h4>
+
+---
 
 ##### Extras (_reminders for me_)
 

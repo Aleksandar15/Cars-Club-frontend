@@ -58,4 +58,4 @@ Combining my passion for cars I created this fullstack project with one of the m
 
 ---
 
-##### Extras & Journals & Plans <a href="https://github.com/Aleksandar15/Cars-Club-frontend-reminders">here</a> (_reminders for me_; no need to go in there - it's the size of a book 😊.)
+##### Extras & Journals & Plans <a href="https://github.com/Aleksandar15/Cars-Club-frontend-reminders">here</a> (_frontend reminders for me_; no need to go in there - it's the size of a book 😊.)

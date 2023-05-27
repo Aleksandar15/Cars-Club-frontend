@@ -1,6 +1,7 @@
 export type PostType = {
   post_title: string;
-  post_image_buffer: Post_image_buffer | undefined;
+  // post_image_buffer: Post_image_buffer | undefined;
+  post_image_buffer: Post_image_buffer;
   post_description: string;
   post_contact_number: string;
   post_asking_price: string;
@@ -19,4 +20,7 @@ export type Currency = "EUR" | "USD" | "Select currency";
 export type Post_image_buffer = {
   type: "Buffer";
   data: ArrayBuffer;
+  // data: ArrayBufferLike;
+  // // Under the hood of TypeScript:
+  // // type ArrayBufferLike = ArrayBuffer | SharedArrayBuffer
 };

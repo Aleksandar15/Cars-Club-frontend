@@ -30,7 +30,11 @@ import { setCurrentPageAction } from "../../redux/slices/paginationMarketplaceCu
 import { selectorPostPerPage } from "../../redux/slices/postPerPageSlice";
 import { selectVerifyUser } from "../../redux/slices/verifySlice";
 import { PostSorted } from "../../utilities/Types/getSortedPostsTypes";
-import { Currency, PostType } from "../../utilities/Types/postsTypes";
+import {
+  Currency,
+  PostType,
+  Post_image_buffer,
+} from "../../utilities/Types/postsTypes";
 import Loading from "../Loading/Loading";
 import Post_Action_Buttons from "./Post_Action_Buttons";
 
@@ -45,9 +49,35 @@ function Post() {
 
   // console.log("nodeENV:", nodeENV);
 
-  const convertBufferToImgSRC = (bufferData: ArrayBufferLike | undefined) => {
-    const buffer = new Uint8Array(bufferData as ArrayBufferLike).buffer;
+  console.count("rendered Post.tsx");
+
+  // const convertBufferToImgSRC = (bufferData: ArrayBufferLike) => {
+  // // Under the hood of TypeScript:
+  // // type ArrayBufferLike = ArrayBuffer | SharedArrayBuffer
+  const convertBufferToImgSRC = (bufferData: ArrayBuffer) => {
+    if (!bufferData) return "";
+
+    const buffer: ArrayBuffer =
+      // new Uint8Array(bufferData as ArrayBufferLike).buffer //Works as well
+      new Uint8Array(bufferData as ArrayBuffer).buffer as ArrayBuffer;
+
+    // const buffer: Uint8Array = new Uint8Array(
+    //   bufferData as ArrayBuffer
+    // ) as Uint8Array; // works as well (without accessing `.buffer`) because
+    // // the Blob constructor accepts an array of values, and the Uint8Array
+    // // object can be treated as an array-like object. Internally, Blob
+    // // converts the Uint8Array into a regular array when creating the Blob.
+
+    // NOTE:
+    // Yes both the Types of "bufferData" and "buffer" are ArrayBuffer,
+    // but the actual DATA is what I should care about
+    // when passing it to "new Blob"`s constructor's argument.
+
+    // console.log("bufferData:", bufferData, "\nbuffer:", buffer);
+
     const blob = new Blob([buffer], { type: "image/jpeg" });
+    // console.log("blob:", blob);
+
     const blobToURL = URL.createObjectURL(blob);
     // console.log("blobToURL:", blobToURL);
     return blobToURL;
@@ -133,7 +163,7 @@ function Post() {
           <p>(Start by creating one.)</p>
         </div>
       ) : (
-        posts.map((post) => {
+        (posts as PostType[]).map((post: PostType) => {
           {
             // console.log("post:", post);
             // console.log("post.post_id:", post.post_id);
@@ -195,8 +225,15 @@ function Post() {
               <div className="post-image-wrapper-center">
                 <div className="post-image-wrapper">
                   <img
-                    src={convertBufferToImgSRC(post.post_image_buffer?.data)}
-                    alt={"title"}
+                    src={convertBufferToImgSRC(
+                      (post.post_image_buffer as Post_image_buffer)
+                        ?.data as ArrayBuffer
+                      // ?.data as ArrayBufferLike //Type works as well because
+                      // Under the hood of TypeScript:
+                      // type ArrayBufferLike = ArrayBuffer | SharedArrayBuffer
+                    )}
+                    // alt={"title"}
+                    alt={`Image of: ${post.post_title}`}
                     className="post-image"
                   />
                 </div>

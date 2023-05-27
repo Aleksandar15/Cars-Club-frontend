@@ -33,12 +33,16 @@ import { Currency, PostType } from "../../utilities/Types/postsTypes";
 import Loading from "../Loading/Loading";
 import Post_Action_Buttons from "./Post_Action_Buttons";
 
+const nodeENV = import.meta.env;
+
 function Post() {
   const axiosCredentials = useAxiosInterceptor();
   // DO NOT REMOVE useAxiosInterceptor()
   // or AsyncThunk's being used in Post & it's children
   // will start failing (I'm working on testing performance
   // to instead call useAxiosIntercpetor inside App.tsx).
+
+  // console.log("nodeENV:", nodeENV);
 
   const convertBufferToImgSRC = (bufferData: ArrayBufferLike | undefined) => {
     const buffer = new Uint8Array(bufferData as ArrayBufferLike).buffer;
@@ -66,6 +70,9 @@ function Post() {
   // console.log("Post.tsx searchCarsFieldsState:", searchCarsFieldsState);
 
   const postPerPage = useSelectorTyped(selectorPostPerPage);
+  const searchCarsFieldsState = useSelectorTyped<FormSearchCarsFields>(
+    selectorFormSearchCarsFields
+  );
 
   useEffect(() => {
     // dispatchAsyncThunk(getAllPosts());
@@ -75,12 +82,21 @@ function Post() {
       getSortedPostsAsyncThunk({
         limit: postPerPage,
         offset: 0,
-        carNameTitle: "",
+        // carNameTitle: "",
+        carNameTitle: searchCarsFieldsState.carNameInputField,
       })
     );
 
     // I changed my decision and decided not to use sessionStorage
     // to store postPerPage, instead go with default 5 / 0 / ""
+
+    // Logic changed into keeping the state `postPerPage` as-is even if
+    // User navigates to different components, that's why I must retrieve
+    // `searchCarsFieldsState.carNameInputField` from `FormSearchCars`.
+
+    if (nodeENV.DEV) {
+      console.log("postPerPage Post.tsx:", postPerPage);
+    }
 
     // No need for flags since I only will call it ONCE on Render
   }, []);
@@ -102,8 +118,6 @@ function Post() {
   if (postsStatus === "failed") {
     return <h1>Error: {postsError}. Please refresh or try again later.</h1>;
   }
-
-  // Implement a DIV/H1 that will show if there's 0 posts (# in array)
 
   return (
     <>

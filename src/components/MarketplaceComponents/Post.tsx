@@ -26,6 +26,7 @@ import {
   FormSearchCarsFields,
   selectorFormSearchCarsFields,
 } from "../../redux/slices/formSearchCarsSlice";
+import { setCurrentPageAction } from "../../redux/slices/paginationMarketplaceCurrentPageSlice";
 import { selectorPostPerPage } from "../../redux/slices/postPerPageSlice";
 import { selectVerifyUser } from "../../redux/slices/verifySlice";
 import { PostSorted } from "../../utilities/Types/getSortedPostsTypes";
@@ -93,6 +94,10 @@ function Post() {
     // Logic changed into keeping the state `postPerPage` as-is even if
     // User navigates to different components, that's why I must retrieve
     // `searchCarsFieldsState.carNameInputField` from `FormSearchCars`.
+
+    // Until I move all the Pagination States into
+    // a Single Source of Truth; for now offset is hardcoded at 0:
+    dispatchTyped(setCurrentPageAction({ currentPage: 1 }));
 
     if (nodeENV.DEV) {
       console.log("postPerPage Post.tsx:", postPerPage);

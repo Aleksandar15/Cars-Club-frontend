@@ -52,11 +52,13 @@ const FormSearchCars = () => {
 
     dispatchAsyncThunk(
       getSortedPostsAsyncThunk({
-        // Those doesn't need Redux State because onClick
-        //  I'm resetting the Pagination to:
-        // 1 Page Per 5 Posts Standard (default on refresh)
-        // Offset 0 because I start at index 0 in PG database.
-        limit: 5, // as per the standard `postPerPage`.
+        // // Those doesn't need Redux State because onClick
+        // //  I'm resetting the Pagination to:
+        // // 1 Page Per 5 Posts Standard (default on refresh)
+        // // Offset 0 because I start at index 0 in PG database.
+        // limit: 5, // as per the standard `postPerPage`.
+        // UPDATE: that's a buggy one which ignores the postPerPage
+        limit: postPerPage,
         offset: 0,
         carNameTitle: searchCarsFieldsState.carNameInputField.trim(),
       })

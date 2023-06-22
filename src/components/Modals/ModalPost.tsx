@@ -381,6 +381,34 @@ const ModalPost = () => {
                           maxWidth: "230px",
                         }}
                       />
+                      <p
+                        className="pb-0 mb-0"
+                        style={{
+                          // color: "red",
+                          color: "green",
+                          // textTransform: "capitalize",
+                          textTransform: "none",
+                          fontSize: "13.2px",
+                          // overflowWrap: "break-word", // Testing for a longer text
+                          // wordWrap: "break-word",
+                          // whiteSpace: "pre", //
+                          // whiteSpace: "pre-line",
+                          // Even this won't work because of Prettify,
+                          // I must put my text inside square brackets.
+                          whiteSpace: "pre-wrap", //styling choice.
+                        }}
+                      >
+                        <span style={{ fontWeight: "bold", fontSize: "12px" }}>
+                          {/* TEST: */}
+                          {/* TEST-HINT: */}
+                          HINT:
+                        </span>{" "}
+                        {/* Download one of the images and upload it.
+                        <p className="pb-0 mb-0 pt-0 mt-0">Test text new lines</p> */}
+                        {/* {`Download an image from TEST's posts */}
+                        {`Save an image from TEST's posts
+          And re-upload the same one. 😊`}
+                      </p>
                     </div>
                     <label className="me-1 fw-bold mt-2" htmlFor="description">
                       Description:

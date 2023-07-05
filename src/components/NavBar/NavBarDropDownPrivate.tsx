@@ -6,10 +6,14 @@ import { selectVerifyUser } from "../../redux/slices/verifySlice";
 
 const NavBarDropDownPrivate = () => {
   const navigatePage = useMyNavigate();
+  const clickHomePage = () => navigatePage("/");
   const clickCatalog = () => navigatePage("/catalog");
   const clickMarketplace = () => navigatePage("/marketplace");
   const { clickLogout, clickLogoutAll } = useLogouts();
   const { user_name, user_email } = useSelectorTyped(selectVerifyUser);
+
+  // Update to include Home if isMobile is true, because I hid the Nav.Links to save space
+  const isMobile = window.innerWidth <= 767;
 
   return (
     <>
@@ -29,8 +33,18 @@ const NavBarDropDownPrivate = () => {
         </p>
         {/* <p className="m-0">{"Test"}</p> */}
         <Dropdown.Divider />
+        {isMobile && (
+          <Dropdown.Item
+            eventKey="1"
+            onClick={clickHomePage}
+            className="text-white bg-success mb-1  text-center"
+            style={{ borderRadius: "10px" }}
+          >
+            Home
+          </Dropdown.Item>
+        )}
         <Dropdown.Item
-          eventKey="1"
+          eventKey="2"
           onClick={clickCatalog}
           className="text-white bg-info mb-1  text-center"
           style={{ borderRadius: "10px" }}
@@ -38,7 +52,7 @@ const NavBarDropDownPrivate = () => {
           Catalog
         </Dropdown.Item>
         <Dropdown.Item
-          eventKey="2"
+          eventKey="3"
           onClick={clickMarketplace}
           className="text-white bg-info text-center"
           style={{ borderRadius: "10px" }}
@@ -47,7 +61,7 @@ const NavBarDropDownPrivate = () => {
         </Dropdown.Item>
         <Dropdown.Divider />
         <Dropdown.Item
-          eventKey="3"
+          eventKey="4"
           onClick={clickLogout}
           className="text-light bg-danger text-center"
           style={{ borderRadius: "10px" }}
@@ -55,7 +69,7 @@ const NavBarDropDownPrivate = () => {
           Logout
         </Dropdown.Item>
         <Dropdown.Item
-          eventKey="4"
+          eventKey="5"
           onClick={clickLogoutAll}
           className="text-light bg-danger text-center mt-1"
           style={{ borderRadius: "10px" }}

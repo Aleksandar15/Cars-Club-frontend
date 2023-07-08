@@ -25,6 +25,10 @@ const NavBar = () => {
   // Logic behind `sticky`: must have "top" or UNDEFINED value, so if any of
   // the Modals are open (their state is TRUE) then set 'sticky' to UNDEFINED
 
+  // Fix for mobile screen where NavBar would take up a lot of space
+  // is to hide the Nav.Link, but include Home inside the DropDown
+  const isMobile = window.innerWidth <= 767;
+
   return (
     <NavBarByBS
       sticky={
@@ -47,34 +51,40 @@ const NavBar = () => {
         // className={`navCustomClass`}
         >
           {/* NAV2 */}
-          {isUserAuthorized === true ? (
-            <>
+          {!isMobile ? (
+            // If it's NOT Mobile screen, then display Nav.Links
+            isUserAuthorized === true ? (
+              <>
+                <Nav.Link to="/" as={NavLink} className="fs-5">
+                  Home
+                </Nav.Link>
+                <Nav.Link to="/catalog" as={NavLink} className="fs-5">
+                  Catalog
+                </Nav.Link>
+                <Nav.Link to="/marketplace" as={NavLink} className="fs-5">
+                  Marketplace
+                </Nav.Link>
+              </>
+            ) : isUserAuthorized === false ? (
+              <>
+                <Nav.Link to="/" as={NavLink} className="fs-5">
+                  Home
+                </Nav.Link>
+                <Nav.Link to="/login" as={NavLink} className="fs-5">
+                  Login
+                </Nav.Link>
+                <Nav.Link to="/register" as={NavLink} className="fs-5">
+                  Register
+                </Nav.Link>
+              </>
+            ) : (
               <Nav.Link to="/" as={NavLink} className="fs-5">
                 Home
               </Nav.Link>
-              <Nav.Link to="/catalog" as={NavLink} className="fs-5">
-                Catalog
-              </Nav.Link>
-              <Nav.Link to="/marketplace" as={NavLink} className="fs-5">
-                Marketplace
-              </Nav.Link>
-            </>
-          ) : isUserAuthorized === false ? (
-            <>
-              <Nav.Link to="/" as={NavLink} className="fs-5">
-                Home
-              </Nav.Link>
-              <Nav.Link to="/login" as={NavLink} className="fs-5">
-                Login
-              </Nav.Link>
-              <Nav.Link to="/register" as={NavLink} className="fs-5">
-                Register
-              </Nav.Link>
-            </>
+            )
           ) : (
-            <Nav.Link to="/" as={NavLink} className="fs-5">
-              Home
-            </Nav.Link>
+            // Return nothing when isMobile is true.
+            <></>
           )}
         </Nav>
         {/* NAV OUTSIDE */}

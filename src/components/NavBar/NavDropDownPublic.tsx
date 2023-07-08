@@ -8,6 +8,9 @@ const NavDropDownPublic = () => {
 
   const { isUserAuthorized } = useSelectorTyped(selectVerifyUser);
 
+  // Update to include Home if isMobile is true, because I hid the Nav.Links to save space
+  const isMobile = window.innerWidth <= 767;
+
   return (
     <>
       <DropdownButton
@@ -20,6 +23,14 @@ const NavDropDownPublic = () => {
       >
         <Dropdown.Item
           eventKey="1"
+          onClick={() => navigatePage("/")}
+          className="text-white bg-success mb-1  text-center"
+          style={{ borderRadius: "10px" }}
+        >
+          HOME
+        </Dropdown.Item>
+        <Dropdown.Item
+          eventKey="2"
           onClick={() => navigatePage("/login")}
           className="text-white bg-info mb-1  text-center"
           style={{ borderRadius: "10px" }}
@@ -27,7 +38,7 @@ const NavDropDownPublic = () => {
           LOGIN
         </Dropdown.Item>
         <Dropdown.Item
-          eventKey="2"
+          eventKey="3"
           onClick={() => navigatePage("/register")}
           className="text-white bg-info text-center"
           style={{ borderRadius: "10px" }}

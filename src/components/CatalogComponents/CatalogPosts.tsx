@@ -115,6 +115,9 @@ const CatalogPosts = () => {
     window.scrollTo(0, 0); // Scroll to top
   };
 
+  // Keep Pagination buttons smaller for phone display size
+  const isMobile = window.innerWidth <= 767;
+
   return (
     <>
       {catalogArray.slice(numberOfFirstPost, numberOfLastPost).map((post) => {
@@ -149,9 +152,10 @@ const CatalogPosts = () => {
 
       <div style={{ display: "flex", justifyContent: "center" }}>
         <Pagination
-          size="lg"
+          // size="lg"
           // size="sm"
-          // default is Medium
+          // default (undefined) is Medium
+          size={isMobile ? undefined : "lg"}
         >
           <Pagination.First
             onClick={handleFirstPage}

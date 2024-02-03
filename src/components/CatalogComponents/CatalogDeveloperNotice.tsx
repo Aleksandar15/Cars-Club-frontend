@@ -23,7 +23,7 @@ const CatalogDeveloperNotice = () => {
         className="mb-5    mt-3 text-center"
         style={{ color: "#0dcaf0", fontSize: "18px" }}
       >
-        (In here I have 1 post/page so you can easily access pagination.)
+        {/* (In here I have 1 post/page so you can easily access pagination.) */}
       </h6>
     </>
   );

@@ -15,7 +15,7 @@ import { PostType } from "../../utilities/Types/postsTypes";
 import { RootState } from "../store";
 
 // const axiosCredentials = useAxiosInterceptor();
-// // ^ Invalid hook call. Only inside of the body of a fn component.
+// // ^ Invalid hook call. Only callable inside of the body of a functional component.
 //
 // NEW IMPORTANT INFO ABOUT HOW axiosCredentials still is an interceptor:
 // UPDATE2: the success from importing axisoCredentials from axios Utils
@@ -51,10 +51,12 @@ import { RootState } from "../store";
 // I can't use dispatch in Redux because useDispatch() is a Hook, again.
 // and I can't confuse my getAllPosts InitialState with the
 // future /editpost/ID`s endpoint success response consisting of:
-// NOT posts[] array but a JSON with isSuccessful: boolean & message:string
+// NOT a "posts[] Array" data but rather a JSON data with
+// `isSuccessful: boolean` & `message :string` properties,
 // I would have to keep including my InitialState with `?` optional props
 // and ruin the usefulness that TypeScript provides.
 // I rather will call useAxiosInterceptor in the EditPost Component
+// (Update: the Component is now called Post.tsx in src/components.)
 // where I'll manually call "/editpost/ID" & on success I'll re-call
 // my GETALLPOSTS (or future update with pagination) -> and that will
 // cause 'Loading' screen to my Post (PARENT COMPONENT) & also

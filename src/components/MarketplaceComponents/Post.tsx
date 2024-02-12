@@ -285,6 +285,39 @@ function Post() {
                   ))}
                 </ul>
               </div> */}
+
+              {/*  */}
+              <div className="comment-section">
+                <h3>Comments</h3>
+                <ul className="list-group">
+                  {/* {comments.map((comment, index) => ( */}
+                  <li
+                    // key={index}
+                    className="list-group-item"
+                  >
+                    {/* {comment} */}
+                  </li>
+                  {/* ))} */}
+                </ul>
+                <form
+                // onSubmit={handleCommentSubmit}
+                >
+                  <div className="form-group">
+                    <label htmlFor="comment">Add a comment:</label>
+                    <textarea
+                      id="comment"
+                      className="form-control"
+                      rows="3"
+                      // value={newComment}
+                      // onChange={handleCommentChange}
+                    ></textarea>
+                  </div>
+                  <button type="submit" className="btn btn-primary">
+                    Submit
+                  </button>
+                </form>
+              </div>
+              {/*  */}
             </div>
           );
         })

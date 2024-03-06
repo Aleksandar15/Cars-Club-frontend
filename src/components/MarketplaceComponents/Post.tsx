@@ -307,7 +307,8 @@ function Post() {
                     <textarea
                       id="comment"
                       className="form-control"
-                      rows="3"
+                      // rows="3" // Data type is supposed to be a number.
+                      rows={3}
                       // value={newComment}
                       // onChange={handleCommentChange}
                     ></textarea>

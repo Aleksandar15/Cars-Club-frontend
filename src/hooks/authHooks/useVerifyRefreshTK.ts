@@ -177,7 +177,12 @@ const useVerifyRefreshTK = (
             }, 10000);
           }
 
-          if (errDataTyped?.isSuccessful === false) {
+          if (
+            errDataTyped?.isSuccessful === false ||
+            // hotfix2.0: if server isn't reachable that's a Network Error:
+            errDataTyped === undefined
+          ) {
+            // return // should not 'return', else openModal isn't triggered
             dispatchTyped(
               unauthorized({
                 userStatus: {
@@ -186,6 +191,13 @@ const useVerifyRefreshTK = (
                 },
               })
             );
+
+            // hotfix2: HEADS-UP: err.message === 'Network Error' is true, but I
+            // won't send a separate dispatch call to open Modal with the correct msg
+            // of the error as to prevent possible hackers of knowing the exact issue
+            // console.log("Initial useVerifyRefreshTK 'err':", err);
+            // console.log("useVerifyRefresh errDataTyped",errDataTyped); //undefined
+            // console.log("routeBelongsTo:", routeBelongsTo); // it's 'private'
 
             if (routeBelongsTo === "private") {
               dispatchTyped(

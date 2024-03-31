@@ -177,7 +177,7 @@ const useVerifyRefreshTK = (
             }, 10000);
           }
 
-          if (errDataTyped?.isSuccessful === false) {
+          if (errDataTyped?.isSuccessful === false || false) {
             dispatchTyped(
               unauthorized({
                 userStatus: {

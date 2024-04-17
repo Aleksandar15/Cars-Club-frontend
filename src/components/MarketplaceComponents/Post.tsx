@@ -288,7 +288,11 @@ function Post() {
 
               {/*  */}
               <div className="comment-section">
-                <h3>Comments</h3>
+                <h4>Comments</h4>
+                {/* <h4 className="mt-1">Comments</h4> */}
+                {/* <p className="mt-3" classNmae="fw-bold">
+                  Comments
+                </p> */}
                 <ul className="list-group">
                   {/* {comments.map((comment, index) => ( */}
                   <li

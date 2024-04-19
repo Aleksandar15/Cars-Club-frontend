@@ -289,6 +289,7 @@ function Post() {
               {/*  */}
               <div className="comment-section">
                 {/* <h4>Comments</h4> */}
+                {/* <h6 className="fw-bold">Comments</h6> */}
                 {/* <h4 className="mt-1">Comments</h4> */}
                 <p
                   // className="mt-1 fw-bold"
@@ -320,7 +321,10 @@ function Post() {
                       rows={3}
                       // value={newComment}
                       // onChange={handleCommentChange}
-                    ></textarea>
+                      // >
+                    />
+                    {/* Test text
+                    </textarea> */}
                   </div>
                   <button type="submit" className="btn btn-primary">
                     Submit

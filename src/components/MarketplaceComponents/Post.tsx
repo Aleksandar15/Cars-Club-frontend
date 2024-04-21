@@ -304,10 +304,19 @@ function Post() {
                   <li
                     // key={index}
                     className="list-group-item"
+                    //
+                    // value={post.post_created_by_user_name}
                   >
                     {/* {comment} */}
+                    {/* @ */}
+                    {post.post_created_by_user_name}
                   </li>
                   {/* ))} */}
+                  <li
+                  // className="list-group-item"
+                  >
+                    @Test
+                  </li>
                 </ul>
                 <form
                 // onSubmit={handleCommentSubmit}

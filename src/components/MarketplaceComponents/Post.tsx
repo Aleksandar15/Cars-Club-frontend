@@ -94,16 +94,22 @@ function Post() {
   // const postsError = useSelectorTyped(selectorPostsError);
   const postsError = useSelectorTyped(selectorSortedPostsError);
   // const total_posts = useSelectorTyped(selectorSortedTotalPosts);
+  // // console.log("posts:", posts);
+  // // console.log("postsStatus:", postsStatus);
+  // // console.log("postsError:", postsError);
 
-  // const searchCarsFieldsState = useSelectorTyped<FormSearchCarsFields>(
-  //   selectorFormSearchCarsFields
-  // );
-  // console.log("Post.tsx searchCarsFieldsState:", searchCarsFieldsState);
-
+  // --------------------------:
+  // #HotFix3: The below logic and useEffect is no longer necessary since
+  // re-rendering this Post.tsx for every single KEYWORD in the Search Bar
+  // is very expensive & Network tab gets filled with new fresh & unnecessary
+  // requests for (the same) "posts" -> so as of now that both FormSearchCars.tsx
+  // & PaginationMarketplace.tsx are calling AsyncThunk Redux Thunk respectively.
+  // ------------OLD CODE (for reference):
   const postPerPage = useSelectorTyped(selectorPostPerPage);
   const searchCarsFieldsState = useSelectorTyped<FormSearchCarsFields>(
     selectorFormSearchCarsFields
   );
+  // console.log("Post.tsx searchCarsFieldsState:", searchCarsFieldsState);
 
   useEffect(() => {
     // dispatchAsyncThunk(getAllPosts());
@@ -135,9 +141,7 @@ function Post() {
 
     // No need for flags since I only will call it ONCE on Render
   }, []);
-  // console.log("posts:", posts);
-  // console.log("postsStatus:", postsStatus);
-  // console.log("postsError:", postsError);
+  // -----------------^ (OLD CODE ENDS HERE #HotFix3 removes it.)
 
   const { formatNumber } = useModalPost_formatNum();
 
@@ -213,7 +217,7 @@ function Post() {
                       >
                         Delete
                       </Button> */}
-                      {/* ^^^^^UPDATES MOVED INTO: */}
+                      {/* ^UPDATE:Buttons MOVED INTO <Post_Action_Buttons/>:*/}
                       <Post_Action_Buttons
                         post_post_id={post.post_id as string}
                         post_user_id={post.user_id as string}

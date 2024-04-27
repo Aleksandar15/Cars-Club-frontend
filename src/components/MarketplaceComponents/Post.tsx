@@ -98,50 +98,50 @@ function Post() {
   // // console.log("postsStatus:", postsStatus);
   // // console.log("postsError:", postsError);
 
-  // --------------------------:
-  // #HotFix3: The below logic and useEffect is no longer necessary since
-  // re-rendering this Post.tsx for every single KEYWORD in the Search Bar
-  // is very expensive & Network tab gets filled with new fresh & unnecessary
-  // requests for (the same) "posts" -> so as of now that both FormSearchCars.tsx
-  // & PaginationMarketplace.tsx are calling AsyncThunk Redux Thunk respectively.
-  // ------------OLD CODE (for reference):
-  const postPerPage = useSelectorTyped(selectorPostPerPage);
-  const searchCarsFieldsState = useSelectorTyped<FormSearchCarsFields>(
-    selectorFormSearchCarsFields
-  );
-  // console.log("Post.tsx searchCarsFieldsState:", searchCarsFieldsState);
+  // // --------------------------:
+  // // #HotFix3: The below logic and useEffect is no longer necessary since
+  // // re-rendering this Post.tsx for every single KEYWORD in the Search Bar
+  // // is very expensive & Network tab gets filled with new fresh & unnecessary
+  // // requests for (the same) "posts" -> so as of now that both FormSearchCars.tsx
+  // // & PaginationMarketplace.tsx are calling AsyncThunk Redux Thunk respectively.
+  // // ------------OLD CODE (for reference):
+  // const postPerPage = useSelectorTyped(selectorPostPerPage);
+  // const searchCarsFieldsState = useSelectorTyped<FormSearchCarsFields>(
+  //   selectorFormSearchCarsFields
+  // );
+  // // console.log("Post.tsx searchCarsFieldsState:", searchCarsFieldsState);
 
-  useEffect(() => {
-    // dispatchAsyncThunk(getAllPosts());
+  // useEffect(() => {
+  //   // dispatchAsyncThunk(getAllPosts());
 
-    dispatchAsyncThunk(
-      // getSortedPostsAsyncThunk({ limit: 5, offset: 0, carNameTitle: "" })
-      getSortedPostsAsyncThunk({
-        limit: postPerPage,
-        offset: 0,
-        // carNameTitle: "",
-        carNameTitle: searchCarsFieldsState.carNameInputField,
-      })
-    );
+  //   dispatchAsyncThunk(
+  //     // getSortedPostsAsyncThunk({ limit: 5, offset: 0, carNameTitle: "" })
+  //     getSortedPostsAsyncThunk({
+  //       limit: postPerPage,
+  //       offset: 0,
+  //       // carNameTitle: "",
+  //       carNameTitle: searchCarsFieldsState.carNameInputField,
+  //     })
+  //   );
 
-    // I changed my decision and decided not to use sessionStorage
-    // to store postPerPage, instead go with default 5 / 0 / ""
+  //   // I changed my decision and decided not to use sessionStorage
+  //   // to store postPerPage, instead go with default 5 / 0 / ""
 
-    // Logic changed into keeping the state `postPerPage` as-is even if
-    // User navigates to different components, that's why I must retrieve
-    // `searchCarsFieldsState.carNameInputField` from `FormSearchCars`.
+  //   // Logic changed into keeping the state `postPerPage` as-is even if
+  //   // User navigates to different components, that's why I must retrieve
+  //   // `searchCarsFieldsState.carNameInputField` from `FormSearchCars`.
 
-    // Until I move all the Pagination States into
-    // a Single Source of Truth; for now offset is hardcoded at 0:
-    dispatchTyped(setCurrentPageAction({ currentPage: 1 }));
+  //   // Until I move all the Pagination States into
+  //   // a Single Source of Truth; for now offset is hardcoded at 0:
+  //   dispatchTyped(setCurrentPageAction({ currentPage: 1 }));
 
-    if (nodeENV.DEV) {
-      console.log("postPerPage Post.tsx:", postPerPage);
-    }
+  //   if (nodeENV.DEV) {
+  //     console.log("postPerPage Post.tsx:", postPerPage);
+  //   }
 
-    // No need for flags since I only will call it ONCE on Render
-  }, []);
-  // -----------------^ (OLD CODE ENDS HERE #HotFix3 removes it.)
+  //   // No need for flags since I only will call it ONCE on Render
+  // }, []);
+  // // -----------------^ (OLD CODE ENDS HERE #HotFix3 removes it.)
 
   const { formatNumber } = useModalPost_formatNum();
 

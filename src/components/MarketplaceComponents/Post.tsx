@@ -276,7 +276,7 @@ function Post() {
                 {/* ^: Thu May 18 2023 10:05:02 GMT+0200 (Central European SUmmer TIme) */}
               </p>
               {/* <div className="post-comments">
-                <h6>Comments:</h6>
+                <h6 className=" fw-bold">Comments:</h6>
                 <ul className="post-comments-ul">
                   {comments.map((comment, index) => (
                     <li key={index} className="post-comments-li">
@@ -287,7 +287,10 @@ function Post() {
               </div> */}
 
               {/*  */}
-              <div className="comment-section">
+              <div
+                // className="comment-section"
+                className="post-comment-section"
+              >
                 {/* <h4>Comments</h4> */}
                 {/* <h6 className="fw-bold">Comments</h6> */}
                 {/* <h4 className="mt-1">Comments</h4> */}
@@ -299,7 +302,10 @@ function Post() {
                   Comments:
                   {/* COMMENTS */}
                 </p>
-                <ul className="list-group">
+                <ul
+                  // className="list-group"
+                  className="post-comments-ul"
+                >
                   {/* {comments.map((comment, index) => ( */}
                   <li
                     // key={index}

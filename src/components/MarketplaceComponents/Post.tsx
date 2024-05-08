@@ -292,8 +292,8 @@ function Post() {
 
               {/*  */}
               <div
-                // className="comment-section"
-                className="post-comment-section"
+                // className="comments-section"
+                className="post-comments-section"
               >
                 {/* <h4>Comments</h4> */}
                 {/* <h6 className="fw-bold">Comments</h6> */}

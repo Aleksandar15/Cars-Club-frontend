@@ -104,12 +104,12 @@ function Post() {
     dispatchAsyncThunk(
       // getSortedPostsAsyncThunk({ limit: 5, offset: 0, carNameTitle: "" })
       getSortedPostsAsyncThunk({
-        // limit: postPerPage, //hotfix4
-        limit: 5,
+        // limit: postPerPage,
+        limit: 5, //hotfix4 - default value
         offset: 0,
         // carNameTitle: "",
         // carNameTitle: searchCarsFieldsState.carNameInputField,
-        carNameTitle: "", // hotfix4
+        carNameTitle: "", // hotfix4 - default value
       })
     );
 
@@ -125,13 +125,14 @@ function Post() {
     dispatchTyped(setCurrentPageAction({ currentPage: 1 }));
 
     if (nodeENV.DEV) {
-      // removed in Hotfix4
+      // removed 'postPerPage' from Post.tsx in Hotfix4
       // console.log("postPerPage Post.tsx:", postPerPage);
     }
 
     // No need for flags since I only will call it ONCE on Render
   }, []);
-  // // -----------------^ (OLD CODE ENDS HERE #HotFix3 removes it.)
+  // // -----------------^ (OLD CODE ENDS HERE; #HotFix3 removes it.)
+  // // -----------------^ (#HotFix4 returns & modifies the useEffect.)
 
   const { formatNumber } = useModalPost_formatNum();
 

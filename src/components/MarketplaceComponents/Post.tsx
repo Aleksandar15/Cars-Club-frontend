@@ -98,41 +98,50 @@ function Post() {
   // // console.log("postsStatus:", postsStatus);
   // // console.log("postsError:", postsError);
 
-  useEffect(() => {
-    // dispatchAsyncThunk(getAllPosts());
+  // // --------------------------:
+  // // #HotFix3: The below logic and useEffect is no longer necessary since
+  // // re-rendering this Post.tsx for every single KEYWORD in the Search Bar
+  // // is very expensive & Network tab gets filled with new fresh & unnecessary
+  // // requests for (the same) "posts" -> so as of now that both FormSearchCars.tsx
+  // // & PaginationMarketplace.tsx are calling AsyncThunk Redux Thunk respectively.
+  // // ------------OLD CODE (for reference):
+  // const postPerPage = useSelectorTyped(selectorPostPerPage);
+  // const searchCarsFieldsState = useSelectorTyped<FormSearchCarsFields>(
+  //   selectorFormSearchCarsFields
+  // );
+  // // console.log("Post.tsx searchCarsFieldsState:", searchCarsFieldsState);
 
-    dispatchAsyncThunk(
-      // getSortedPostsAsyncThunk({ limit: 5, offset: 0, carNameTitle: "" })
-      getSortedPostsAsyncThunk({
-        // limit: postPerPage,
-        limit: 5, //hotfix4 - default value
-        offset: 0,
-        // carNameTitle: "",
-        // carNameTitle: searchCarsFieldsState.carNameInputField,
-        carNameTitle: "", // hotfix4 - default value
-      })
-    );
+  // useEffect(() => {
+  //   // dispatchAsyncThunk(getAllPosts());
 
-    // I changed my decision and decided not to use sessionStorage
-    // to store postPerPage, instead go with default 5 / 0 / ""
+  //   dispatchAsyncThunk(
+  //     // getSortedPostsAsyncThunk({ limit: 5, offset: 0, carNameTitle: "" })
+  //     getSortedPostsAsyncThunk({
+  //       limit: postPerPage,
+  //       offset: 0,
+  //       // carNameTitle: "",
+  //       carNameTitle: searchCarsFieldsState.carNameInputField,
+  //     })
+  //   );
 
-    // Logic changed into keeping the state `postPerPage` as-is even if
-    // User navigates to different components, that's why I must retrieve
-    // `searchCarsFieldsState.carNameInputField` from `FormSearchCars`.
+  //   // I changed my decision and decided not to use sessionStorage
+  //   // to store postPerPage, instead go with default 5 / 0 / ""
 
-    // Until I move all the Pagination States into
-    // a Single Source of Truth; for now offset is hardcoded at 0:
-    dispatchTyped(setCurrentPageAction({ currentPage: 1 }));
+  //   // Logic changed into keeping the state `postPerPage` as-is even if
+  //   // User navigates to different components, that's why I must retrieve
+  //   // `searchCarsFieldsState.carNameInputField` from `FormSearchCars`.
 
-    if (nodeENV.DEV) {
-      // removed 'postPerPage' from Post.tsx in Hotfix4
-      // console.log("postPerPage Post.tsx:", postPerPage);
-    }
+  //   // Until I move all the Pagination States into
+  //   // a Single Source of Truth; for now offset is hardcoded at 0:
+  //   dispatchTyped(setCurrentPageAction({ currentPage: 1 }));
 
-    // No need for flags since I only will call it ONCE on Render
-  }, []);
-  // // -----------------^ (OLD CODE ENDS HERE; #HotFix3 removes it.)
-  // // -----------------^ (#HotFix4 returns & modifies the useEffect.)
+  //   if (nodeENV.DEV) {
+  //     console.log("postPerPage Post.tsx:", postPerPage);
+  //   }
+
+  //   // No need for flags since I only will call it ONCE on Render
+  // }, []);
+  // // -----------------^ (OLD CODE ENDS HERE #HotFix3 removes it.)
 
   const { formatNumber } = useModalPost_formatNum();
 

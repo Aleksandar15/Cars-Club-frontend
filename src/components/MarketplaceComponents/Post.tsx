@@ -315,6 +315,8 @@ function Post() {
                   {/* ))} */}
                   <li
                   // className="list-group-item"
+                  // // With & without this className there is a visual difference
+                  // // where "dot" is not added if there's no  className so I should make a UI decision.
                   >
                     @Test
                   </li>

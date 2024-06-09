@@ -301,7 +301,10 @@ function Post() {
                   // className="list-group"
                   className="post-comments-ul"
                 >
-                  {/* {comments.map((comment, index) => ( */}@
+                  {/* {comments.map((comment, index) => ( */}
+                  {/* @ */}
+                  {/* Symbol `@` for UI can't be in here as it's started on a new line
+                  because it's considered a new item. */}
                   <li
                     // key={index}
                     className="list-group-item"

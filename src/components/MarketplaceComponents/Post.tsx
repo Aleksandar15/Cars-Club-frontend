@@ -313,7 +313,7 @@ function Post() {
                   >
                     {/* {comment} */}
                     {/* @ */}
-                    {post.post_created_by_user_name}
+                    {/*  */}@{post.post_created_by_user_name}
                   </li>
                   {/* ))} */}
                   <li

@@ -313,7 +313,8 @@ function Post() {
                   >
                     {/* {comment} */}
                     {/* @ */}
-                    {/*  */}@{post.post_created_by_user_name}
+                    {/* Future ideas: I can add an emoji/img in replacement of 'AT'(@) sign */}
+                    @{post.post_created_by_user_name}
                   </li>
                   {/* ))} */}
                   <li

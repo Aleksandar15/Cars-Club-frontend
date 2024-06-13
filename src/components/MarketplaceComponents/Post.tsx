@@ -308,13 +308,14 @@ function Post() {
                   <li
                     // key={index}
                     className="list-group-item"
+                    // Note: this className removes 'dots' signs prior to listed items
                     //
                     // value={post.post_created_by_user_name}
                   >
                     {/* {comment} */}
                     {/* @ */}
                     {/* Future ideas: I can add an emoji/img in replacement of 'AT'(@) sign */}
-                    @{post.post_created_by_user_name}
+                    {/*  */}@{post.post_created_by_user_name}
                   </li>
                   {/* ))} */}
                   <li

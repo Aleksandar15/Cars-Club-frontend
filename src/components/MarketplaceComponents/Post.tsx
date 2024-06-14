@@ -308,7 +308,7 @@ function Post() {
                   <li
                     // key={index}
                     className="list-group-item"
-                    // Note: this className removes 'dots' signs prior to listed items
+                    // Note: this className removes 'dot' sign prior to the listed items => NEEDS FIX
                     //
                     // value={post.post_created_by_user_name}
                   >

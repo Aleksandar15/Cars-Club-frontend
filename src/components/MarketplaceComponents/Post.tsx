@@ -309,6 +309,12 @@ function Post() {
                     // key={index}
                     className="list-group-item"
                     // Note: this className removes 'dot' sign prior to the listed items => NEEDS FIX
+                    style={{
+                      padding: "10px",
+                      backgroundColor: "#f8f9fa",
+                      border: "1px solid #ddd",
+                      listStyleType: "disc",
+                    }}
                     //
                     // value={post.post_created_by_user_name}
                   >

@@ -310,7 +310,9 @@ function Post() {
                     className="list-group-item"
                     // Note: this className removes 'dot' sign prior to the listed items => NEEDS FIX
                     style={{
-                      padding: "10px",
+                      // padding: "10px",
+                      padding: "3px",
+                      // marginLeft: "10px",
                       backgroundColor: "#f8f9fa",
                       border: "1px solid #ddd",
                       listStyleType: "disc",

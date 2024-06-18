@@ -316,6 +316,7 @@ function Post() {
                       backgroundColor: "#f8f9fa",
                       border: "1px solid #ddd",
                       listStyleType: "disc",
+                      cursor: "default",
                     }}
                     //
                     // value={post.post_created_by_user_name}

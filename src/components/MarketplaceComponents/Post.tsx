@@ -314,7 +314,8 @@ function Post() {
                       padding: "3px",
                       // marginLeft: "10px",
                       backgroundColor: "#f8f9fa",
-                      border: "1px solid #ddd",
+                      // border: "1px solid #ddd",
+                      border: "1px solid cyan",
                       listStyleType: "disc",
                       cursor: "default",
                     }}

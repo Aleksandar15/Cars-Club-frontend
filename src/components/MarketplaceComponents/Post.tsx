@@ -315,7 +315,7 @@ function Post() {
                       // marginLeft: "10px",
                       backgroundColor: "#f8f9fa",
                       // border: "1px solid #ddd",
-                      border: "1px solid cyan",
+                      border: "1px dotted cyan",
                       listStyleType: "disc",
                       cursor: "default",
                     }}

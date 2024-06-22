@@ -317,6 +317,7 @@ function Post() {
                       // border: "1px solid #ddd",
                       // border: "1px dotted cyan",
                       border: "2px dotted cyan",
+                      borderRadius: "10px",
                       listStyleType: "disc",
                       cursor: "default",
                     }}

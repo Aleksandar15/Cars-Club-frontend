@@ -320,9 +320,9 @@ function Post() {
                       // border: "1px dotted cyan",
                       // border: "2px dotted cyan",
                       border: "3px dotted cyan",
-                      // borderRadius: "10px",
+                      borderRadius: "10px",
                       // borderRadius: "10px 8px",
-                      borderRadius: "10px 6px",
+                      // borderRadius: "10px 6px",
                       listStyleType: "disc",
                       cursor: "default",
                     }}

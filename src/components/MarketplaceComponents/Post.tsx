@@ -325,6 +325,8 @@ function Post() {
                       // borderRadius: "10px 6px",
                       listStyleType: "disc",
                       cursor: "default",
+                      //
+                      color: "red",
                     }}
                     //
                     // value={post.post_created_by_user_name}

@@ -316,7 +316,7 @@ function Post() {
                       // backgroundColor: "#f8f9fa",
                       // backgroundColor: "magenta",
                       // backgroundColor: "smokewhite",
-                      backgroundColor: "white",
+                      backgroundColor: "darkblue",
                       // border: "1px solid #ddd",
                       // border: "1px dotted cyan",
                       // border: "2px dotted cyan",

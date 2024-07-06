@@ -327,7 +327,8 @@ function Post() {
                       listStyleType: "disc",
                       cursor: "default",
                       //
-                      color: "red",
+                      // color: "red",
+                      color: "darkblue",
                     }}
                     //
                     // value={post.post_created_by_user_name}

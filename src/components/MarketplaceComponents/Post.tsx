@@ -313,6 +313,8 @@ function Post() {
                       // padding: "10px",
                       padding: "3px",
                       // marginLeft: "10px",
+                      margin: "10px", // testing phase
+                      //
                       // backgroundColor: "#f8f9fa",
                       // backgroundColor: "magenta",
                       // backgroundColor: "smokewhite",

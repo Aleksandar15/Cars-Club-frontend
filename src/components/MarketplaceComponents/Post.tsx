@@ -314,7 +314,8 @@ function Post() {
                       padding: "3px",
                       // marginLeft: "10px",
                       // margin: "10px", // testing phase
-                      margin: "10px 5px", // testing phase
+                      // margin: "10px 5px", // testing phase
+                      margin: "10px 8px", // testing phase
                       //
                       // backgroundColor: "#f8f9fa",
                       // backgroundColor: "magenta",

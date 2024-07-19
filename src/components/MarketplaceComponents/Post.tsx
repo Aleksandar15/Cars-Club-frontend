@@ -324,7 +324,8 @@ function Post() {
                       // margin: "-8px -22px",
                       // margin: "-8px -2px",
                       // margin: "-18px -2px",
-                      margin: "-8px -15px",
+                      // margin: "-8px -15px",
+                      margin: "-12px -15px",
                       //
                       // backgroundColor: "#f8f9fa",
                       // backgroundColor: "magenta",

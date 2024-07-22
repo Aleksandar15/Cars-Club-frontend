@@ -335,7 +335,8 @@ function Post() {
                       // border: "1px dotted cyan",
                       // border: "2px dotted cyan",
                       // border: "3px dotted cyan",
-                      border: "3px dotted red", //modify it to fit the rest of the page
+                      // border: "3px dotted red", //modify it to fit the rest of the page
+                      border: "3px dotted darkblue",
                       borderRadius: "10px",
                       // borderRadius: "10px 8px",
                       // borderRadius: "10px 6px",

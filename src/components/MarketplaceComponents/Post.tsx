@@ -340,7 +340,8 @@ function Post() {
                       // borderRadius: "10px",
                       // borderRadius: "10px 8px",
                       // borderRadius: "10px 6px",
-                      borderRadius: "12.5px",
+                      // borderRadius: "12.5px",
+                      borderRadius: "15.5px",
                       listStyleType: "disc",
                       cursor: "default",
                       //

@@ -298,6 +298,9 @@ function Post() {
                   {/* COMMENTS */}
                 </p>
                 {/* IDEA: Here would be a button with functionality to SHOW/HIDE comments sections*/}
+                <button
+                // Functionality to show/hide comments-per-post
+                ></button>
                 <ul
                   // className="list-group"
                   className="post-comments-ul"

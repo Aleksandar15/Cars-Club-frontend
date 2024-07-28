@@ -303,6 +303,7 @@ function Post() {
                 // onClick={
                 //   // function to run it
                 // }
+                // style={}
                 ></button>
                 <ul
                   // className="list-group"

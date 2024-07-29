@@ -303,7 +303,9 @@ function Post() {
                 // onClick={
                 //   // function to run it
                 // }
-                // style={}
+                // style={
+                // color="red"
+                // }
                 ></button>
                 <ul
                   // className="list-group"

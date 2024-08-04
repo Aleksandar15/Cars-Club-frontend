@@ -300,14 +300,12 @@ function Post() {
                 {/* IDEA: Here would be a button with functionality to SHOW/HIDE comments sections*/}
                 {/* <Button */}
                 <button
-                // // Functionality to show/hide comments-per-post
-                // onClick={
-                //   // function to run it
-                // }
-                // style={
-                // color="red"
-                // }
-                // ></button>
+                  // // Functionality to show/hide comments-per-post
+                  // onClick={
+                  //   // function to run it
+                  // }
+                  style={(color = "red")}
+                  // ></button>
                 ></button>
                 <ul
                   // className="list-group"

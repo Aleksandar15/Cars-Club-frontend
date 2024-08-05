@@ -304,8 +304,10 @@ function Post() {
                   // onClick={
                   //   // function to run it
                   // }
-                  style={(color = "red")}
-                  // ></button>
+                  // style={color="red"}
+                  // style={(color = "red")} //VScode
+                  style={{ color: "red" }}
+                  // // ></button>
                 ></button>
                 <ul
                   // className="list-group"

@@ -306,7 +306,7 @@ function Post() {
                   // }
                   // style={color="red"}
                   // style={(color = "red")} //VScode
-                  style={{ color: "red" }}
+                  style={{ color: "red", cursor: "default" }}
                   // // ></Button>
                 ></button>
                 <ul

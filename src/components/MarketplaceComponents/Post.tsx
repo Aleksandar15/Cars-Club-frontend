@@ -305,7 +305,7 @@ function Post() {
                   //   // function to run it
                   // }
                   // style={color="red"}
-                  // style={(color = "red")} //VScode
+                  // style={(color = "red")} //VScode wrong corrections
                   style={{ color: "red", cursor: "default" }}
                   // // ></Button>
                 ></button>

@@ -307,6 +307,7 @@ function Post() {
                   // style={color="red"}
                   // style={(color = "red")} //VScode wrong corrections
                   style={{ color: "red", cursor: "default" }}
+                  className="fw-bold"
                   // // ></Button>
                 ></button>
                 <ul

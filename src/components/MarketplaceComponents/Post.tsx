@@ -308,7 +308,8 @@ function Post() {
                   // style={(color = "red")} //VScode wrong corrections
                   style={{ color: "red", cursor: "default" }}
                   // className="fw-bold btn-primary"
-                  className="fw-bold btn-danger"
+                  className="fw-bold btn-danger btn"
+                  // className="mt-3"
                   // // ></Button>
                 ></button>
                 <ul

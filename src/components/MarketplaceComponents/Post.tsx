@@ -281,24 +281,18 @@ function Post() {
                 </ul>
               </div> */}
 
-              {/*  */}
-              <div
+              {/* V2: */}
+              {/* <div
                 // className="comments-section"
                 className="post-comments-section"
               >
-                {/* <h4>Comments</h4> */}
-                {/* <h6 className="fw-bold">Comments</h6> */}
-                {/* <h4 className="mt-1">Comments</h4> */}
                 <p
                   // className="mt-1 fw-bold"
                   className=" fw-bold"
                   // className="fw-bold"
                 >
                   Comments:
-                  {/* COMMENTS */}
                 </p>
-                {/* IDEA: Here would be a button with functionality to SHOW/HIDE comments sections*/}
-                {/* <Button */}
                 <button
                   // // Functionality to show/hide comments-per-post
                   // onClick={
@@ -316,11 +310,11 @@ function Post() {
                   // className="list-group"
                   className="post-comments-ul"
                 >
-                  {/* {comments.map((comment, index) => ( */}
-                  {/* @ */}
-                  {/* Symbol `@` for UI can't be in here as it's started on a new line
-                  because it's considered a new item. */}
                   <li
+                    // // {/* {comments.map((comment, index) => ( 
+                    // // {/* @ 
+                    // // {/* Symbol `@` for UI can't be in here as it's started on a new line
+                    // // because it's considered a new item. 
                     // key={index}
                     className="list-group-item"
                     // Note: this className removes 'dot' sign prior to the listed items => NEEDS FIX
@@ -366,13 +360,11 @@ function Post() {
                     //
                     // value={post.post_created_by_user_name}
                   >
-                    {/* {comment} */}
-                    {/* @ */}
-                    {/* Future ideas: I can add an emoji/img in replacement of 'AT'(@) sign */}
-                    {/*  */}@{post.post_created_by_user_name}
+                    @{post.post_created_by_user_name}
                   </li>
-                  {/* ))} */}
                   <li
+                  // {/* ))}  // - These braces are for closing the above comment.map method which is commented out for now since there is no full functionality yet.
+                  // Test2 - this second test user should be removed as comment.map method above should be used in the future.
                   // className="list-group-item"
                   // // With & without this className there is a visual difference
                   // // where "dot" is not added if there's no  className so I should make a UI decision.
@@ -393,16 +385,18 @@ function Post() {
                       // value={newComment}
                       // onChange={handleCommentChange}
                       // >
+                      // // NOTE:
+                      // // DO NOT CLOSE IT LIKE BELOW, since this textarea tag above will be a self-closing tag.
+                      // // {/* Test text
+                      // // </textarea> 
                     />
-                    {/* Test text
-                    </textarea> */}
                   </div>
                   <button type="submit" className="btn btn-primary">
                     Submit
                   </button>
                 </form>
-              </div>
-              {/*  */}
+              </div> */}
+              {/* V2 ends. */}
             </div>
           );
         })

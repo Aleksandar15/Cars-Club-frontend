@@ -307,6 +307,9 @@ function Post() {
                       // setIsCommentSectionVisible(!isCommentSectionVisible);
                       setIsCommentSectionVisible((prevState) => ({
                         ...prevState,
+                        // This works since 'post.post_id' is typeof string,
+                        // so such object's property named "post.post_id" starts
+                        // with 'undefined' value & !undefined -> becomes => true
                         [post.post_id]: !prevState[post.post_id],
                       }));
                     }}

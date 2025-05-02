@@ -141,8 +141,10 @@ function Post() {
   // console.log("posts:", posts);
 
   // const [isCommentSectionVisible, setIsCommentSectionVisible] = useState(false);
-  const [isCommentSectionVisible, setIsCommentSectionVisible] = useState({});
-  console.log("isCommentSectionVisible:", isCommentSectionVisible);
+  const [isCommentSectionVisible, setIsCommentSectionVisible] = useState<{
+    [key: string]: boolean;
+  }>({});
+  // console.log("isCommentSectionVisible:", isCommentSectionVisible);
 
   if (postsStatus === "idle" || postsStatus === "loading") {
     // Might need to move these inside parent: MarketPlace.tsx
@@ -303,15 +305,21 @@ function Post() {
                     //   // function to run it
                     // }
                     onClick={() => {
-                      console.log("Test, & post.post_id:", post.post_id);
+                      // console.log("Test, & post.post_id:", post.post_id);
                       // setIsCommentSectionVisible(!isCommentSectionVisible);
-                      setIsCommentSectionVisible((prevState) => ({
-                        ...prevState,
-                        // This works since 'post.post_id' is typeof string,
-                        // so such object's property named "post.post_id" starts
-                        // with 'undefined' value & !undefined -> becomes => true
-                        [post.post_id]: !prevState[post.post_id],
-                      }));
+                      setIsCommentSectionVisible((prevState) => {
+                        // console.log(
+                        //   'prevState inside "setIsCommentSectionVisible":',
+                        //   prevState
+                        // ); // "isCommentSectionVisible" gets filled up with as many post's ID's whenever SHOW-comment buttons are clicked -> as it stores them in a key-value pair => it still won't slow down even if there's 1000s
+                        return {
+                          ...prevState, // 'prevState' is an object containing key-value pairs.
+                          // This works since 'post.post_id' is typeof string,
+                          // so such object's property named "post.post_id" is created
+                          // & starts with 'undefined' value & !undefined -> becomes => true
+                          [post.post_id]: !prevState[post.post_id],
+                        };
+                      });
                     }}
                     // style={color="red"}
                     // style={(color = "red")} //VScode wrong corrections
@@ -345,7 +353,29 @@ function Post() {
                     {/* Comment feature incoming. */}
                     Comment feature coming soon.
                   </h6>
-                  // <div>
+                  // <div
+                  // //   style={{
+                  // //     // padding: "10px",
+                  // //     padding: "3px",
+                  // //     // marginLeft: "10px",
+                  // //     // margin: "10px", // testing phase
+                  // //     // margin: "10px 5px", // testing phase
+                  // //     // margin: "10px 8px", // testing phase
+                  // //     // margin: "-8px -15px",
+                  // //     margin: "-12px -15px",
+                  // //     //
+                  // //     // backgroundColor: "#f8f9fa",
+                  // //     // backgroundColor: "magenta",
+                  // //     // backgroundColor: "smokewhite",
+                  // //     // backgroundColor: "darkblue",
+                  // //     // border: "3px dotted cyan",
+                  // //     // border: "3px dotted red", //modify it to fit the rest of the page
+                  // //     border: "3px dotted darkblue",
+                  // //     borderRadius: "15.5px",
+                  // //     listStyleType: "disc",
+                  // //     cursor: "default",
+                  // //   }}
+                  // >
                   //   <ul
                   //     // className="list-group"
                   //     className="post-comments-ul"
@@ -409,7 +439,9 @@ function Post() {
                   //     // // With & without this className there is a visual difference
                   //     // // where "dot" is not added if there's no  className so I should make a UI decision.
                   //     >
-                  //       @Test
+                  //       {/* @Test */}
+                  //       <span> @{post.post_created_by_user_name}: </span>Comment
+                  //       Example
                   //     </li>
                   //   </ul>
                   //   <form

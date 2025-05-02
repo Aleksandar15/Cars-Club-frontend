@@ -140,7 +140,9 @@ function Post() {
   // console.log("postsStatus:", postsStatus);
   // console.log("posts:", posts);
 
-  const [isCommentSectionVisible, setIsCommentSectionVisible] = useState(false);
+  // const [isCommentSectionVisible, setIsCommentSectionVisible] = useState(false);
+  const [isCommentSectionVisible, setIsCommentSectionVisible] = useState({});
+  console.log("isCommentSectionVisible:", isCommentSectionVisible);
 
   if (postsStatus === "idle" || postsStatus === "loading") {
     // Might need to move these inside parent: MarketPlace.tsx
@@ -301,8 +303,12 @@ function Post() {
                     //   // function to run it
                     // }
                     onClick={() => {
-                      console.log("Test");
-                      setIsCommentSectionVisible(!isCommentSectionVisible);
+                      console.log("Test, & post.post_id:", post.post_id);
+                      // setIsCommentSectionVisible(!isCommentSectionVisible);
+                      setIsCommentSectionVisible((prevState) => ({
+                        ...prevState,
+                        [post.post_id]: !prevState[post.post_id],
+                      }));
                     }}
                     // style={color="red"}
                     // style={(color = "red")} //VScode wrong corrections
@@ -325,11 +331,13 @@ function Post() {
                     // // ></Button>
                   >
                     {/* SHOW/HIDE */}
-                    {isCommentSectionVisible ? "HIDE" : "SHOW"}
+                    {/* {isCommentSectionVisible ? "HIDE" : "SHOW"} */}
+                    {isCommentSectionVisible[post.post_id] ? "HIDE" : "SHOW"}
                     {/* </button> */}
                   </Button>
                 </p>
-                {isCommentSectionVisible && (
+                {/* {isCommentSectionVisible && ( */}
+                {isCommentSectionVisible[post.post_id] && (
                   <h6 style={{ color: "red", fontStyle: "italic" }}>
                     {/* Comment feature incoming. */}
                     Comment feature coming soon.

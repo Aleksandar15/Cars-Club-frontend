@@ -330,7 +330,7 @@ function Post() {
                   </Button>
                 </p>
                 {isCommentSectionVisible && (
-                  <h6>
+                  <h6 style={{ color: "red", fontStyle: "italic" }}>
                     {/* Comment feature incoming. */}
                     Comment feature coming soon.
                   </h6>

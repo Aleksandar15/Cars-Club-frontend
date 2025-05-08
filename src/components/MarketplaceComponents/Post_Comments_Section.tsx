@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
+import { PostType } from "../../utilities/Types/postsTypes";
 
-const Post_Comments_Section: React.FC = ({ post }) => {
+interface PostCommentsSectionProps {
+  post: PostType;
+}
+
+const Post_Comments_Section: React.FC<PostCommentsSectionProps> = ({
+  post,
+}) => {
   // const [isCommentSectionVisible, setIsCommentSectionVisible] = useState(false);
   const [isCommentSectionVisible, setIsCommentSectionVisible] = useState<{
     [key: string]: boolean;
